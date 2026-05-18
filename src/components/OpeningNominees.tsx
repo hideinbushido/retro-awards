@@ -3,7 +3,8 @@
 import { useState, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import { Music, Volume2, Check } from 'lucide-react';
-import { Opening, voteOpening } from '@/lib/firestore';
+import { voteOpening } from '@/lib/firestore';
+import { Opening } from '@/data/nominees';
 
 type Props = { year: number; openings: Opening[] };
 
@@ -18,24 +19,19 @@ export default function OpeningNominees({ year, openings }: Props) {
   const [loading, setLoading] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  const playAudio = useCallback((opening: Opening) => {
-    if (!opening.audioPath) return;
-    if (audioRef.current) {
-      audioRef.current.pause();
-    }
-    const audio = new Audio(opening.audioPath);
+  const playAudio = useCallback((op: Opening) => {
+    if (!op.audio) return;
+    if (audioRef.current) audioRef.current.pause();
+    const audio = new Audio(op.audio);
     audio.volume = 0.7;
     audioRef.current = audio;
     audio.play().catch(() => {});
-    setPlayingId(opening.id);
+    setPlayingId(op.id);
     audio.onended = () => setPlayingId(null);
   }, []);
 
   const stopAudio = useCallback(() => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current = null;
-    }
+    if (audioRef.current) { audioRef.current.pause(); audioRef.current = null; }
     setPlayingId(null);
   }, []);
 
@@ -55,14 +51,13 @@ export default function OpeningNominees({ year, openings }: Props) {
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
       {openings.map((op) => {
         const isPlaying = playingId === op.id;
-        const hasVoted = !!votedId;
         const isMyVote = votedId === op.id;
+        const hasVoted = !!votedId;
 
         return (
           <div
             key={op.id}
-            className="retro-card rounded-lg overflow-hidden flex flex-col group cursor-pointer"
-            style={{ position: 'relative' }}
+            className="retro-card rounded-lg overflow-hidden flex flex-col group cursor-pointer relative"
             onMouseEnter={() => playAudio(op)}
             onMouseLeave={stopAudio}
             onTouchStart={() => isPlaying ? stopAudio() : playAudio(op)}
@@ -70,12 +65,11 @@ export default function OpeningNominees({ year, openings }: Props) {
             {/* Image */}
             <div className="relative aspect-[3/4] overflow-hidden">
               <Image
-                src={op.imageUrl || '/placeholder.png'}
+                src={op.image}
                 alt={op.animeName}
                 fill
                 className="object-cover group-hover:scale-105 transition-transform duration-500"
               />
-              {/* Overlay on hover */}
               <div
                 className="absolute inset-0 transition-opacity duration-300"
                 style={{
@@ -83,7 +77,7 @@ export default function OpeningNominees({ year, openings }: Props) {
                   opacity: isPlaying ? 1 : 0,
                 }}
               />
-              {/* Playing indicator */}
+              {/* Playing bars */}
               {isPlaying && (
                 <div className="absolute top-2 right-2 flex items-end gap-0.5" style={{ height: '20px' }}>
                   {[0,1,2,3].map((i) => (
@@ -91,7 +85,6 @@ export default function OpeningNominees({ year, openings }: Props) {
                   ))}
                 </div>
               )}
-              {/* Vote badge */}
               {isMyVote && (
                 <div
                   className="absolute top-2 left-2 flex items-center gap-1 px-2 py-1 rounded text-xs font-bold"
@@ -105,15 +98,11 @@ export default function OpeningNominees({ year, openings }: Props) {
             {/* Info */}
             <div className="p-3 flex flex-col gap-2 flex-1">
               <div>
-                <p className="font-black text-sm leading-tight" style={{ color: 'var(--sepia)' }}>
-                  {op.animeName}
-                </p>
+                <p className="font-black text-sm leading-tight" style={{ color: 'var(--sepia)' }}>{op.animeName}</p>
                 <p className="text-xs mt-0.5" style={{ color: 'var(--neon)' }}>
-                  <Music size={10} className="inline mr-1" />
-                  {op.openingTitle}
+                  <Music size={10} className="inline mr-1" />{op.openingTitle}
                 </p>
               </div>
-
               <button
                 onClick={() => handleVote(op.id)}
                 disabled={hasVoted || loading === op.id}
@@ -124,13 +113,13 @@ export default function OpeningNominees({ year, openings }: Props) {
               </button>
             </div>
 
-            {/* Audio hint on mobile */}
-            <div
-              className="absolute bottom-14 left-0 right-0 text-center text-xs py-1"
-              style={{ color: 'var(--neon)', opacity: isPlaying ? 1 : 0, transition: 'opacity 0.3s' }}
-            >
-              <Volume2 size={10} className="inline mr-1" /> En lecture
-            </div>
+            {isPlaying && (
+              <div className="absolute bottom-14 left-0 right-0 text-center text-xs py-0.5"
+                style={{ color: 'var(--neon)' }}
+              >
+                <Volume2 size={10} className="inline mr-1" /> En lecture
+              </div>
+            )}
           </div>
         );
       })}

@@ -3,7 +3,8 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { X, Check } from 'lucide-react';
-import { Anime, voteAnime } from '@/lib/firestore';
+import { voteAnime } from '@/lib/firestore';
+import { Anime } from '@/data/nominees';
 
 type Props = { year: number; animes: Anime[] };
 
@@ -35,47 +36,29 @@ export default function AnimeNominees({ year, animes }: Props) {
         {animes.map((anime) => {
           const isMyVote = votedId === anime.id;
           const hasVoted = !!votedId;
-
           return (
-            <div
-              key={anime.id}
-              className="retro-card rounded-lg overflow-hidden flex flex-col group"
-            >
-              {/* Image — click = zoom */}
+            <div key={anime.id} className="retro-card rounded-lg overflow-hidden flex flex-col group">
               <div
                 className="relative aspect-[3/4] overflow-hidden cursor-zoom-in"
                 onClick={() => setZoomed(anime)}
               >
-                <Image
-                  src={anime.imageUrl || '/placeholder.png'}
-                  alt={anime.name}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
-                />
+                <Image src={anime.image} alt={anime.name} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
                 {isMyVote && (
-                  <div
-                    className="absolute top-2 left-2 flex items-center gap-1 px-2 py-1 rounded text-xs font-bold"
+                  <div className="absolute top-2 left-2 flex items-center gap-1 px-2 py-1 rounded text-xs font-bold"
                     style={{ background: 'var(--neon)', color: 'var(--bg)' }}
                   >
                     <Check size={10} /> MON VOTE
                   </div>
                 )}
-                {/* Hover overlay hint */}
                 <div
                   className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                   style={{ background: 'rgba(0,255,204,0.08)' }}
                 >
-                  <span className="text-xs font-bold tracking-widest uppercase" style={{ color: 'var(--neon)' }}>
-                    Agrandir
-                  </span>
+                  <span className="text-xs font-bold tracking-widest uppercase" style={{ color: 'var(--neon)' }}>Agrandir</span>
                 </div>
               </div>
-
-              {/* Info */}
               <div className="p-3 flex flex-col gap-2 flex-1">
-                <p className="font-black text-sm leading-tight" style={{ color: 'var(--sepia)' }}>
-                  {anime.name}
-                </p>
+                <p className="font-black text-sm leading-tight" style={{ color: 'var(--sepia)' }}>{anime.name}</p>
                 <button
                   onClick={() => handleVote(anime.id)}
                   disabled={hasVoted || loading === anime.id}
@@ -90,31 +73,20 @@ export default function AnimeNominees({ year, animes }: Props) {
         })}
       </div>
 
-      {/* ── ZOOM MODAL ── */}
+      {/* ZOOM MODAL */}
       {zoomed && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4"
-          style={{ background: 'rgba(0,0,0,0.9)', backdropFilter: 'blur(8px)' }}
+          style={{ background: 'rgba(0,0,0,0.92)', backdropFilter: 'blur(8px)' }}
           onClick={() => setZoomed(null)}
         >
-          <div
-            className="relative max-w-sm w-full"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              onClick={() => setZoomed(null)}
-              className="absolute -top-10 right-0 btn-neon p-1.5 rounded z-10"
-            >
+          <div className="relative max-w-sm w-full" onClick={(e) => e.stopPropagation()}>
+            <button onClick={() => setZoomed(null)} className="absolute -top-10 right-0 btn-neon p-1.5 rounded z-10">
               <X size={16} />
             </button>
             <div className="rounded-xl overflow-hidden neon-border">
               <div className="relative" style={{ aspectRatio: '3/4' }}>
-                <Image
-                  src={zoomed.imageUrl || '/placeholder.png'}
-                  alt={zoomed.name}
-                  fill
-                  className="object-cover"
-                />
+                <Image src={zoomed.image} alt={zoomed.name} fill className="object-cover" />
               </div>
             </div>
             <div className="text-center mt-4">
