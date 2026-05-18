@@ -16,6 +16,18 @@ export default function HomePage() {
           className="relative flex-1 flex flex-col items-center justify-center overflow-hidden vhs-flicker"
           style={{ background: 'var(--bg)' }}
         >
+          {/* Video background */}
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{ opacity: 0.25, zIndex: 0 }}
+          >
+            <source src="/Fondaccueil1.mp4" type="video/mp4" />
+          </video>
+
           <div className="crt-vignette" />
 
           {/* Neon grid */}
