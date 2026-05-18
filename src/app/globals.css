@@ -1,26 +1,201 @@
 @import "tailwindcss";
 
+/* ── PALETTE RETRO AWARDS ── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg:        #0d0a06;
+  --bg2:       #120e08;
+  --bg3:       #1a1208;
+  --neon:      #00ffcc;
+  --neon2:     #00cc99;
+  --neon-dim:  rgba(0,255,204,0.15);
+  --sepia:     #e8d5a0;
+  --sepia-dim: #9a8a6a;
+  --red:       #ff3333;
+  --border:    rgba(0,255,204,0.18);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--sepia);
+  font-family: 'Courier New', Courier, monospace;
+  overflow-x: hidden;
 }
+
+/* ── SCANLINES OVERLAY ── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.06) 2px,
+    rgba(0,0,0,0.06) 4px
+  );
+}
+
+/* ── FILM GRAIN ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: -50%;
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+  animation: grain 0.5s steps(2) infinite;
+}
+
+@keyframes grain {
+  0%   { transform: translate(0,   0);   }
+  25%  { transform: translate(-2%, -4%); }
+  50%  { transform: translate(4%,  2%);  }
+  75%  { transform: translate(-3%, 3%);  }
+  100% { transform: translate(2%,  -2%); }
+}
+
+/* ── GLITCH EFFECT ── */
+@keyframes glitch {
+  0%   { clip-path: inset(40% 0 61% 0); transform: translate(-2px, 0); }
+  20%  { clip-path: inset(92% 0 1%  0); transform: translate(2px, 0);  }
+  40%  { clip-path: inset(43% 0 50% 0); transform: translate(-1px, 0); }
+  60%  { clip-path: inset(25% 0 58% 0); transform: translate(1px, 0);  }
+  80%  { clip-path: inset(54% 0 7%  0); transform: translate(-2px, 0); }
+  100% { clip-path: inset(58% 0 43% 0); transform: translate(0, 0);    }
+}
+
+.glitch { position: relative; }
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+.glitch:hover::before {
+  opacity: 0.7;
+  color: var(--neon);
+  animation: glitch 0.35s infinite;
+}
+.glitch:hover::after {
+  opacity: 0.5;
+  color: var(--red);
+  animation: glitch 0.35s infinite reverse;
+  left: 2px;
+}
+
+/* ── NEON GLOW ── */
+.neon-text {
+  color: var(--neon);
+  text-shadow: 0 0 8px var(--neon), 0 0 20px rgba(0,255,204,0.4);
+}
+.neon-border {
+  border: 1px solid var(--neon);
+  box-shadow: 0 0 12px rgba(0,255,204,0.2), inset 0 0 12px rgba(0,255,204,0.03);
+}
+
+/* ── CRT VIGNETTE ── */
+.crt-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.7) 100%);
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--neon2); border-radius: 3px; }
+
+/* ── RETRO CARD ── */
+.retro-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+.retro-card:hover {
+  border-color: var(--neon);
+  box-shadow: 0 0 20px rgba(0,255,204,0.15);
+  transform: translateY(-2px);
+}
+
+/* ── BTN NEON ── */
+.btn-neon {
+  background: transparent;
+  border: 1px solid var(--neon);
+  color: var(--neon);
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: background 0.2s, box-shadow 0.2s, color 0.2s;
+  cursor: pointer;
+}
+.btn-neon:hover {
+  background: var(--neon);
+  color: var(--bg);
+  box-shadow: 0 0 20px rgba(0,255,204,0.4);
+}
+.btn-neon:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── FADE ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.animate-fade-up { animation: fadeUp 0.6s ease forwards; }
+.animate-fade-in { animation: fadeIn 0.5s ease forwards; }
+
+/* ── VHS FLICKER ── */
+@keyframes flicker {
+  0%, 100% { opacity: 1;    }
+  92%       { opacity: 1;    }
+  93%       { opacity: 0.85; }
+  94%       { opacity: 1;    }
+  96%       { opacity: 0.9;  }
+  97%       { opacity: 1;    }
+}
+.vhs-flicker { animation: flicker 4s infinite; }
+
+/* ── AUDIO WAVE INDICATOR ── */
+@keyframes wave {
+  0%, 100% { height: 4px;  }
+  50%       { height: 16px; }
+}
+.audio-bar {
+  width: 3px;
+  background: var(--neon);
+  border-radius: 2px;
+  animation: wave 0.8s ease-in-out infinite;
+}
+.audio-bar:nth-child(2) { animation-delay: 0.15s; }
+.audio-bar:nth-child(3) { animation-delay: 0.30s; }
+.audio-bar:nth-child(4) { animation-delay: 0.45s; }
+
+/* ── HORIZONTAL SCROLL (PC timeline) ── */
+.timeline-scroll {
+  display: flex;
+  overflow-x: auto;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  scroll-snap-type: x mandatory;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.timeline-scroll::-webkit-scrollbar { display: none; }
+.timeline-scroll > * { scroll-snap-align: start; flex-shrink: 0; }
