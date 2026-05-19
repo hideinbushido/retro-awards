@@ -1,21 +1,30 @@
 'use client';
 
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import Link from 'next/link';
 import { ChevronLeft, ChevronRight, Rewind, Music, Tv } from 'lucide-react';
 import { nominees } from '@/data/nominees';
-import type { Opening } from '@/data/nominees';
+import type { Opening, Anime } from '@/data/nominees';
 
 const YEARS = [2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006, 2005] as const;
 
 type Phase = 'hero' | 'timetravel' | 'year';
+type DisplayNominee =
+  | { type: 'opening'; data: Opening }
+  | { type: 'anime'; data: Anime }
+  | null;
 
-function pickOne<T>(arr: T[]): T | null {
-  if (!arr.length) return null;
-  return arr[Math.floor(Math.random() * arr.length)];
+function pickNominee(year: number): DisplayNominee {
+  const data = nominees[year];
+  const pool: DisplayNominee[] = [
+    ...data.openings.map(d => ({ type: 'opening' as const, data: d })),
+    ...data.animes.map(d => ({ type: 'anime' as const, data: d })),
+  ];
+  if (!pool.length) return null;
+  return pool[Math.floor(Math.random() * pool.length)];
 }
 
-// ── Shared BG grid / vignette ──
+// ── Shared decorations ──
 function SlideDecorations() {
   return (
     <>
@@ -113,16 +122,10 @@ function HeroSlide({ onEnd }: { onEnd: () => void }) {
 }
 
 // ── Year timeline bar ──
-function YearTimeline({
-  currentYear,
-  onSelect,
-}: {
-  currentYear: number;
-  onSelect: (idx: number) => void;
-}) {
+function YearTimeline({ currentYear, onSelect }: { currentYear: number; onSelect: (idx: number) => void }) {
   return (
     <div
-      className="absolute bottom-0 inset-x-0 flex items-center justify-center gap-0 px-4 pb-4 pt-3 overflow-x-auto"
+      className="absolute bottom-0 inset-x-0 flex items-center justify-center px-4 pb-4 pt-3 overflow-x-auto"
       style={{ zIndex: 5, scrollbarWidth: 'none', borderTop: '1px solid var(--border)', background: 'rgba(13,10,6,0.6)', backdropFilter: 'blur(8px)' }}
     >
       {YEARS.map((y, idx) => {
@@ -131,27 +134,21 @@ function YearTimeline({
           <button
             key={y}
             onClick={() => onSelect(idx)}
-            className="flex flex-col items-center gap-1 px-3 py-1 group flex-shrink-0"
             style={{ cursor: 'pointer', background: 'none', border: 'none' }}
+            className="flex flex-col items-center gap-1 px-3 py-1 flex-shrink-0"
           >
-            <span
-              className="text-xs font-bold tracking-widest transition-all"
-              style={{
-                color: active ? 'var(--neon)' : 'var(--sepia-dim)',
-                textShadow: active ? '0 0 8px var(--neon)' : 'none',
-              }}
-            >
+            <span className="text-xs font-bold tracking-widest transition-all" style={{
+              color: active ? 'var(--neon)' : 'var(--sepia-dim)',
+              textShadow: active ? '0 0 8px var(--neon)' : 'none',
+            }}>
               {y}
             </span>
-            <span
-              className="block rounded-full transition-all"
-              style={{
-                width: active ? '8px' : '5px',
-                height: active ? '8px' : '5px',
-                background: active ? 'var(--neon)' : 'var(--sepia-dim)',
-                boxShadow: active ? '0 0 6px var(--neon)' : 'none',
-              }}
-            />
+            <span className="block rounded-full transition-all" style={{
+              width: active ? '8px' : '5px',
+              height: active ? '8px' : '5px',
+              background: active ? 'var(--neon)' : 'var(--sepia-dim)',
+              boxShadow: active ? '0 0 6px var(--neon)' : 'none',
+            }} />
           </button>
         );
       })}
@@ -161,17 +158,11 @@ function YearTimeline({
 
 // ── Year slide ──
 function YearSlide({
-  year,
-  yearIndex,
-  opening,
-  onEnd,
-  onLeft,
-  onRight,
-  onSelectYear,
+  year, yearIndex, nominee, onEnd, onLeft, onRight, onSelectYear,
 }: {
   year: number;
   yearIndex: number;
-  opening: Opening | null;
+  nominee: DisplayNominee;
   onEnd: () => void;
   onLeft: () => void;
   onRight: () => void;
@@ -179,13 +170,48 @@ function YearSlide({
 }) {
   const canLeft = yearIndex > 0;
   const canRight = yearIndex < YEARS.length - 1;
+  const isOpening = nominee?.type === 'opening';
+  const isAnime = nominee?.type === 'anime';
+
+  // Auto-play audio for openings
+  useEffect(() => {
+    if (!isOpening) return;
+    const opening = (nominee as { type: 'opening'; data: Opening }).data;
+    const audio = new Audio(opening.audio);
+    audio.volume = 0.5;
+    audio.play().catch(() => {});
+    return () => { audio.pause(); audio.src = ''; };
+  }, [isOpening, nominee]);
+
+  const coverSrc = isOpening
+    ? (nominee as { type: 'opening'; data: Opening }).data.image
+    : isAnime
+      ? (nominee as { type: 'anime'; data: Anime }).data.image
+      : null;
+
+  const silhouetteSrc = isAnime
+    ? (nominee as { type: 'anime'; data: Anime }).data.silhouette ?? null
+    : null;
+
+  const titleLine = isOpening
+    ? (nominee as { type: 'opening'; data: Opening }).data.openingTitle
+    : isAnime
+      ? (nominee as { type: 'anime'; data: Anime }).data.name
+      : null;
+
+  const subLine = isOpening
+    ? (nominee as { type: 'opening'; data: Opening }).data.animeName
+    : null;
+
+  const categoryLabel = isOpening ? 'Opening' : isAnime ? 'Anime de l\'année' : null;
+  const voteHref = isOpening ? `/opening/${year}` : `/anime/${year}`;
+  const nomineesHref = isOpening ? `/opening/${year}` : `/anime/${year}`;
 
   return (
     <div
       className="relative w-full h-full overflow-hidden vhs-flicker"
       style={{ animation: 'slideInRight 0.55s cubic-bezier(0.22,1,0.36,1) both' }}
     >
-      {/* Background video */}
       <video
         autoPlay muted playsInline
         className="absolute inset-0 w-full h-full object-cover"
@@ -201,8 +227,7 @@ function YearSlide({
         onClick={canLeft ? onLeft : undefined}
         className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center justify-center rounded-full transition-all"
         style={{
-          zIndex: 10,
-          width: '48px', height: '48px',
+          zIndex: 10, width: '48px', height: '48px',
           background: 'rgba(13,10,6,0.7)',
           border: `1px solid ${canLeft ? 'var(--neon)' : 'var(--border)'}`,
           color: canLeft ? 'var(--neon)' : 'var(--sepia-dim)',
@@ -219,8 +244,7 @@ function YearSlide({
         onClick={canRight ? onRight : undefined}
         className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center justify-center rounded-full transition-all"
         style={{
-          zIndex: 10,
-          width: '48px', height: '48px',
+          zIndex: 10, width: '48px', height: '48px',
           background: 'rgba(13,10,6,0.7)',
           border: `1px solid ${canRight ? 'var(--neon)' : 'var(--border)'}`,
           color: canRight ? 'var(--neon)' : 'var(--sepia-dim)',
@@ -232,9 +256,9 @@ function YearSlide({
         <ChevronRight size={22} />
       </button>
 
-      {/* Main content */}
+      {/* Main layout */}
       <div
-        className="absolute inset-0 flex items-center justify-center pb-16 px-20 gap-10 animate-fade-in"
+        className="absolute inset-0 flex items-center pb-16 px-20 gap-10 animate-fade-in"
         style={{ zIndex: 3 }}
       >
         {/* Cover */}
@@ -248,32 +272,22 @@ function YearSlide({
             background: 'var(--bg2)',
           }}
         >
-          {opening ? (
-            <img
-              src={opening.image}
-              alt={opening.animeName}
-              className="w-full h-full object-cover"
-            />
+          {coverSrc ? (
+            <img src={coverSrc} alt={titleLine ?? ''} className="w-full h-full object-cover" />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
-              <span className="text-xs tracking-widest uppercase" style={{ color: 'var(--sepia-dim)' }}>
-                À VENIR
-              </span>
+              <span className="text-xs tracking-widest uppercase" style={{ color: 'var(--sepia-dim)' }}>À VENIR</span>
             </div>
           )}
         </div>
 
         {/* Info */}
-        <div className="flex flex-col gap-4 min-w-0">
-          {/* Badge */}
+        <div className="flex flex-col gap-4 flex-1 min-w-0">
           <div className="flex items-center gap-3">
             <div className="h-px w-12" style={{ background: 'var(--neon)', opacity: 0.4 }} />
-            <span className="text-xs font-bold tracking-widest uppercase" style={{ color: 'var(--neon)' }}>
-              RETRO AWARDS
-            </span>
+            <span className="text-xs font-bold tracking-widest uppercase" style={{ color: 'var(--neon)' }}>RETRO AWARDS</span>
           </div>
 
-          {/* Year */}
           <h2
             className="font-black leading-none glitch"
             data-text={String(year)}
@@ -282,27 +296,27 @@ function YearSlide({
             {year}
           </h2>
 
-          {opening ? (
+          {nominee ? (
             <>
-              {/* Opening title */}
+              {categoryLabel && (
+                <span className="text-xs font-bold tracking-widest uppercase flex items-center gap-1.5" style={{ color: 'var(--neon)', opacity: 0.7 }}>
+                  {isOpening ? <Music size={10} /> : <Tv size={10} />}
+                  {categoryLabel}
+                </span>
+              )}
               <div>
-                <p className="font-black" style={{ fontSize: 'clamp(1.2rem, 3vw, 2rem)', color: 'var(--sepia)' }}>
-                  {opening.openingTitle}
+                <p className="font-black truncate" style={{ fontSize: 'clamp(1.2rem, 3vw, 2rem)', color: 'var(--sepia)' }}>
+                  {titleLine}
                 </p>
-                <p className="text-sm mt-1" style={{ color: 'var(--neon)', opacity: 0.8 }}>
-                  {opening.animeName}
-                </p>
+                {subLine && (
+                  <p className="text-sm mt-1 truncate" style={{ color: 'var(--neon)', opacity: 0.8 }}>{subLine}</p>
+                )}
               </div>
 
-              {/* Divider */}
               <div className="h-px w-32" style={{ background: 'var(--border)' }} />
 
-              {/* Buttons */}
               <div className="flex flex-wrap gap-3">
-                <Link
-                  href={`/opening/${year}`}
-                  className="btn-neon px-5 py-2 rounded text-xs tracking-widest"
-                >
+                <Link href={nomineesHref} className="btn-neon px-5 py-2 rounded text-xs tracking-widest">
                   VOIR NOMINÉS
                 </Link>
                 <Link
@@ -320,9 +334,32 @@ function YearSlide({
             </p>
           )}
         </div>
+
+        {/* Silhouette (anime only) */}
+        {isAnime && silhouetteSrc && (
+          <div
+            className="flex-shrink-0 self-end animate-fade-in"
+            style={{
+              height: 'clamp(200px, 45vh, 380px)',
+              width: 'auto',
+              position: 'relative',
+            }}
+          >
+            <img
+              src={silhouetteSrc}
+              alt=""
+              style={{
+                height: '100%',
+                width: 'auto',
+                objectFit: 'contain',
+                filter: 'drop-shadow(0 0 20px rgba(0,255,204,0.25))',
+                opacity: 0.9,
+              }}
+            />
+          </div>
+        )}
       </div>
 
-      {/* Year timeline */}
       <YearTimeline currentYear={year} onSelect={onSelectYear} />
     </div>
   );
@@ -332,7 +369,7 @@ function YearSlide({
 export default function HomeCarousel() {
   const [yearIndex, setYearIndex] = useState(-1);
   const [phase, setPhase] = useState<Phase>('hero');
-  const [shownOpening, setShownOpening] = useState<Opening | null>(null);
+  const [nominee, setNominee] = useState<DisplayNominee>(null);
   const nextIdxRef = useRef<number>(0);
 
   const currentYear = yearIndex >= 0 ? YEARS[yearIndex] : null;
@@ -354,9 +391,7 @@ export default function HomeCarousel() {
       setYearIndex(-1);
       setPhase('hero');
     } else {
-      const year = YEARS[idx];
-      const data = nominees[year];
-      setShownOpening(pickOne(data.openings));
+      setNominee(pickNominee(YEARS[idx]));
       setYearIndex(idx);
       setPhase('year');
     }
@@ -364,17 +399,14 @@ export default function HomeCarousel() {
 
   return (
     <div className="relative w-full h-full overflow-hidden bg-black">
-
-      {phase === 'hero' && (
-        <HeroSlide onEnd={handleVideoEnd} />
-      )}
+      {phase === 'hero' && <HeroSlide onEnd={handleVideoEnd} />}
 
       {phase === 'year' && currentYear !== null && (
         <YearSlide
           key={currentYear}
           year={currentYear}
           yearIndex={yearIndex}
-          opening={shownOpening}
+          nominee={nominee}
           onEnd={handleVideoEnd}
           onLeft={() => goToYear(yearIndex - 1)}
           onRight={() => goToYear(yearIndex + 1)}

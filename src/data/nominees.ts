@@ -10,6 +10,7 @@ export type Anime = {
   id: string;
   name: string;
   image: string;
+  silhouette?: string;
 };
 
 export type YearNominees = {
@@ -19,8 +20,10 @@ export type YearNominees = {
 
 // ─────────────────────────────────────────
 // REMPLIS LES DONNÉES ICI POUR CHAQUE ANNÉE
-// image: "/{year}/OPENING/Cover/{NOM}.png"
-// audio: "/{year}/OPENING/Audio/{NOM}.mp3"
+// Opening → image: "/{year}/OPENING/Cover/{NOM}.png"
+//           audio: "/{year}/OPENING/Audio/{NOM}.mp3"
+// Anime   → image:      "/{year}/ANIME/Cover/{NOM}.png"
+//           silhouette: "/{year}/ANIME/Silhouette/{NOM}.png"
 // ─────────────────────────────────────────
 
 export const nominees: Record<number, YearNominees> = {
