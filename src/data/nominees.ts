@@ -51,10 +51,22 @@ export const nominees: Record<number, YearNominees> = {
 
   2018: {
     openings: [
-      // { id: '1', animeName: 'Sword Art Online', openingTitle: 'Crossing Field', image: '/nominees/2018/openings/1/cover.jpg', audio: '/nominees/2018/openings/1/audio.mp3' },
+      { id: '1',  animeName: 'Gintama',                              openingTitle: 'I Wanna Be...',   image: '/2018/OPENING/Cover/GINTAMA.png',    audio: '/2018/OPENING/Audio/GINTAMA.mp3'    },
+      { id: '2',  animeName: 'Black Clover',                         openingTitle: 'Black Rover',     image: '/2018/OPENING/Cover/BLACK.png',      audio: '/2018/OPENING/Audio/BLACK.mp3'      },
+      { id: '3',  animeName: 'My Hero Academia',                     openingTitle: 'ODD FUTURE',      image: '/2018/OPENING/Cover/MHA.png',        audio: '/2018/OPENING/Audio/MHA.mp3'        },
+      { id: '4',  animeName: 'Overlord III',                         openingTitle: 'VORACITY',        image: '/2018/OPENING/Cover/OVERLORD.png',   audio: '/2018/OPENING/Audio/OVERLORD.mp3'   },
+      { id: '5',  animeName: 'Wotakoi',                              openingTitle: 'Fiction',         image: '/2018/OPENING/Cover/WOTAKOI.png',    audio: '/2018/OPENING/Audio/WOTAKOI.mp3'    },
+      { id: '6',  animeName: 'Tokyo Ghoul:re',                       openingTitle: 'asphyxia',        image: '/2018/OPENING/Cover/TOKYOGHOUL.png', audio: '/2018/OPENING/Audio/TOKYOGHOUL.mp3' },
+      { id: '7',  animeName: 'Kokkoku',                              openingTitle: 'Flashback',       image: '/2018/OPENING/Cover/KOKKOKU.png',    audio: '/2018/OPENING/Audio/KOKKOKU.mp3'    },
+      { id: '8',  animeName: 'That Time I Got Reincarnated as Slime', openingTitle: 'Nameless Story',  image: '/2018/OPENING/Cover/SLIME.png',      audio: '/2018/OPENING/Audio/SLIME.mp3'      },
+      { id: '9',  animeName: 'Food Wars! S5',                        openingTitle: 'Symbol',          image: '/2018/OPENING/Cover/FOODWARS.png',   audio: '/2018/OPENING/Audio/FOODWARS.mp3'   },
+      { id: '10', animeName: 'JoJo\'s Bizarre Adventure',           openingTitle: 'Fighting Gold',   image: '/2018/OPENING/Cover/JOJO.png',       audio: '/2018/OPENING/Audio/JOJO.mp3'       },
+      { id: '11', animeName: 'Steins;Gate 0',                        openingTitle: 'Fatima',          image: '/2018/OPENING/Cover/STEINS.png',     audio: '/2018/OPENING/Audio/STEINS.mp3'     },
+      { id: '12', animeName: 'Attack on Titan S3',                   openingTitle: 'Red Swan',        image: '/2018/OPENING/Cover/AOT.png',        audio: '/2018/OPENING/Audio/AOT.mp3'        },
+      { id: '13', animeName: 'Grand Blue Dreaming',                  openingTitle: 'Grand Blue',      image: '/2018/OPENING/Cover/GRANBLUE.png',   audio: '/2018/OPENING/Audio/GRANBLUE.mp3'   },
     ],
     animes: [
-      // { id: '1', name: 'Sword Art Online', image: '/nominees/2018/animes/1/cover.jpg' },
+      // { id: '1', name: 'Sword Art Online', image: '/2018/ANIME/Cover/SAO.png', silhouette: '/2018/ANIME/Silhouette/SAO.png' },
     ],
   },
 
