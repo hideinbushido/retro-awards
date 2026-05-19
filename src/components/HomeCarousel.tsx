@@ -258,17 +258,17 @@ function YearSlide({
 
       {/* Main layout */}
       <div
-        className="absolute inset-0 flex items-center pb-16 px-20 gap-10 animate-fade-in"
-        style={{ zIndex: 3 }}
+        className="absolute inset-0 flex items-center animate-fade-in"
+        style={{ zIndex: 3, paddingBottom: '72px', paddingLeft: '80px', paddingRight: '80px', gap: '48px' }}
       >
-        {/* Cover */}
+        {/* Cover — hauteur quasi plein écran */}
         <div
           className="flex-shrink-0 rounded-2xl overflow-hidden"
           style={{
-            width: 'clamp(160px, 22vw, 280px)',
+            height: 'calc(100% - 3rem)',
             aspectRatio: '2/3',
             border: '2px solid var(--border)',
-            boxShadow: '0 0 40px rgba(0,255,204,0.1)',
+            boxShadow: '0 0 60px rgba(0,255,204,0.18), 0 0 120px rgba(0,255,204,0.06)',
             background: 'var(--bg2)',
           }}
         >
@@ -276,22 +276,22 @@ function YearSlide({
             <img src={coverSrc} alt={titleLine ?? ''} className="w-full h-full object-cover" />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
-              <span className="text-xs tracking-widest uppercase" style={{ color: 'var(--sepia-dim)' }}>À VENIR</span>
+              <span className="text-sm tracking-widest uppercase" style={{ color: 'var(--sepia-dim)' }}>À VENIR</span>
             </div>
           )}
         </div>
 
         {/* Info */}
-        <div className="flex flex-col gap-4 flex-1 min-w-0">
-          <div className="flex items-center gap-3">
-            <div className="h-px w-12" style={{ background: 'var(--neon)', opacity: 0.4 }} />
-            <span className="text-xs font-bold tracking-widest uppercase" style={{ color: 'var(--neon)' }}>RETRO AWARDS</span>
+        <div className="flex flex-col justify-center gap-6 flex-1 min-w-0">
+          <div className="flex items-center gap-4">
+            <div className="h-px w-16" style={{ background: 'var(--neon)', opacity: 0.5 }} />
+            <span className="text-sm font-bold tracking-widest uppercase" style={{ color: 'var(--neon)' }}>RETRO AWARDS</span>
           </div>
 
           <h2
             className="font-black leading-none glitch"
             data-text={String(year)}
-            style={{ fontSize: 'clamp(3.5rem, 10vw, 7rem)', color: 'var(--sepia)', letterSpacing: '-0.02em' }}
+            style={{ fontSize: 'clamp(5rem, 14vw, 10rem)', color: 'var(--sepia)', letterSpacing: '-0.03em' }}
           >
             {year}
           </h2>
@@ -299,29 +299,38 @@ function YearSlide({
           {nominee ? (
             <>
               {categoryLabel && (
-                <span className="text-xs font-bold tracking-widest uppercase flex items-center gap-1.5" style={{ color: 'var(--neon)', opacity: 0.7 }}>
-                  {isOpening ? <Music size={10} /> : <Tv size={10} />}
+                <span className="text-sm font-bold tracking-widest uppercase flex items-center gap-2" style={{ color: 'var(--neon)', opacity: 0.8 }}>
+                  {isOpening ? <Music size={14} /> : <Tv size={14} />}
                   {categoryLabel}
                 </span>
               )}
-              <div>
-                <p className="font-black truncate" style={{ fontSize: 'clamp(1.2rem, 3vw, 2rem)', color: 'var(--sepia)' }}>
+
+              <div className="flex flex-col gap-2">
+                <p
+                  className="font-black leading-tight"
+                  style={{ fontSize: 'clamp(2rem, 4.5vw, 3.5rem)', color: 'var(--sepia)', wordBreak: 'break-word' }}
+                >
                   {titleLine}
                 </p>
                 {subLine && (
-                  <p className="text-sm mt-1 truncate" style={{ color: 'var(--neon)', opacity: 0.8 }}>{subLine}</p>
+                  <p style={{ fontSize: 'clamp(1rem, 2vw, 1.4rem)', color: 'var(--neon)', opacity: 0.85 }}>
+                    {subLine}
+                  </p>
                 )}
               </div>
 
-              <div className="h-px w-32" style={{ background: 'var(--border)' }} />
+              <div className="h-px w-48" style={{ background: 'var(--border)' }} />
 
-              <div className="flex flex-wrap gap-3">
-                <Link href={nomineesHref} className="btn-neon px-5 py-2 rounded text-xs tracking-widest">
+              <div className="flex flex-wrap gap-4">
+                <Link
+                  href={nomineesHref}
+                  className="btn-neon px-7 py-3 rounded text-sm tracking-widest"
+                >
                   VOIR NOMINÉS
                 </Link>
                 <Link
                   href={`/annee/${year}`}
-                  className="px-5 py-2 rounded text-xs font-bold tracking-widest uppercase transition-all hover:scale-105"
+                  className="px-7 py-3 rounded text-sm font-bold tracking-widest uppercase transition-all hover:scale-105"
                   style={{ border: '1px solid var(--sepia-dim)', color: 'var(--sepia-dim)' }}
                 >
                   VOTER {year}
@@ -329,7 +338,7 @@ function YearSlide({
               </div>
             </>
           ) : (
-            <p className="text-xs tracking-widest uppercase" style={{ color: 'var(--sepia-dim)', opacity: 0.5 }}>
+            <p className="text-sm tracking-widest uppercase" style={{ color: 'var(--sepia-dim)', opacity: 0.5 }}>
               NOMINEES À VENIR
             </p>
           )}
@@ -339,11 +348,7 @@ function YearSlide({
         {isAnime && silhouetteSrc && (
           <div
             className="flex-shrink-0 self-end animate-fade-in"
-            style={{
-              height: 'clamp(200px, 45vh, 380px)',
-              width: 'auto',
-              position: 'relative',
-            }}
+            style={{ height: '85%', width: 'auto' }}
           >
             <img
               src={silhouetteSrc}
@@ -352,8 +357,7 @@ function YearSlide({
                 height: '100%',
                 width: 'auto',
                 objectFit: 'contain',
-                filter: 'drop-shadow(0 0 20px rgba(0,255,204,0.25))',
-                opacity: 0.9,
+                filter: 'drop-shadow(0 0 24px rgba(0,255,204,0.3))',
               }}
             />
           </div>
