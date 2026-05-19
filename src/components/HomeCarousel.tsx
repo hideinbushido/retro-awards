@@ -122,14 +122,14 @@ function HeroSlide({ onEnd }: { onEnd: () => void }) {
 }
 
 // ── Year timeline bar ──
-function YearTimeline({ currentYear, onSelect }: { currentYear: number; onSelect: (idx: number) => void }) {
+function YearTimeline({ currentYear, onSelect }: { currentYear: number | null; onSelect: (idx: number) => void }) {
   return (
     <div
       className="absolute bottom-0 inset-x-0 flex items-center justify-center px-4 pb-4 pt-3 overflow-x-auto"
       style={{ zIndex: 5, scrollbarWidth: 'none', borderTop: '1px solid var(--border)', background: 'rgba(13,10,6,0.6)', backdropFilter: 'blur(8px)' }}
     >
       {YEARS.map((y, idx) => {
-        const active = y === currentYear;
+        const active = currentYear !== null && y === currentYear;
         return (
           <button
             key={y}
@@ -158,18 +158,12 @@ function YearTimeline({ currentYear, onSelect }: { currentYear: number; onSelect
 
 // ── Year slide ──
 function YearSlide({
-  year, yearIndex, nominee, onEnd, onLeft, onRight, onSelectYear,
+  year, nominee, onEnd,
 }: {
   year: number;
-  yearIndex: number;
   nominee: DisplayNominee;
   onEnd: () => void;
-  onLeft: () => void;
-  onRight: () => void;
-  onSelectYear: (idx: number) => void;
 }) {
-  const canLeft = yearIndex > 0;
-  const canRight = yearIndex < YEARS.length - 1;
   const isOpening = nominee?.type === 'opening';
   const isAnime = nominee?.type === 'anime';
 
@@ -221,40 +215,6 @@ function YearSlide({
         <source src="/Fondaccueil1.mp4" type="video/mp4" />
       </video>
       <SlideDecorations />
-
-      {/* Arrow LEFT */}
-      <button
-        onClick={canLeft ? onLeft : undefined}
-        className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center justify-center rounded-full transition-all"
-        style={{
-          zIndex: 10, width: '48px', height: '48px',
-          background: 'rgba(13,10,6,0.7)',
-          border: `1px solid ${canLeft ? 'var(--neon)' : 'var(--border)'}`,
-          color: canLeft ? 'var(--neon)' : 'var(--sepia-dim)',
-          opacity: canLeft ? 1 : 0.3,
-          cursor: canLeft ? 'pointer' : 'default',
-          boxShadow: canLeft ? '0 0 12px rgba(0,255,204,0.15)' : 'none',
-        }}
-      >
-        <ChevronLeft size={22} />
-      </button>
-
-      {/* Arrow RIGHT */}
-      <button
-        onClick={canRight ? onRight : undefined}
-        className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center justify-center rounded-full transition-all"
-        style={{
-          zIndex: 10, width: '48px', height: '48px',
-          background: 'rgba(13,10,6,0.7)',
-          border: `1px solid ${canRight ? 'var(--neon)' : 'var(--border)'}`,
-          color: canRight ? 'var(--neon)' : 'var(--sepia-dim)',
-          opacity: canRight ? 1 : 0.3,
-          cursor: canRight ? 'pointer' : 'default',
-          boxShadow: canRight ? '0 0 12px rgba(0,255,204,0.15)' : 'none',
-        }}
-      >
-        <ChevronRight size={22} />
-      </button>
 
       {/* Main layout */}
       <div
@@ -364,7 +324,6 @@ function YearSlide({
         )}
       </div>
 
-      <YearTimeline currentYear={year} onSelect={onSelectYear} />
     </div>
   );
 }
@@ -401,6 +360,17 @@ export default function HomeCarousel() {
     }
   }, []);
 
+  const isTransitioning = phase === 'timetravel';
+  // hero = index -1, year slides = 0..14
+  const canLeft = !isTransitioning && yearIndex > 0;
+  // from hero (−1) right goes to 0, from year goes to next
+  const canRight = !isTransitioning && yearIndex < YEARS.length - 1;
+
+  const handleLeft = () => { if (canLeft) goToYear(yearIndex - 1); };
+  const handleRight = () => {
+    if (!isTransitioning) goToYear(yearIndex === -1 ? 0 : yearIndex + 1);
+  };
+
   return (
     <div className="relative w-full h-full overflow-hidden bg-black">
       {phase === 'hero' && <HeroSlide onEnd={handleVideoEnd} />}
@@ -409,14 +379,49 @@ export default function HomeCarousel() {
         <YearSlide
           key={currentYear}
           year={currentYear}
-          yearIndex={yearIndex}
           nominee={nominee}
           onEnd={handleVideoEnd}
-          onLeft={() => goToYear(yearIndex - 1)}
-          onRight={() => goToYear(yearIndex + 1)}
-          onSelectYear={(idx) => idx !== yearIndex && goToYear(idx)}
         />
       )}
+
+      {/* ── ARROWS (toujours présentes) ── */}
+      <button
+        onClick={handleLeft}
+        className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center justify-center rounded-full transition-all"
+        style={{
+          zIndex: 20, width: '52px', height: '52px',
+          background: 'rgba(13,10,6,0.75)',
+          border: `1px solid ${canLeft ? 'var(--neon)' : 'var(--border)'}`,
+          color: canLeft ? 'var(--neon)' : 'var(--sepia-dim)',
+          opacity: canLeft ? 1 : 0.25,
+          cursor: canLeft ? 'pointer' : 'default',
+          boxShadow: canLeft ? '0 0 14px rgba(0,255,204,0.2)' : 'none',
+        }}
+      >
+        <ChevronLeft size={24} />
+      </button>
+
+      <button
+        onClick={handleRight}
+        className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center justify-center rounded-full transition-all"
+        style={{
+          zIndex: 20, width: '52px', height: '52px',
+          background: 'rgba(13,10,6,0.75)',
+          border: `1px solid ${canRight ? 'var(--neon)' : 'var(--border)'}`,
+          color: canRight ? 'var(--neon)' : 'var(--sepia-dim)',
+          opacity: canRight ? 1 : 0.25,
+          cursor: canRight ? 'pointer' : 'default',
+          boxShadow: canRight ? '0 0 14px rgba(0,255,204,0.2)' : 'none',
+        }}
+      >
+        <ChevronRight size={24} />
+      </button>
+
+      {/* ── YEAR TIMELINE (toujours présente) ── */}
+      <YearTimeline
+        currentYear={currentYear}
+        onSelect={(idx) => !isTransitioning && idx !== yearIndex && goToYear(idx)}
+      />
 
       {phase === 'timetravel' && (
         <div className="absolute inset-0 bg-black" style={{ zIndex: 50 }}>
