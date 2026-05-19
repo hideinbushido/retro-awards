@@ -113,13 +113,6 @@ export default function OpeningNominees({ year, openings }: Props) {
               </button>
             </div>
 
-            {isPlaying && (
-              <div className="absolute bottom-14 left-0 right-0 text-center text-xs py-0.5"
-                style={{ color: 'var(--neon)' }}
-              >
-                <Volume2 size={10} className="inline mr-1" /> En lecture
-              </div>
-            )}
           </div>
         );
       })}
