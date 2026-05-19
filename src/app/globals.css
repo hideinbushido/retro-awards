@@ -187,6 +187,12 @@ body::before {
 .audio-bar:nth-child(3) { animation-delay: 0.30s; }
 .audio-bar:nth-child(4) { animation-delay: 0.45s; }
 
+/* ── SLIDE IN FROM RIGHT (year carousel) ── */
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(60px); }
+  to   { opacity: 1; transform: translateX(0);    }
+}
+
 /* ── HORIZONTAL SCROLL (PC timeline) ── */
 .timeline-scroll {
   display: flex;
