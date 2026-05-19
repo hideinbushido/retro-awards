@@ -2,6 +2,7 @@ export type Opening = {
   id: string;
   animeName: string;
   openingTitle: string;
+  op?: number; // si absent ou 1 → "Opening", sinon → "Opening 2", "Opening 7"...
   image: string;
   audio: string;
 };
@@ -36,11 +37,11 @@ export const nominees: Record<number, YearNominees> = {
       { id: '4',  animeName: 'Dororo',                        openingTitle: 'Kaen',                image: '/2019/OPENING/Cover/DORO.png',     audio: '/2019/OPENING/Audio/DORO.mp3'     },
       { id: '5',  animeName: 'Dr. Stone',                     openingTitle: 'Good Morning World!', image: '/2019/OPENING/Cover/DRSTO.png',    audio: '/2019/OPENING/Audio/DRSTO.mp3'    },
       { id: '6',  animeName: 'Domestic Girlfriend',           openingTitle: 'Kawaki wo Ameku',     image: '/2019/OPENING/Cover/DOMESTIC.png', audio: '/2019/OPENING/Audio/DOMESTIC.mp3' },
-      { id: '7',  animeName: 'Black Clover',                  openingTitle: 'JUSTadICE',           image: '/2019/OPENING/Cover/BLACK.png',    audio: '/2019/OPENING/Audio/BLACK.mp3'    },
-      { id: '8',  animeName: 'My Hero Academia',              openingTitle: 'Polaris',             image: '/2019/OPENING/Cover/MHA.png',      audio: '/2019/OPENING/Audio/MHA.mp3'      },
-      { id: '9',  animeName: 'One Piece',                     openingTitle: 'OVER THE TOP',        image: '/2019/OPENING/Cover/ONE.png',      audio: '/2019/OPENING/Audio/ONE.mp3'      },
+      { id: '7',  animeName: 'Black Clover',                  openingTitle: 'JUSTadICE',           op: 7,  image: '/2019/OPENING/Cover/BLACK.png',    audio: '/2019/OPENING/Audio/BLACK.mp3'    },
+      { id: '8',  animeName: 'My Hero Academia',              openingTitle: 'Polaris',             op: 6,  image: '/2019/OPENING/Cover/MHA.png',      audio: '/2019/OPENING/Audio/MHA.mp3'      },
+      { id: '9',  animeName: 'One Piece',                     openingTitle: 'OVER THE TOP',        op: 22, image: '/2019/OPENING/Cover/ONE.png',      audio: '/2019/OPENING/Audio/ONE.mp3'      },
       { id: '10', animeName: 'Sword Art Online: Alicization', openingTitle: 'ADAMAS',              image: '/2019/OPENING/Cover/SAO.png',      audio: '/2019/OPENING/Audio/SAO.mp3'      },
-      { id: '11', animeName: 'Mob Psycho 100',                openingTitle: '99.9',                image: '/2019/OPENING/Cover/MOB.png',      audio: '/2019/OPENING/Audio/MOB.mp3'      },
+      { id: '11', animeName: 'Mob Psycho 100',                openingTitle: '99.9',                op: 2,  image: '/2019/OPENING/Cover/MOB.png',      audio: '/2019/OPENING/Audio/MOB.mp3'      },
       { id: '12', animeName: 'Kaguya-sama: Love Is War',      openingTitle: 'Love Dramatic',       image: '/2019/OPENING/Cover/KAGUYA.png',   audio: '/2019/OPENING/Audio/KAGUYA.mp3'   },
       { id: '13', animeName: 'The Promised Neverland',        openingTitle: 'Touch Off',           image: '/2019/OPENING/Cover/PROMISED.png', audio: '/2019/OPENING/Audio/PROMISED.mp3' },
     ],
@@ -59,11 +60,11 @@ export const nominees: Record<number, YearNominees> = {
       { id: '6',  animeName: 'Tokyo Ghoul:re',                       openingTitle: 'asphyxia',        image: '/2018/OPENING/Cover/TOKYOG.png',     audio: '/2018/OPENING/Audio/TOKYOG.mp3'     },
       { id: '7',  animeName: 'Kokkoku',                              openingTitle: 'Flashback',       image: '/2018/OPENING/Cover/KOKKOKU.png',    audio: '/2018/OPENING/Audio/KOKKOKU.mp3'    },
       { id: '8',  animeName: 'That Time I Got Reincarnated as Slime', openingTitle: 'Nameless Story',  image: '/2018/OPENING/Cover/SLIME.png',      audio: '/2018/OPENING/Audio/SLIME.mp3'      },
-      { id: '9',  animeName: 'Food Wars! S5',                        openingTitle: 'Symbol',          image: '/2018/OPENING/Cover/FOOD.png',       audio: '/2018/OPENING/Audio/FOOD.mp3'       },
+      { id: '9',  animeName: 'Food Wars! ',                        openingTitle: 'Symbol',          image: '/2018/OPENING/Cover/FOOD.png',       audio: '/2018/OPENING/Audio/FOOD.mp3'       },
       { id: '10', animeName: 'JoJo\'s Bizarre Adventure',           openingTitle: 'Fighting Gold',   image: '/2018/OPENING/Cover/JOJO.png',       audio: '/2018/OPENING/Audio/JOJO.mp3'       },
       { id: '11', animeName: 'Steins;Gate 0',                        openingTitle: 'Fatima',          image: '/2018/OPENING/Cover/STEINS0.png',    audio: '/2018/OPENING/Audio/STEINS0.mp3'    },
       { id: '12', animeName: 'Attack on Titan S3',                   openingTitle: 'Red Swan',        image: '/2018/OPENING/Cover/SNK.png',        audio: '/2018/OPENING/Audio/SNK.mp3'        },
-      { id: '13', animeName: 'Grand Blue Dreaming',                  openingTitle: 'Grand Blue',      image: '/2018/OPENING/Cover/GRANDBLUE.png',  audio: '/2018/OPENING/Audio/GRANDBLUE.mp3'  },
+      { id: '13', animeName: 'Grand Blue',                  openingTitle: 'Grand Blue',      image: '/2018/OPENING/Cover/GRANDBLUE.png',  audio: '/2018/OPENING/Audio/GRANDBLUE.mp3'  },
     ],
     animes: [
       // { id: '1', name: 'Sword Art Online', image: '/2018/ANIME/Cover/SAO.png', silhouette: '/2018/ANIME/Silhouette/SAO.png' },
@@ -83,7 +84,7 @@ export const nominees: Record<number, YearNominees> = {
       { id: '9',  animeName: 'Twin Star Exorcists',                          openingTitle: 'Re:Call',                 image: '/2017/OPENING/Cover/TWINSTAR.png',   audio: '/2017/OPENING/Audio/TWINSTAR.mp3'   },
       { id: '10', animeName: 'Dragon Ball Super',                            openingTitle: 'Limit-Break x Survivor', image: '/2017/OPENING/Cover/DBS.png',        audio: '/2017/OPENING/Audio/DBS.mp3'        },
       { id: '11', animeName: 'Rokudenashi Majutsu Koushi to Akashic Records', openingTitle: 'Blow out',               image: '/2017/OPENING/Cover/ROKUDENA.png',   audio: '/2017/OPENING/Audio/ROKUDENA.mp3'   },
-      { id: '12', animeName: 'KonoSuba S2',                                  openingTitle: 'Tomorrow',               image: '/2017/OPENING/Cover/KONOSUBA.png',   audio: '/2017/OPENING/Audio/KONOSUBA.mp3'   },
+      { id: '12', animeName: 'KonoSuba',                                  openingTitle: 'Tomorrow',               image: '/2017/OPENING/Cover/KONOSUBA.png',   audio: '/2017/OPENING/Audio/KONOSUBA.mp3'   },
       { id: '13', animeName: 'Made in Abyss',                                openingTitle: 'Deep in Abyss',          image: '/2017/OPENING/Cover/MADE.png',       audio: '/2017/OPENING/Audio/MADE.mp3'       },
       { id: '14', animeName: 'Black Clover',                                  openingTitle: 'Haruka Mirai',           image: '/2017/OPENING/Cover/BLACK.png',      audio: '/2017/OPENING/Audio/BLACK.mp3'      },
       { id: '15', animeName: 'Kakegurui',                                     openingTitle: 'Deal with the devil',    image: '/2017/OPENING/Cover/KAKEGURUI.png',  audio: '/2017/OPENING/Audio/KAKEGURUI.mp3'  },

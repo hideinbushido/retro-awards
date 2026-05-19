@@ -102,6 +102,9 @@ export default function OpeningNominees({ year, openings }: Props) {
                 <p className="text-xs mt-0.5" style={{ color: 'var(--neon)' }}>
                   <Music size={10} className="inline mr-1" />{op.openingTitle}
                 </p>
+                <p className="text-xs mt-0.5" style={{ color: 'var(--sepia-dim)', opacity: 0.7 }}>
+                  {op.op && op.op > 1 ? `Opening ${op.op}` : 'Opening'}
+                </p>
               </div>
               <button
                 onClick={() => handleVote(op.id)}

@@ -216,7 +216,10 @@ function YearSlide({
     ? (nominee as { type: 'opening'; data: Opening }).data.animeName
     : null;
 
-  const categoryLabel = isOpening ? 'Opening' : isAnime ? 'Anime de l\'année' : null;
+  const opNum = isOpening ? (nominee as { type: 'opening'; data: Opening }).data.op : undefined;
+  const categoryLabel = isOpening
+    ? (opNum && opNum > 1 ? `Opening ${opNum}` : 'Opening')
+    : isAnime ? 'Anime de l\'année' : null;
   const voteHref = isOpening ? `/opening/${year}` : `/anime/${year}`;
   const nomineesHref = isOpening ? `/opening/${year}` : `/anime/${year}`;
 
