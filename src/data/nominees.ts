@@ -72,10 +72,24 @@ export const nominees: Record<number, YearNominees> = {
 
   2017: {
     openings: [
-      // { id: '1', animeName: 'My Hero Academia', openingTitle: 'The Day', image: '/nominees/2017/openings/1/cover.jpg', audio: '/nominees/2017/openings/1/audio.mp3' },
+      { id: '1',  animeName: 'My Hero Academia',                             openingTitle: 'Peace Sign',              image: '/2017/OPENING/Cover/MHA.png',       audio: '/2017/OPENING/Audio/MHA.mp3'       },
+      { id: '2',  animeName: 'Welcome to the Ballroom',                      openingTitle: '10% roll, 10% romance',   image: '/2017/OPENING/Cover/BALLROOM.png',  audio: '/2017/OPENING/Audio/BALLROOM.mp3'  },
+      { id: '3',  animeName: 'Fate/Apocrypha',                               openingTitle: 'ASH',                     image: '/2017/OPENING/Cover/FATE.png',       audio: '/2017/OPENING/Audio/FATE.mp3'       },
+      { id: '4',  animeName: 'Attack on Titan S2',                           openingTitle: 'Shinzou wo Sasageyo!',    image: '/2017/OPENING/Cover/AOT.png',        audio: '/2017/OPENING/Audio/AOT.mp3'        },
+      { id: '5',  animeName: 'Blue Exorcist S2',                             openingTitle: 'SCOREBOOK',               image: '/2017/OPENING/Cover/BLUEEXO.png',    audio: '/2017/OPENING/Audio/BLUEEXO.mp3'    },
+      { id: '6',  animeName: 'Boruto: Naruto Next Generations',              openingTitle: 'OVER',                    image: '/2017/OPENING/Cover/BORUTO.png',     audio: '/2017/OPENING/Audio/BORUTO.mp3'     },
+      { id: '7',  animeName: 'One Piece',                                    openingTitle: 'Hope',                    image: '/2017/OPENING/Cover/ONE.png',        audio: '/2017/OPENING/Audio/ONE.mp3'        },
+      { id: '8',  animeName: 'Saga of Tanya the Evil',                       openingTitle: 'JINGO JUNGLE',            image: '/2017/OPENING/Cover/TANYA.png',      audio: '/2017/OPENING/Audio/TANYA.mp3'      },
+      { id: '9',  animeName: 'Twin Star Exorcists',                          openingTitle: 'Re:Call',                 image: '/2017/OPENING/Cover/TWINSTAR.png',   audio: '/2017/OPENING/Audio/TWINSTAR.mp3'   },
+      { id: '10', animeName: 'Dragon Ball Super',                            openingTitle: 'Limit-Break x Survivor', image: '/2017/OPENING/Cover/DBS.png',        audio: '/2017/OPENING/Audio/DBS.mp3'        },
+      { id: '11', animeName: 'Rokudenashi Majutsu Koushi to Akashic Records', openingTitle: 'Blow out',               image: '/2017/OPENING/Cover/ROKU.png',       audio: '/2017/OPENING/Audio/ROKU.mp3'       },
+      { id: '12', animeName: 'KonoSuba S2',                                  openingTitle: 'Tomorrow',               image: '/2017/OPENING/Cover/KONOSUBA.png',   audio: '/2017/OPENING/Audio/KONOSUBA.mp3'   },
+      { id: '13', animeName: 'Made in Abyss',                                openingTitle: 'Deep in Abyss',          image: '/2017/OPENING/Cover/ABYSS.png',      audio: '/2017/OPENING/Audio/ABYSS.mp3'      },
+      { id: '14', animeName: 'Black Clover',                                  openingTitle: 'Haruka Mirai',           image: '/2017/OPENING/Cover/BLACK.png',      audio: '/2017/OPENING/Audio/BLACK.mp3'      },
+      { id: '15', animeName: 'Kakegurui',                                     openingTitle: 'Deal with the devil',    image: '/2017/OPENING/Cover/KAKEGURUI.png',  audio: '/2017/OPENING/Audio/KAKEGURUI.mp3'  },
     ],
     animes: [
-      // { id: '1', name: 'My Hero Academia', image: '/nominees/2017/animes/1/cover.jpg' },
+      // { id: '1', name: 'My Hero Academia', image: '/2017/ANIME/Cover/MHA.png', silhouette: '/2017/ANIME/Silhouette/MHA.png' },
     ],
   },
 
