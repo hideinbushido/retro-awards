@@ -6,6 +6,17 @@ import { ChevronLeft, ChevronRight, Rewind, Music, Tv } from 'lucide-react';
 import { nominees } from '@/data/nominees';
 import type { Opening, Anime } from '@/data/nominees';
 
+function useIsMobile() {
+  const [mobile, setMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+  return mobile;
+}
+
 const YEARS = [2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006, 2005] as const;
 
 type Phase = 'hero' | 'timetravel' | 'year';
@@ -303,6 +314,7 @@ export default function HomeCarousel() {
   const [phase, setPhase] = useState<Phase>('hero');
   const [nominee, setNominee] = useState<DisplayNominee>(null);
   const nextIdxRef = useRef<number>(0);
+  const isMobile = useIsMobile();
 
   const currentYear = yearIndex >= 0 ? YEARS[yearIndex] : null;
 
@@ -311,11 +323,13 @@ export default function HomeCarousel() {
     setPhase('timetravel');
   }, []);
 
+  // Sur mobile : pas d'avancement automatique à la fin de la vidéo
   const handleVideoEnd = useCallback(() => {
+    if (isMobile) return;
     const next = yearIndex + 1;
     nextIdxRef.current = next >= YEARS.length ? -1 : next;
     setPhase('timetravel');
-  }, [yearIndex]);
+  }, [yearIndex, isMobile]);
 
   const afterTimeTravel = useCallback(() => {
     const idx = nextIdxRef.current;
@@ -338,12 +352,12 @@ export default function HomeCarousel() {
     if (!isTransitioning) goToYear(yearIndex === -1 ? 0 : yearIndex + 1);
   };
 
-  // Fallback : si la vidéo timetravel ne se lance pas (mobile), on avance après 6s
+  // Fallback timetravel uniquement sur desktop (si vidéo bloque)
   useEffect(() => {
-    if (phase !== 'timetravel') return;
+    if (phase !== 'timetravel' || isMobile) return;
     const t = setTimeout(afterTimeTravel, 6000);
     return () => clearTimeout(t);
-  }, [phase, afterTimeTravel]);
+  }, [phase, afterTimeTravel, isMobile]);
 
   return (
     <div className="relative w-full h-full overflow-hidden bg-black">
