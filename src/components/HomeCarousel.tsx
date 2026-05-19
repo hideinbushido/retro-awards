@@ -124,10 +124,7 @@ function HeroSlide({ onEnd }: { onEnd: () => void }) {
 // ── Year timeline bar ──
 function YearTimeline({ currentYear, onSelect }: { currentYear: number | null; onSelect: (idx: number) => void }) {
   return (
-    <div
-      className="absolute bottom-0 inset-x-0 flex items-center justify-center px-4 pb-4 pt-3 overflow-x-auto"
-      style={{ zIndex: 5, scrollbarWidth: 'none', borderTop: '1px solid var(--border)', background: 'rgba(13,10,6,0.6)', backdropFilter: 'blur(8px)' }}
-    >
+    <div className="year-timeline">
       {YEARS.map((y, idx) => {
         const active = currentYear !== null && y === currentYear;
         return (
@@ -216,81 +213,50 @@ function YearSlide({
       </video>
       <SlideDecorations />
 
-      {/* Main layout */}
-      <div
-        className="absolute inset-0 flex items-center animate-fade-in"
-        style={{ zIndex: 3, paddingBottom: '72px', paddingLeft: '80px', paddingRight: '80px', gap: '48px' }}
-      >
-        {/* Cover — hauteur quasi plein écran */}
-        <div
-          className="flex-shrink-0 rounded-2xl overflow-hidden"
-          style={{
-            height: 'calc(100% - 3rem)',
-            aspectRatio: '2/3',
-            border: '2px solid var(--border)',
-            boxShadow: '0 0 60px rgba(0,255,204,0.18), 0 0 120px rgba(0,255,204,0.06)',
-            background: 'var(--bg2)',
-          }}
-        >
+      {/* Main layout — responsive via CSS classes */}
+      <div className="year-layout animate-fade-in">
+
+        {/* Cover */}
+        <div className="year-cover">
           {coverSrc ? (
             <img src={coverSrc} alt={titleLine ?? ''} className="w-full h-full object-cover" />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
-              <span className="text-sm tracking-widest uppercase" style={{ color: 'var(--sepia-dim)' }}>À VENIR</span>
+              <span className="text-xs tracking-widest uppercase" style={{ color: 'var(--sepia-dim)' }}>À VENIR</span>
             </div>
           )}
         </div>
 
         {/* Info */}
-        <div className="flex flex-col justify-center gap-6 flex-1 min-w-0">
-          <div className="flex items-center gap-4">
-            <div className="h-px w-16" style={{ background: 'var(--neon)', opacity: 0.5 }} />
-            <span className="text-sm font-bold tracking-widest uppercase" style={{ color: 'var(--neon)' }}>RETRO AWARDS</span>
+        <div className="year-info">
+          <div className="flex items-center gap-3">
+            <div className="h-px w-10" style={{ background: 'var(--neon)', opacity: 0.5 }} />
+            <span className="text-xs font-bold tracking-widest uppercase" style={{ color: 'var(--neon)' }}>RETRO AWARDS</span>
+            <div className="h-px w-10 md:hidden" style={{ background: 'var(--neon)', opacity: 0.5 }} />
           </div>
 
-          <h2
-            className="font-black leading-none glitch"
-            data-text={String(year)}
-            style={{ fontSize: 'clamp(5rem, 14vw, 10rem)', color: 'var(--sepia)', letterSpacing: '-0.03em' }}
-          >
-            {year}
-          </h2>
+          <h2 className="year-number glitch" data-text={String(year)}>{year}</h2>
 
           {nominee ? (
             <>
               {categoryLabel && (
-                <span className="text-sm font-bold tracking-widest uppercase flex items-center gap-2" style={{ color: 'var(--neon)', opacity: 0.8 }}>
-                  {isOpening ? <Music size={14} /> : <Tv size={14} />}
+                <span className="text-xs font-bold tracking-widest uppercase flex items-center justify-center md:justify-start gap-1.5" style={{ color: 'var(--neon)', opacity: 0.8 }}>
+                  {isOpening ? <Music size={12} /> : <Tv size={12} />}
                   {categoryLabel}
                 </span>
               )}
-
-              <div className="flex flex-col gap-2">
-                <p
-                  className="font-black leading-tight"
-                  style={{ fontSize: 'clamp(2rem, 4.5vw, 3.5rem)', color: 'var(--sepia)', wordBreak: 'break-word' }}
-                >
-                  {titleLine}
-                </p>
-                {subLine && (
-                  <p style={{ fontSize: 'clamp(1rem, 2vw, 1.4rem)', color: 'var(--neon)', opacity: 0.85 }}>
-                    {subLine}
-                  </p>
-                )}
+              <div>
+                <p className="year-title">{titleLine}</p>
+                {subLine && <p className="year-subtitle mt-1">{subLine}</p>}
               </div>
-
-              <div className="h-px w-48" style={{ background: 'var(--border)' }} />
-
-              <div className="flex flex-wrap gap-4">
-                <Link
-                  href={nomineesHref}
-                  className="btn-neon px-7 py-3 rounded text-sm tracking-widest"
-                >
+              <div className="h-px w-32 hidden md:block" style={{ background: 'var(--border)' }} />
+              <div className="year-buttons">
+                <Link href={nomineesHref} className="btn-neon px-5 py-2 rounded text-xs tracking-widest">
                   VOIR NOMINÉS
                 </Link>
                 <Link
                   href={`/annee/${year}`}
-                  className="px-7 py-3 rounded text-sm font-bold tracking-widest uppercase transition-all hover:scale-105"
+                  className="px-5 py-2 rounded text-xs font-bold tracking-widest uppercase"
                   style={{ border: '1px solid var(--sepia-dim)', color: 'var(--sepia-dim)' }}
                 >
                   VOTER {year}
@@ -298,27 +264,19 @@ function YearSlide({
               </div>
             </>
           ) : (
-            <p className="text-sm tracking-widest uppercase" style={{ color: 'var(--sepia-dim)', opacity: 0.5 }}>
+            <p className="text-xs tracking-widest uppercase" style={{ color: 'var(--sepia-dim)', opacity: 0.5 }}>
               NOMINEES À VENIR
             </p>
           )}
         </div>
 
-        {/* Silhouette (anime only) */}
+        {/* Silhouette (anime, desktop only) */}
         {isAnime && silhouetteSrc && (
-          <div
-            className="flex-shrink-0 self-end animate-fade-in"
-            style={{ height: '85%', width: 'auto' }}
-          >
+          <div className="flex-shrink-0 self-end animate-fade-in hidden md:block" style={{ height: '85%' }}>
             <img
               src={silhouetteSrc}
               alt=""
-              style={{
-                height: '100%',
-                width: 'auto',
-                objectFit: 'contain',
-                filter: 'drop-shadow(0 0 24px rgba(0,255,204,0.3))',
-              }}
+              style={{ height: '100%', width: 'auto', objectFit: 'contain', filter: 'drop-shadow(0 0 24px rgba(0,255,204,0.3))' }}
             />
           </div>
         )}
@@ -361,15 +319,20 @@ export default function HomeCarousel() {
   }, []);
 
   const isTransitioning = phase === 'timetravel';
-  // hero = index -1, year slides = 0..14
   const canLeft = !isTransitioning && yearIndex > 0;
-  // from hero (−1) right goes to 0, from year goes to next
   const canRight = !isTransitioning && yearIndex < YEARS.length - 1;
 
   const handleLeft = () => { if (canLeft) goToYear(yearIndex - 1); };
   const handleRight = () => {
     if (!isTransitioning) goToYear(yearIndex === -1 ? 0 : yearIndex + 1);
   };
+
+  // Fallback : si la vidéo timetravel ne se lance pas (mobile), on avance après 6s
+  useEffect(() => {
+    if (phase !== 'timetravel') return;
+    const t = setTimeout(afterTimeTravel, 6000);
+    return () => clearTimeout(t);
+  }, [phase, afterTimeTravel]);
 
   return (
     <div className="relative w-full h-full overflow-hidden bg-black">
@@ -387,31 +350,33 @@ export default function HomeCarousel() {
       {/* ── ARROWS (toujours présentes) ── */}
       <button
         onClick={handleLeft}
-        className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center justify-center rounded-full transition-all"
+        className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 flex items-center justify-center rounded-full transition-all"
         style={{
-          zIndex: 20, width: '52px', height: '52px',
-          background: 'rgba(13,10,6,0.75)',
+          zIndex: 20, width: '48px', height: '48px',
+          background: 'rgba(13,10,6,0.85)',
           border: `1px solid ${canLeft ? 'var(--neon)' : 'var(--border)'}`,
           color: canLeft ? 'var(--neon)' : 'var(--sepia-dim)',
-          opacity: canLeft ? 1 : 0.25,
+          opacity: canLeft ? 1 : 0.2,
           cursor: canLeft ? 'pointer' : 'default',
           boxShadow: canLeft ? '0 0 14px rgba(0,255,204,0.2)' : 'none',
+          touchAction: 'manipulation',
         }}
       >
-        <ChevronLeft size={24} />
+        <ChevronLeft size={22} />
       </button>
 
       <button
         onClick={handleRight}
-        className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center justify-center rounded-full transition-all"
+        className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 flex items-center justify-center rounded-full transition-all"
         style={{
-          zIndex: 20, width: '52px', height: '52px',
-          background: 'rgba(13,10,6,0.75)',
+          zIndex: 20, width: '48px', height: '48px',
+          background: 'rgba(13,10,6,0.85)',
           border: `1px solid ${canRight ? 'var(--neon)' : 'var(--border)'}`,
           color: canRight ? 'var(--neon)' : 'var(--sepia-dim)',
-          opacity: canRight ? 1 : 0.25,
+          opacity: canRight ? 1 : 0.2,
           cursor: canRight ? 'pointer' : 'default',
           boxShadow: canRight ? '0 0 14px rgba(0,255,204,0.2)' : 'none',
+          touchAction: 'manipulation',
         }}
       >
         <ChevronRight size={24} />
@@ -426,9 +391,10 @@ export default function HomeCarousel() {
       {phase === 'timetravel' && (
         <div className="absolute inset-0 bg-black" style={{ zIndex: 50 }}>
           <video
-            autoPlay muted playsInline
+            autoPlay muted playsInline preload="auto"
             className="w-full h-full object-cover"
             onEnded={afterTimeTravel}
+            style={{ display: 'block' }}
           >
             <source src="/timetravel.mp4" type="video/mp4" />
           </video>
