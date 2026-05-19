@@ -74,7 +74,7 @@ export const nominees: Record<number, YearNominees> = {
     openings: [
       { id: '1',  animeName: 'My Hero Academia',                             openingTitle: 'Peace Sign',              image: '/2017/OPENING/Cover/MHA.png',       audio: '/2017/OPENING/Audio/MHA.mp3'       },
       { id: '2',  animeName: 'Welcome to the Ballroom',                      openingTitle: '10% roll, 10% romance',   image: '/2017/OPENING/Cover/BALLROOM.png',  audio: '/2017/OPENING/Audio/BALLROOM.mp3'  },
-      { id: '3',  animeName: 'Fate/Apocrypha',                               openingTitle: 'ASH',                     image: '/2017/OPENING/Cover/FATE.png',       audio: '/2017/OPENING/Audio/FATE.mp3'       },
+      { id: '3',  animeName: 'Fate/Apocrypha',                               openingTitle: 'ASH',                     image: '/2017/OPENING/Cover/APOCRYPHA.png', audio: '/2017/OPENING/Audio/APOCRYPHA.mp3' },
       { id: '4',  animeName: 'Attack on Titan S2',                           openingTitle: 'Shinzou wo Sasageyo!',    image: '/2017/OPENING/Cover/SNK.png',        audio: '/2017/OPENING/Audio/SNK.mp3'        },
       { id: '5',  animeName: 'Blue Exorcist S2',                             openingTitle: 'SCOREBOOK',               image: '/2017/OPENING/Cover/BLUEEXO.png',    audio: '/2017/OPENING/Audio/BLUEEXO.mp3'    },
       { id: '6',  animeName: 'Boruto: Naruto Next Generations',              openingTitle: 'OVER',                    image: '/2017/OPENING/Cover/BORUTO.png',     audio: '/2017/OPENING/Audio/BORUTO.mp3'     },
