@@ -187,15 +187,31 @@ function YearSlide({
   const isOpening = nominee?.type === 'opening';
   const isAnime = nominee?.type === 'anime';
 
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [audioPlaying, setAudioPlaying] = useState(false);
+
   // Auto-play audio for openings
   useEffect(() => {
     if (!isOpening) return;
     const opening = (nominee as { type: 'opening'; data: Opening }).data;
     const audio = new Audio(opening.audio);
     audio.volume = 0.5;
-    audio.play().catch(() => {});
-    return () => { audio.pause(); audio.src = ''; };
+    audioRef.current = audio;
+    audio.play().then(() => setAudioPlaying(true)).catch(() => setAudioPlaying(false));
+    audio.onended = () => setAudioPlaying(false);
+    return () => { audio.pause(); audio.src = ''; audioRef.current = null; setAudioPlaying(false); };
   }, [isOpening, nominee]);
+
+  function toggleAudio() {
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (audioPlaying) {
+      audio.pause();
+      setAudioPlaying(false);
+    } else {
+      audio.play().then(() => setAudioPlaying(true)).catch(() => {});
+    }
+  }
 
   const coverSrc = isOpening
     ? (nominee as { type: 'opening'; data: Opening }).data.image
@@ -298,6 +314,24 @@ function YearSlide({
               </div>
               <div className="h-px w-32 hidden md:block" style={{ background: 'var(--border)' }} />
               <div className="year-buttons">
+                {isOpening && (
+                  <button
+                    onClick={toggleAudio}
+                    className="flex items-center gap-2 px-5 py-2 rounded text-xs font-bold tracking-widest uppercase transition-all"
+                    style={{
+                      border: '1px solid var(--neon)',
+                      color: 'var(--neon)',
+                      background: audioPlaying ? 'rgba(0,255,204,0.12)' : 'transparent',
+                      touchAction: 'manipulation',
+                    }}
+                  >
+                    {audioPlaying ? (
+                      <><span style={{ fontSize: '14px' }}>⏸</span> PAUSE</>
+                    ) : (
+                      <><span style={{ fontSize: '14px' }}>▶</span> ÉCOUTER</>
+                    )}
+                  </button>
+                )}
                 <Link href={nomineesHref} className="btn-neon px-5 py-2 rounded text-xs tracking-widest">
                   VOIR NOMINÉS
                 </Link>
