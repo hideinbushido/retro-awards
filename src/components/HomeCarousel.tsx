@@ -217,6 +217,10 @@ function YearSlide({
     ? (nominee as { type: 'opening'; data: Opening }).data.animeName
     : null;
 
+  const artistLine = isOpening
+    ? (nominee as { type: 'opening'; data: Opening }).data.artist ?? null
+    : null;
+
   const opNum = isOpening ? (nominee as { type: 'opening'; data: Opening }).data.op : undefined;
   const categoryLabel = isOpening
     ? (opNum && opNum > 1 ? `Opening ${opNum}` : 'Opening')
@@ -273,7 +277,8 @@ function YearSlide({
               )}
               <div>
                 <p className="year-title">{titleLine}</p>
-                {subLine && <p className="year-subtitle mt-1">{subLine}</p>}
+                {artistLine && <p className="year-subtitle mt-1">{artistLine}</p>}
+                {subLine && <p className="text-xs mt-1" style={{ color: 'var(--sepia-dim)', opacity: 0.7 }}>{subLine}</p>}
               </div>
               <div className="h-px w-32 hidden md:block" style={{ background: 'var(--border)' }} />
               <div className="year-buttons">
