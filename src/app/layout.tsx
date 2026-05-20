@@ -11,7 +11,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="fr" className="h-full">
       <body className="min-h-full flex flex-col">
-        <MusicProvider src="/Moonlit Save Point.mp3">
+        <MusicProvider src="/THEME SITE.mp3">
           {children}
         </MusicProvider>
       </body>
