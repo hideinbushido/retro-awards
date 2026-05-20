@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback, useEffect } from 'react';
 import Link from 'next/link';
+import NextImage from 'next/image';
 import { ChevronLeft, ChevronRight, Rewind, Music, Tv } from 'lucide-react';
 import { nominees } from '@/data/nominees';
 import type { Opening, Anime } from '@/data/nominees';
@@ -178,11 +179,10 @@ function YearTimeline({ currentYear, onSelect }: { currentYear: number | null; o
 
 // ── Year slide ──
 function YearSlide({
-  year, nominee, onEnd,
+  year, nominee,
 }: {
   year: number;
   nominee: DisplayNominee;
-  onEnd: () => void;
 }) {
   const isOpening = nominee?.type === 'opening';
   const isAnime = nominee?.type === 'anime';
@@ -234,10 +234,9 @@ function YearSlide({
       style={{ animation: 'slideInRight 0.55s cubic-bezier(0.22,1,0.36,1) both' }}
     >
       <video
-        autoPlay muted playsInline
+        autoPlay muted playsInline loop
         className="absolute inset-0 w-full h-full object-cover"
         style={{ opacity: 0.25, zIndex: 0 }}
-        onEnded={onEnd}
       >
         <source src="/Fondaccueil1.mp4" type="video/mp4" />
       </video>
@@ -247,9 +246,16 @@ function YearSlide({
       <div className="year-layout animate-fade-in">
 
         {/* Cover */}
-        <div className="year-cover">
+        <div className="year-cover" style={{ position: 'relative' }}>
           {coverSrc ? (
-            <img src={coverSrc} alt={titleLine ?? ''} className="w-full h-full object-cover" />
+            <NextImage
+              src={coverSrc}
+              alt={titleLine ?? ''}
+              fill
+              priority
+              sizes="(max-width: 768px) 40vw, 25vw"
+              style={{ objectFit: 'cover' }}
+            />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
               <span className="text-xs tracking-widest uppercase" style={{ color: 'var(--sepia-dim)' }}>À VENIR</span>
@@ -342,13 +348,18 @@ export default function HomeCarousel() {
     setPhase('timetravel');
   }, []);
 
-  // Sur mobile : pas d'avancement automatique à la fin de la vidéo
-  const handleVideoEnd = useCallback(() => {
-    if (isMobile) return;
+  const handleAutoAdvance = useCallback(() => {
     const next = yearIndex + 1;
     nextIdxRef.current = next >= YEARS.length ? -1 : next;
     setPhase('timetravel');
-  }, [yearIndex, isMobile]);
+  }, [yearIndex]);
+
+  // Timer 40s pour l'avancement automatique sur desktop uniquement
+  useEffect(() => {
+    if (phase !== 'year' || isMobile) return;
+    const t = setTimeout(handleAutoAdvance, 40000);
+    return () => clearTimeout(t);
+  }, [phase, yearIndex, isMobile, handleAutoAdvance]);
 
   const afterTimeTravel = useCallback(() => {
     const idx = nextIdxRef.current;
@@ -371,12 +382,12 @@ export default function HomeCarousel() {
     if (!isTransitioning) goToYear(yearIndex === -1 ? 0 : yearIndex + 1);
   };
 
-  // Fallback timetravel uniquement sur desktop (si vidéo bloque)
+  // Fallback timetravel si la vidéo ne se déclenche pas
   useEffect(() => {
-    if (phase !== 'timetravel' || isMobile) return;
+    if (phase !== 'timetravel') return;
     const t = setTimeout(afterTimeTravel, 6000);
     return () => clearTimeout(t);
-  }, [phase, afterTimeTravel, isMobile]);
+  }, [phase, afterTimeTravel]);
 
   return (
     <div className="relative w-full h-full overflow-hidden bg-black">
@@ -387,7 +398,6 @@ export default function HomeCarousel() {
           key={currentYear}
           year={currentYear}
           nominee={nominee}
-          onEnd={handleVideoEnd}
         />
       )}
 

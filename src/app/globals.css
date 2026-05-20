@@ -226,6 +226,7 @@ body::before {
   background: var(--bg2);
   height: 32vh;
   aspect-ratio: 2/3;
+  position: relative;
 }
 @media (min-width: 768px) {
   .year-cover {
