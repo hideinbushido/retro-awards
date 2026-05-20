@@ -273,6 +273,16 @@ function YearSlide({
 
           <h2 className="year-number glitch" data-text={String(year)}>{year}</h2>
 
+          {/* Badge nominé */}
+          <div
+            className="inline-flex items-center gap-2 px-3 py-1 rounded self-center md:self-start"
+            style={{ background: 'rgba(0,255,204,0.08)', border: '1px solid var(--border)' }}
+          >
+            <span className="text-xs font-bold tracking-widest uppercase" style={{ color: 'var(--sepia-dim)' }}>
+              ✦ NOMINÉ — PAS ENCORE GAGNANT
+            </span>
+          </div>
+
           {nominee ? (
             <>
               {categoryLabel && (
