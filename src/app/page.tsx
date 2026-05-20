@@ -6,7 +6,7 @@ export default function HomePage() {
   return (
     <>
       <Navbar />
-      <BackgroundMusic src="/music/ambiance.mp3" />
+      <BackgroundMusic src="/Moonlit Save Point.mp3" />
       <main className="fixed inset-0 pt-16 overflow-hidden">
         <HomeCarousel />
       </main>
