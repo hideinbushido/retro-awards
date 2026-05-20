@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import { MusicProvider } from '@/contexts/MusicContext';
 
 export const metadata: Metadata = {
   title: 'RETRO Awards — Zenkai Hors-Série',
@@ -9,7 +10,11 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fr" className="h-full">
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <MusicProvider src="/Moonlit Save Point.mp3">
+          {children}
+        </MusicProvider>
+      </body>
     </html>
   );
 }

@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Music, Volume2, Check } from 'lucide-react';
 import { voteOpening } from '@/lib/firestore';
 import { Opening } from '@/data/nominees';
+import { useMusicContext } from '@/contexts/MusicContext';
 
 type Props = { year: number; openings: Opening[] };
 
@@ -18,22 +19,25 @@ export default function OpeningNominees({ year, openings }: Props) {
   const [playingId, setPlayingId] = useState<string | null>(null);
   const [loading, setLoading] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const { pauseForOpening, resumeFromOpening } = useMusicContext();
 
   const playAudio = useCallback((op: Opening) => {
     if (!op.audio) return;
+    pauseForOpening();
     if (audioRef.current) audioRef.current.pause();
     const audio = new Audio(op.audio);
     audio.volume = 0.7;
     audioRef.current = audio;
     audio.play().catch(() => {});
     setPlayingId(op.id);
-    audio.onended = () => setPlayingId(null);
-  }, []);
+    audio.onended = () => { setPlayingId(null); resumeFromOpening(); };
+  }, [pauseForOpening, resumeFromOpening]);
 
   const stopAudio = useCallback(() => {
     if (audioRef.current) { audioRef.current.pause(); audioRef.current = null; }
     setPlayingId(null);
-  }, []);
+    resumeFromOpening();
+  }, [resumeFromOpening]);
 
   async function handleVote(id: string) {
     if (votedId || loading) return;

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { ChevronLeft, ChevronRight, Rewind, Music, Tv } from 'lucide-react';
 import { nominees } from '@/data/nominees';
 import type { Opening, Anime } from '@/data/nominees';
+import { useMusicContext } from '@/contexts/MusicContext';
 
 function useIsMobile() {
   const [mobile, setMobile] = useState(false);
@@ -318,6 +319,16 @@ export default function HomeCarousel() {
   const [nominee, setNominee] = useState<DisplayNominee>(null);
   const nextIdxRef = useRef<number>(0);
   const isMobile = useIsMobile();
+  const { pauseForOpening, resumeFromOpening } = useMusicContext();
+
+  // Pause musique quand un opening est affiché, reprend sinon
+  useEffect(() => {
+    if (phase === 'year' && nominee?.type === 'opening') {
+      pauseForOpening();
+    } else {
+      resumeFromOpening();
+    }
+  }, [phase, nominee, pauseForOpening, resumeFromOpening]);
 
   const currentYear = yearIndex >= 0 ? YEARS[yearIndex] : null;
 
