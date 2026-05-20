@@ -391,7 +391,7 @@ export default function HomeCarousel() {
 
   return (
     <div className="relative w-full h-full overflow-hidden bg-black">
-      {phase === 'hero' && <HeroSlide onEnd={handleVideoEnd} />}
+      {phase === 'hero' && <HeroSlide onEnd={handleAutoAdvance} />}
 
       {phase === 'year' && currentYear !== null && (
         <YearSlide
