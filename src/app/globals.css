@@ -304,7 +304,7 @@ body::before {
   }
 }
 
-/* ── TIMELINE MOBILE ── */
+/* ── TIMELINE ── */
 .year-timeline {
   position: absolute;
   bottom: 0;
@@ -324,6 +324,14 @@ body::before {
   gap: 4px;
 }
 .year-timeline::-webkit-scrollbar { display: none; }
+@media (min-width: 768px) {
+  .year-timeline {
+    justify-content: space-between;
+    overflow-x: hidden;
+    padding: 10px 32px 12px;
+    gap: 0;
+  }
+}
 
 /* ── HORIZONTAL SCROLL (PC timeline) ── */
 .timeline-scroll {
