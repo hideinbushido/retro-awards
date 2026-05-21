@@ -1,9 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { BarChart3, Trophy, Music, Tv, RefreshCw } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { BarChart3, Trophy, Music, Tv, RefreshCw, Upload, Copy, Check } from 'lucide-react';
 import { YEARS, getVotes } from '@/lib/firestore';
 import { nominees } from '@/data/nominees';
+import { uploadFile } from '@/lib/storage';
+import type { UploadCategory, UploadType } from '@/lib/storage';
 
 const ADMIN_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || 'retro2025';
 
@@ -65,6 +67,8 @@ export default function AdminPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth]);
 
+  const [tab, setTab] = useState<'votes' | 'upload'>('votes');
+
   if (!auth) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--bg)' }}>
@@ -95,23 +99,44 @@ export default function AdminPage() {
       <div className="max-w-5xl mx-auto">
 
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
             <BarChart3 size={24} style={{ color: 'var(--neon)' }} />
-            <h1 className="font-black text-xl neon-text tracking-widest">RETRO AWARDS — DASHBOARD</h1>
+            <h1 className="font-black text-xl neon-text tracking-widest">RETRO AWARDS — ADMIN</h1>
           </div>
-          <button onClick={loadAll} disabled={loading} className="btn-neon px-3 py-2 rounded text-xs flex items-center gap-2">
-            <RefreshCw size={12} className={loading ? 'animate-spin' : ''} />
-            Rafraîchir
-          </button>
+          {tab === 'votes' && (
+            <button onClick={loadAll} disabled={loading} className="btn-neon px-3 py-2 rounded text-xs flex items-center gap-2">
+              <RefreshCw size={12} className={loading ? 'animate-spin' : ''} />
+              Rafraîchir
+            </button>
+          )}
         </div>
 
-        {loading && !data.length && (
+        {/* Tabs */}
+        <div className="flex gap-2 mb-8">
+          {(['votes', 'upload'] as const).map((t) => (
+            <button
+              key={t}
+              onClick={() => setTab(t)}
+              className="px-5 py-2 rounded text-xs font-bold tracking-widest uppercase transition-all"
+              style={{
+                background: tab === t ? 'var(--neon)' : 'transparent',
+                color: tab === t ? 'var(--bg)' : 'var(--sepia-dim)',
+                border: '1px solid var(--neon)',
+              }}
+            >
+              {t === 'votes' ? '📊 Votes' : '⬆️ Upload'}
+            </button>
+          ))}
+        </div>
+
+        {tab === 'upload' && <UploadPanel />}
+
+        {tab === 'votes' && loading && !data.length && (
           <p className="text-center py-20 neon-text text-sm tracking-widest">Chargement des votes...</p>
         )}
 
-        {/* Year selector */}
-        {!selectedYear && (
+        {tab === 'votes' && !selectedYear && (
           <>
             {/* Global summary */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
@@ -154,7 +179,7 @@ export default function AdminPage() {
         )}
 
         {/* Year detail */}
-        {selectedYear && yearData && (
+        {tab === 'votes' && selectedYear && yearData && (
           <div>
             <div className="flex items-center gap-4 mb-8">
               <button onClick={() => setSelectedYear(null)} className="btn-neon px-3 py-1.5 rounded text-xs">
@@ -195,6 +220,165 @@ export default function AdminPage() {
                 <VoteBar items={yearData.animes.map((a) => ({ label: a.name, votes: a.votes }))} />
               )}
             </section>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ── Upload Panel ──
+function UploadPanel() {
+  const [year, setYear] = useState(2019);
+  const [category, setCategory] = useState<UploadCategory>('OPENING');
+  const [type, setType] = useState<UploadType>('Cover');
+  const [file, setFile] = useState<File | null>(null);
+  const [progress, setProgress] = useState<number | null>(null);
+  const [url, setUrl] = useState('');
+  const [copied, setCopied] = useState(false);
+  const [error, setError] = useState('');
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  async function handleUpload() {
+    if (!file) return;
+    setError('');
+    setUrl('');
+    setProgress(0);
+    try {
+      const downloadUrl = await uploadFile(year, category, type, file, setProgress);
+      setUrl(downloadUrl);
+    } catch (e) {
+      setError('Erreur upload. Vérifie les règles Firebase Storage.');
+      setProgress(null);
+    }
+  }
+
+  function copyUrl() {
+    navigator.clipboard.writeText(url);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }
+
+  const accept = type === 'Cover' ? 'image/*' : 'audio/*';
+
+  return (
+    <div className="max-w-lg">
+      <h2 className="font-black text-sm tracking-widest uppercase mb-6" style={{ color: 'var(--sepia)' }}>
+        Uploader un fichier vers Firebase Storage
+      </h2>
+
+      <div className="flex flex-col gap-4">
+        {/* Année */}
+        <div>
+          <label className="text-xs font-bold tracking-widest uppercase mb-2 block" style={{ color: 'var(--sepia-dim)' }}>Année</label>
+          <select
+            value={year}
+            onChange={(e) => setYear(Number(e.target.value))}
+            className="w-full px-4 py-2 rounded text-sm font-mono"
+            style={{ background: 'var(--bg3)', border: '1px solid var(--border)', color: 'var(--sepia)', outline: 'none' }}
+          >
+            {YEARS.map((y) => <option key={y} value={y}>{y}</option>)}
+          </select>
+        </div>
+
+        {/* Catégorie */}
+        <div>
+          <label className="text-xs font-bold tracking-widest uppercase mb-2 block" style={{ color: 'var(--sepia-dim)' }}>Catégorie</label>
+          <div className="flex gap-2">
+            {(['OPENING', 'ANIME'] as UploadCategory[]).map((c) => (
+              <button
+                key={c}
+                onClick={() => setCategory(c)}
+                className="flex-1 py-2 rounded text-xs font-bold tracking-widest uppercase"
+                style={{
+                  background: category === c ? 'rgba(0,255,204,0.15)' : 'transparent',
+                  border: `1px solid ${category === c ? 'var(--neon)' : 'var(--border)'}`,
+                  color: category === c ? 'var(--neon)' : 'var(--sepia-dim)',
+                }}
+              >{c}</button>
+            ))}
+          </div>
+        </div>
+
+        {/* Type */}
+        <div>
+          <label className="text-xs font-bold tracking-widest uppercase mb-2 block" style={{ color: 'var(--sepia-dim)' }}>Type de fichier</label>
+          <div className="flex gap-2">
+            {(['Cover', 'Audio'] as UploadType[]).map((t) => (
+              <button
+                key={t}
+                onClick={() => { setType(t); setFile(null); if (inputRef.current) inputRef.current.value = ''; }}
+                className="flex-1 py-2 rounded text-xs font-bold tracking-widest uppercase"
+                style={{
+                  background: type === t ? 'rgba(0,255,204,0.15)' : 'transparent',
+                  border: `1px solid ${type === t ? 'var(--neon)' : 'var(--border)'}`,
+                  color: type === t ? 'var(--neon)' : 'var(--sepia-dim)',
+                }}
+              >{t}</button>
+            ))}
+          </div>
+        </div>
+
+        {/* Fichier */}
+        <div>
+          <label className="text-xs font-bold tracking-widest uppercase mb-2 block" style={{ color: 'var(--sepia-dim)' }}>
+            Fichier ({type === 'Cover' ? 'image' : 'audio'})
+          </label>
+          <input
+            ref={inputRef}
+            type="file"
+            accept={accept}
+            onChange={(e) => { setFile(e.target.files?.[0] ?? null); setUrl(''); setProgress(null); }}
+            className="w-full text-xs"
+            style={{ color: 'var(--sepia-dim)' }}
+          />
+          {file && (
+            <p className="text-xs mt-1" style={{ color: 'var(--sepia-dim)' }}>
+              {file.name} — {(file.size / 1024).toFixed(0)} Ko
+            </p>
+          )}
+        </div>
+
+        {/* Upload button */}
+        <button
+          onClick={handleUpload}
+          disabled={!file || progress !== null}
+          className="btn-neon py-3 rounded text-sm flex items-center justify-center gap-2"
+        >
+          <Upload size={14} />
+          {progress !== null && progress < 100 ? `Upload... ${progress}%` : 'Uploader'}
+        </button>
+
+        {/* Progress bar */}
+        {progress !== null && (
+          <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'var(--bg3)' }}>
+            <div
+              className="h-full rounded-full transition-all"
+              style={{ width: `${progress}%`, background: 'var(--neon)' }}
+            />
+          </div>
+        )}
+
+        {/* Error */}
+        {error && (
+          <p className="text-xs font-bold" style={{ color: 'var(--red)' }}>{error}</p>
+        )}
+
+        {/* Result URL */}
+        {url && (
+          <div className="retro-card rounded-lg p-4">
+            <p className="text-xs font-bold tracking-widest uppercase mb-2" style={{ color: 'var(--neon)' }}>
+              ✓ Upload réussi — URL Firebase Storage
+            </p>
+            <div className="flex items-center gap-2">
+              <p className="text-xs font-mono break-all flex-1" style={{ color: 'var(--sepia-dim)' }}>{url}</p>
+              <button onClick={copyUrl} className="btn-neon p-2 rounded flex-shrink-0">
+                {copied ? <Check size={14} /> : <Copy size={14} />}
+              </button>
+            </div>
+            <p className="text-xs mt-3" style={{ color: 'var(--sepia-dim)', opacity: 0.7 }}>
+              Copie cette URL dans le champ <code style={{ color: 'var(--neon)' }}>{type === 'Cover' ? 'image' : 'audio'}</code> du nominé dans nominees.ts
+            </p>
           </div>
         )}
       </div>
