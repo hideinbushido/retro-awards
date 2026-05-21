@@ -45,18 +45,18 @@ body::after {
   );
 }
 
-/* ── FILM GRAIN (desktop only — trop lourd sur mobile) ── */
+/* ── FILM GRAIN (desktop only, ralenti) ── */
 @media (min-width: 768px) {
   body::before {
     content: '';
     position: fixed;
-    inset: -50%;
+    inset: 0;
     pointer-events: none;
     z-index: 9998;
-    opacity: 0.04;
+    opacity: 0.03;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
     background-size: 256px 256px;
-    animation: grain 0.5s steps(2) infinite;
+    animation: grain 3s steps(4) infinite;
   }
 }
 
@@ -177,9 +177,19 @@ body::after {
   96%       { opacity: 0.9;  }
   97%       { opacity: 1;    }
 }
-/* Flicker désactivé sur mobile */
-@media (min-width: 768px) {
-  .vhs-flicker { animation: flicker 4s infinite; }
+/* Flicker via pseudo-élément — n'affecte pas les pointer events des enfants */
+.slide-flicker::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  animation: flicker 4s infinite;
+  background: transparent;
+}
+/* Désactivé sur mobile */
+@media (max-width: 767px) {
+  .slide-flicker::after { animation: none; }
 }
 
 /* ── AUDIO WAVE INDICATOR ── */

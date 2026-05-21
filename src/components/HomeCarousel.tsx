@@ -60,7 +60,7 @@ function SlideDecorations() {
 // ── Hero slide ──
 function HeroSlide({ onEnd }: { onEnd: () => void }) {
   return (
-    <div className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden vhs-flicker">
+    <div className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden slide-flicker">
       <video
         autoPlay muted playsInline preload="auto"
         className="absolute inset-0 w-full h-full object-cover"
@@ -246,7 +246,7 @@ function YearSlide({
 
   return (
     <div
-      className="relative w-full h-full overflow-hidden vhs-flicker"
+      className="relative w-full h-full overflow-hidden slide-flicker"
       style={{ animation: 'slideInRight 0.55s cubic-bezier(0.22,1,0.36,1) both' }}
     >
       <video
