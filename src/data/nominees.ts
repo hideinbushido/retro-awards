@@ -97,7 +97,21 @@ export const nominees: Record<number, YearNominees> = {
 
   2016: {
     openings: [
-      // { id: '1', animeName: 'Re:Zero', openingTitle: 'Redo', image: '/nominees/2016/openings/1/cover.jpg', audio: '/nominees/2016/openings/1/audio.mp3' },
+      { id: '1',  animeName: 'My Hero Academia',                        openingTitle: 'The Day',                        artist: 'Porno Graffitti',           image: '/2016/OPENING/Cover/MHA.png',       audio: '/2016/OPENING/Audio/MHA.mp3'       },
+      { id: '2',  animeName: 'Naruto: Shippuden',                       openingTitle: 'Blood Circulator',               artist: 'ASIAN KUNG-FU GENERATION',  op: 19, image: '/2016/OPENING/Cover/NARUTO19.png',  audio: '/2016/OPENING/Audio/NARUTO19.mp3'  },
+      { id: '3',  animeName: 'Mob Psycho 100',                          openingTitle: '99',                             artist: 'MOB CHOIR',                         image: '/2016/OPENING/Cover/MOB.png',       audio: '/2016/OPENING/Audio/MOB.mp3'       },
+      { id: '4',  animeName: 'Haikyu!!',                                openingTitle: 'Fly High!!',                     artist: 'BURNOUT SYNDROMES',         op: 4,  image: '/2016/OPENING/Cover/HAIKYU.png',    audio: '/2016/OPENING/Audio/HAIKYU.mp3'    },
+      { id: '5',  animeName: 'Food Wars!',                              openingTitle: 'Rising Rainbow',                 artist: 'Misokkasu',                 op: 2,  image: '/2016/OPENING/Cover/FOODWARS2.png', audio: '/2016/OPENING/Audio/FOODWARS2.mp3' },
+      { id: '6',  animeName: 'Bungo Stray Dogs',                        openingTitle: 'Reason Living',                  artist: 'SCREEN mode',               op: 2,  image: '/2016/OPENING/Cover/BUNGO.png',     audio: '/2016/OPENING/Audio/BUNGO.mp3'     },
+      { id: '7',  animeName: 'Assassination Classroom',                 openingTitle: 'Bye Bye Yesterday',              artist: '3-nen E-gumi Utatan',       op: 4,  image: '/2016/OPENING/Cover/ASSCLASS.png',  audio: '/2016/OPENING/Audio/ASSCLASS.mp3'  },
+      { id: '8',  animeName: 'ERASED',                                  openingTitle: 'Re:Re:',                         artist: 'ASIAN KUNG-FU GENERATION',         image: '/2016/OPENING/Cover/ERASED.png',    audio: '/2016/OPENING/Audio/ERASED.mp3'    },
+      { id: '9',  animeName: 'Re:ZERO',                                 openingTitle: 'Redo',                           artist: 'Konomi Suzuki',                     image: '/2016/OPENING/Cover/REZERO.png',    audio: '/2016/OPENING/Audio/REZERO.mp3'    },
+      { id: '10', animeName: 'Fairy Tail',                              openingTitle: 'Ashita wo Narase',               artist: 'Kavka Shishido',            op: 22, image: '/2016/OPENING/Cover/FAIRY.png',     audio: '/2016/OPENING/Audio/FAIRY.mp3'     },
+      { id: '11', animeName: 'Tales of Zestiria the X',                 openingTitle: 'Kaze no Uta',                    artist: 'FLOW',                              image: '/2016/OPENING/Cover/TALES.png',     audio: '/2016/OPENING/Audio/TALES.mp3'     },
+      { id: '12', animeName: "Haven't You Heard? I'm Sakamoto",         openingTitle: 'COOLEST',                        artist: 'CustomiZ',                          image: '/2016/OPENING/Cover/SAKAMOTO.png',  audio: '/2016/OPENING/Audio/SAKAMOTO.mp3'  },
+      { id: '13', animeName: 'Twin Star Exorcists',                     openingTitle: 'sync',                           artist: 'lol',                       op: 3,  image: '/2016/OPENING/Cover/TWINSTAR.png',  audio: '/2016/OPENING/Audio/TWINSTAR.mp3'  },
+      { id: '14', animeName: 'Yuri!!! on Ice',                          openingTitle: 'History Maker',                  artist: 'Dean Fujioka',                      image: '/2016/OPENING/Cover/YURI.png',      audio: '/2016/OPENING/Audio/YURI.mp3'      },
+      { id: '15', animeName: 'D.Gray-man Hallow',                       openingTitle: 'Key -bring it on, my Destiny-', artist: 'Lenny code fiction',                image: '/2016/OPENING/Cover/DGRAY.png',     audio: '/2016/OPENING/Audio/DGRAY.mp3'     },
     ],
     animes: [
       // { id: '1', name: 'Re:Zero', image: '/nominees/2016/animes/1/cover.jpg' },
