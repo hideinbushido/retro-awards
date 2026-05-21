@@ -30,10 +30,13 @@ export function MusicProvider({ src, children }: { src: string; children: React.
     audio.volume = 0.25;
     audio.loop = true;
     audioRef.current = audio;
-    audio.play()
-      .then(() => setPlaying(true))
-      .catch(() => setBlocked(true));
-    return () => { audio.pause(); audio.src = ''; };
+    // Délai pour ne pas bloquer le premier rendu de la page
+    const t = setTimeout(() => {
+      audio.play()
+        .then(() => setPlaying(true))
+        .catch(() => setBlocked(true));
+    }, 1000);
+    return () => { clearTimeout(t); audio.pause(); audio.src = ''; };
   }, [src]);
 
   const pauseForOpening = useCallback(() => {

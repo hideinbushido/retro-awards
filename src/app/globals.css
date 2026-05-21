@@ -17,6 +17,11 @@
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 
+/* Supprime le délai 300ms sur tous les boutons/liens sur mobile */
+button, a, [role="button"] {
+  touch-action: manipulation;
+}
+
 body {
   background: var(--bg);
   color: var(--sepia);
@@ -40,17 +45,19 @@ body::after {
   );
 }
 
-/* ── FILM GRAIN ── */
-body::before {
-  content: '';
-  position: fixed;
-  inset: -50%;
-  pointer-events: none;
-  z-index: 9998;
-  opacity: 0.04;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-  background-size: 256px 256px;
-  animation: grain 0.5s steps(2) infinite;
+/* ── FILM GRAIN (desktop only — trop lourd sur mobile) ── */
+@media (min-width: 768px) {
+  body::before {
+    content: '';
+    position: fixed;
+    inset: -50%;
+    pointer-events: none;
+    z-index: 9998;
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-size: 256px 256px;
+    animation: grain 0.5s steps(2) infinite;
+  }
 }
 
 @keyframes grain {
@@ -170,7 +177,10 @@ body::before {
   96%       { opacity: 0.9;  }
   97%       { opacity: 1;    }
 }
-.vhs-flicker { animation: flicker 4s infinite; }
+/* Flicker désactivé sur mobile */
+@media (min-width: 768px) {
+  .vhs-flicker { animation: flicker 4s infinite; }
+}
 
 /* ── AUDIO WAVE INDICATOR ── */
 @keyframes wave {
