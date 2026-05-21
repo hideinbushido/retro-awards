@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useRef, useCallback } from 'react';
-import Image from 'next/image';
 import { Music, Volume2, Check } from 'lucide-react';
 import { voteOpening } from '@/lib/firestore';
 import { Opening } from '@/data/nominees';
@@ -68,11 +67,11 @@ export default function OpeningNominees({ year, openings }: Props) {
           >
             {/* Image */}
             <div className="relative aspect-[3/4] overflow-hidden">
-              <Image
+              <img
                 src={op.image}
                 alt={op.animeName}
-                fill
-                className="object-cover group-hover:scale-105 transition-transform duration-500"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                loading="lazy"
               />
               <div
                 className="absolute inset-0 transition-opacity duration-300"

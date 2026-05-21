@@ -2,7 +2,6 @@
 
 import { useState, useRef, useCallback, useEffect } from 'react';
 import Link from 'next/link';
-import NextImage from 'next/image';
 import { ChevronLeft, ChevronRight, Rewind, Music, Tv } from 'lucide-react';
 import { nominees } from '@/data/nominees';
 import type { Opening, Anime } from '@/data/nominees';
@@ -264,13 +263,10 @@ function YearSlide({
         {/* Cover */}
         <div className="year-cover" style={{ position: 'relative' }}>
           {coverSrc ? (
-            <NextImage
+            <img
               src={coverSrc}
               alt={titleLine ?? ''}
-              fill
-              priority
-              sizes="(max-width: 768px) 40vw, 25vw"
-              style={{ objectFit: 'cover' }}
+              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
