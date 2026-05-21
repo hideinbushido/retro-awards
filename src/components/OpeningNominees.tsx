@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { Music, Volume2, Check } from 'lucide-react';
 import { voteOpening } from '@/lib/firestore';
 import { Opening } from '@/data/nominees';
@@ -18,14 +18,32 @@ export default function OpeningNominees({ year, openings }: Props) {
   const [playingId, setPlayingId] = useState<string | null>(null);
   const [loading, setLoading] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const audioMapRef = useRef<Map<string, HTMLAudioElement>>(new Map());
   const { pauseForOpening, resumeFromOpening } = useMusicContext();
+
+  // Précharge tous les audios dès le chargement de la page
+  useEffect(() => {
+    openings.forEach(op => {
+      if (!op.audio) return;
+      const audio = new Audio();
+      audio.preload = 'auto';
+      audio.volume = 0.7;
+      audio.src = op.audio;
+      audioMapRef.current.set(op.id, audio);
+    });
+    return () => {
+      audioMapRef.current.forEach(a => { a.pause(); a.src = ''; });
+      audioMapRef.current.clear();
+    };
+  }, [openings]);
 
   const playAudio = useCallback((op: Opening) => {
     if (!op.audio) return;
     pauseForOpening();
     if (audioRef.current) audioRef.current.pause();
-    const audio = new Audio(op.audio);
-    audio.volume = 0.7;
+    const audio = audioMapRef.current.get(op.id);
+    if (!audio) return;
+    audio.currentTime = 0;
     audioRef.current = audio;
     audio.play().catch(() => {});
     setPlayingId(op.id);
