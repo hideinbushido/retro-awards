@@ -282,9 +282,8 @@ function YearSlide({
         {/* Info */}
         <div className="year-info">
           <div className="flex items-center gap-3">
-            <div className="h-px w-10" style={{ background: 'var(--neon)', opacity: 0.5 }} />
+            <div className="h-px w-8" style={{ background: 'var(--neon)', opacity: 0.5 }} />
             <span className="text-xs font-bold tracking-widest uppercase" style={{ color: 'var(--neon)' }}>RETRO AWARDS</span>
-            <div className="h-px w-10 md:hidden" style={{ background: 'var(--neon)', opacity: 0.5 }} />
           </div>
 
           <h2 className="year-number glitch" data-text={String(year)}>{year}</h2>
@@ -302,7 +301,7 @@ function YearSlide({
           {nominee ? (
             <>
               {categoryLabel && (
-                <span className="text-xs font-bold tracking-widest uppercase flex items-center justify-center md:justify-start gap-1.5" style={{ color: 'var(--neon)', opacity: 0.8 }}>
+                <span className="text-xs font-bold tracking-widest uppercase flex items-center gap-1.5" style={{ color: 'var(--neon)', opacity: 0.8 }}>
                   {isOpening ? <Music size={12} /> : <Tv size={12} />}
                   {categoryLabel}
                 </span>
@@ -317,7 +316,7 @@ function YearSlide({
                 {isOpening && (
                   <button
                     onClick={toggleAudio}
-                    className="flex items-center gap-2 px-5 py-2 rounded text-xs font-bold tracking-widest uppercase transition-all"
+                    className="flex items-center gap-1.5 px-3 py-1.5 md:px-5 md:py-2 rounded text-xs font-bold tracking-widest uppercase transition-all"
                     style={{
                       border: '1px solid var(--neon)',
                       color: 'var(--neon)',
@@ -332,12 +331,12 @@ function YearSlide({
                     )}
                   </button>
                 )}
-                <Link href={nomineesHref} className="btn-neon px-5 py-2 rounded text-xs tracking-widest">
+                <Link href={nomineesHref} className="btn-neon px-3 py-1.5 md:px-5 md:py-2 rounded text-xs tracking-widest">
                   VOIR NOMINÉS
                 </Link>
                 <Link
                   href={`/annee/${year}`}
-                  className="px-5 py-2 rounded text-xs font-bold tracking-widest uppercase"
+                  className="px-3 py-1.5 md:px-5 md:py-2 rounded text-xs font-bold tracking-widest uppercase"
                   style={{ border: '1px solid var(--sepia-dim)', color: 'var(--sepia-dim)' }}
                 >
                   VOTER {year}

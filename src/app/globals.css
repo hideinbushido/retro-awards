@@ -194,66 +194,65 @@ body::before {
 }
 
 /* ── YEAR SLIDE — RESPONSIVE LAYOUT ── */
+
+/* MOBILE : cover gauche + info droite en mini horizontal */
 .year-layout {
   position: absolute;
   inset: 0;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
-  gap: 16px;
-  padding: 12px 56px 80px;
+  gap: 12px;
+  padding: 8px 56px 72px 56px;
   z-index: 3;
   overflow: hidden;
 }
 @media (min-width: 768px) {
   .year-layout {
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
     gap: 48px;
     padding: 0 80px 72px;
-    overflow: visible;
   }
 }
 
 .year-cover {
   flex-shrink: 0;
-  border-radius: 16px;
+  border-radius: 12px;
   overflow: hidden;
   border: 2px solid var(--border);
-  box-shadow: 0 0 60px rgba(0,255,204,0.18), 0 0 120px rgba(0,255,204,0.06);
+  box-shadow: 0 0 30px rgba(0,255,204,0.15);
   background: var(--bg2);
-  height: 32vh;
-  aspect-ratio: 2/3;
   position: relative;
+  /* Mobile : hauteur basée sur l'écran, ratio portrait */
+  height: min(42vh, 55vw);
+  aspect-ratio: 2/3;
 }
 @media (min-width: 768px) {
   .year-cover {
     height: calc(100% - 3rem);
+    border-radius: 16px;
+    box-shadow: 0 0 60px rgba(0,255,204,0.18), 0 0 120px rgba(0,255,204,0.06);
   }
 }
 
 .year-info {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 6px;
   flex: 1;
   min-width: 0;
-  align-items: center;
-  text-align: center;
+  align-items: flex-start;
+  text-align: left;
+  overflow: hidden;
 }
 @media (min-width: 768px) {
   .year-info {
     gap: 24px;
-    align-items: flex-start;
-    text-align: left;
     justify-content: center;
   }
 }
 
 .year-number {
-  font-size: clamp(2.5rem, 18vw, 10rem);
+  font-size: clamp(2rem, 11vw, 10rem);
   font-weight: 900;
   line-height: 1;
   color: var(--sepia);
@@ -266,9 +265,9 @@ body::before {
 }
 
 .year-title {
-  font-size: clamp(1.2rem, 5vw, 3.5rem);
+  font-size: clamp(0.95rem, 3.5vw, 3.5rem);
   font-weight: 900;
-  line-height: 1.1;
+  line-height: 1.15;
   color: var(--sepia);
   word-break: break-word;
 }
@@ -279,7 +278,7 @@ body::before {
 }
 
 .year-subtitle {
-  font-size: clamp(0.85rem, 3vw, 1.4rem);
+  font-size: clamp(0.75rem, 2.5vw, 1.4rem);
   color: var(--neon);
   opacity: 0.85;
 }
@@ -292,14 +291,13 @@ body::before {
 .year-buttons {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
-  margin-top: 4px;
+  gap: 6px;
+  justify-content: flex-start;
+  margin-top: 2px;
 }
 @media (min-width: 768px) {
   .year-buttons {
     gap: 16px;
-    justify-content: flex-start;
     margin-top: 0;
   }
 }
