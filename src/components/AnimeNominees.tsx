@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { X, Check } from 'lucide-react';
 import { voteAnime } from '@/lib/firestore';
 import { Anime } from '@/data/nominees';
@@ -41,7 +42,7 @@ export default function AnimeNominees({ year, animes }: Props) {
                 className="relative aspect-[3/4] overflow-hidden cursor-zoom-in"
                 onClick={() => setZoomed(anime)}
               >
-                <img src={anime.image} alt={anime.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                <Image src={anime.image} alt={anime.name} fill sizes="(max-width: 640px) 50vw, 33vw" className="object-cover group-hover:scale-105 transition-transform duration-500" />
                 {isMyVote && (
                   <div className="absolute top-2 left-2 flex items-center gap-1 px-2 py-1 rounded text-xs font-bold"
                     style={{ background: 'var(--neon)', color: 'var(--bg)' }}
@@ -85,7 +86,7 @@ export default function AnimeNominees({ year, animes }: Props) {
             </button>
             <div className="rounded-xl overflow-hidden neon-border">
               <div className="relative" style={{ aspectRatio: '3/4' }}>
-                <img src={zoomed.image} alt={zoomed.name} className="w-full h-full object-cover" />
+                <Image src={zoomed.image} alt={zoomed.name} fill sizes="90vw" className="object-cover" />
               </div>
             </div>
             <div className="text-center mt-4">
