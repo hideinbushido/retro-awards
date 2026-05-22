@@ -120,10 +120,25 @@ export const nominees: Record<number, YearNominees> = {
 
   2015: {
     openings: [
-      // { id: '1', animeName: 'One Punch Man', openingTitle: 'The Hero', image: '/nominees/2015/openings/1/cover.jpg', audio: '/nominees/2015/openings/1/audio.mp3' },
+      { id: '1',  animeName: 'Fate/stay night: Unlimited Blade Works',   openingTitle: 'Brave Shine',                              artist: 'Aimer',                                     op: 2,  image: '/2015/OPENING/Cover/FATE2.png',       audio: '/2015/OPENING/Audio/FATE2.mp3'       },
+      { id: '2',  animeName: 'Noragami Aragoto',                          openingTitle: 'Kyouran Hey Kids!!',                       artist: 'THE ORAL CIGARETTES',                                image: '/2015/OPENING/Cover/NORAGAMI.png',    audio: '/2015/OPENING/Audio/NORAGAMI.mp3'    },
+      { id: '3',  animeName: 'Blood Blockade Battlefront',                openingTitle: 'Hello, World!',                            artist: 'BUMP OF CHICKEN',                                    image: '/2015/OPENING/Cover/BBB.png',          audio: '/2015/OPENING/Audio/BBB.mp3'          },
+      { id: '4',  animeName: 'Seraph of the End',                         openingTitle: 'X.U.',                                     artist: 'SawanoHiroyuki[nZk]:Gemie',                          image: '/2015/OPENING/Cover/SERAPH.png',      audio: '/2015/OPENING/Audio/SERAPH.mp3'      },
+      { id: '5',  animeName: 'One Piece',                                 openingTitle: 'Hard Knock Days',                          artist: 'GENERATIONS from EXILE TRIBE',              op: 18, image: '/2015/OPENING/Cover/ONE18.png',       audio: '/2015/OPENING/Audio/ONE18.mp3'       },
+      { id: '6',  animeName: 'Naruto: Shippuden',                         openingTitle: 'Kaze',                                     artist: 'Yamazaru',                                  op: 17, image: '/2015/OPENING/Cover/NARUTO17.png',    audio: '/2015/OPENING/Audio/NARUTO17.mp3'    },
+      { id: '7',  animeName: "Kuroko's Basketball",                        openingTitle: 'Punky Funky Love',                         artist: 'GRANRODEO',                                 op: 7,  image: '/2015/OPENING/Cover/KUROKO7.png',     audio: '/2015/OPENING/Audio/KUROKO7.mp3'     },
+      { id: '8',  animeName: 'Death Parade',                              openingTitle: 'Flyers',                                   artist: 'BRADIO',                                             image: '/2015/OPENING/Cover/DEATHPARADE.png', audio: '/2015/OPENING/Audio/DEATHPARADE.mp3' },
+      { id: '9',  animeName: 'Food Wars!',                                openingTitle: 'Kibou no Uta',                             artist: 'ULTRATOWER',                                         image: '/2015/OPENING/Cover/FOODWARS.png',    audio: '/2015/OPENING/Audio/FOODWARS.mp3'    },
+      { id: '10', animeName: 'Overlord',                                  openingTitle: 'Clattanoia',                               artist: 'OxT',                                                image: '/2015/OPENING/Cover/OVERLORD.png',    audio: '/2015/OPENING/Audio/OVERLORD.mp3'    },
+      { id: '11', animeName: 'Chivalry of a Failed Knight',               openingTitle: 'Identity',                                 artist: 'Mikio Sakai',                                        image: '/2015/OPENING/Cover/CHIVALRY.png',    audio: '/2015/OPENING/Audio/CHIVALRY.mp3'    },
+      { id: '12', animeName: 'Fairy Tail',                                openingTitle: 'BREAK OUT',                                artist: 'V6',                                        op: 18, image: '/2015/OPENING/Cover/FAIRY18.png',     audio: '/2015/OPENING/Audio/FAIRY18.mp3'     },
+      { id: '13', animeName: 'Pokémon XYZ',                               openingTitle: 'XY&Z',                                     artist: 'Rica Matsumoto',                                     image: '/2015/OPENING/Cover/POKEMON.png',     audio: '/2015/OPENING/Audio/POKEMON.mp3'     },
+      { id: '14', animeName: 'Dragon Ball Super',                         openingTitle: 'Chouzetsu☆Dynamic!',                      artist: 'Kazuya Yoshii',                                      image: '/2015/OPENING/Cover/DBS.png',          audio: '/2015/OPENING/Audio/DBS.mp3'          },
+      { id: '15', animeName: 'Haikyu!!',                                  openingTitle: "I'm a Believer",                           artist: 'SPYAIR',                                    op: 3,  image: '/2015/OPENING/Cover/HAIKYU3.png',     audio: '/2015/OPENING/Audio/HAIKYU3.mp3'     },
+      { id: '16', animeName: "JoJo's Bizarre Adventure: Stardust Crusaders", openingTitle: 'Sono Chi no Kioku ~End of THE WORLD~', artist: 'JO☆STARS ~TOMMY, Coda, JIN~',            op: 4,  image: '/2015/OPENING/Cover/JOJO4.png',       audio: '/2015/OPENING/Audio/JOJO4.mp3'       },
     ],
     animes: [
-      // { id: '1', name: 'One Punch Man', image: '/nominees/2015/animes/1/cover.jpg' },
+      // { id: '1', name: 'One Punch Man', image: '/2015/ANIME/Cover/OPM.png', silhouette: '/2015/ANIME/Silhouette/OPM.png' },
     ],
   },
 
