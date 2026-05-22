@@ -111,7 +111,6 @@ export const nominees: Record<number, YearNominees> = {
       { id: '12', animeName: "Haven't You Heard? I'm Sakamoto",         openingTitle: 'COOLEST',                        artist: 'CustomiZ',                          image: '/2016/OPENING/Cover/SAKAMOTO.png',  audio: '/2016/OPENING/Audio/SAKAMOTO.mp3'  },
       { id: '13', animeName: 'Twin Star Exorcists',                     openingTitle: 'sync',                           artist: 'lol',                       op: 3,  image: '/2016/OPENING/Cover/TWINSTAR.png',  audio: '/2016/OPENING/Audio/TWINSTAR.mp3'  },
       { id: '14', animeName: 'Yuri!!! on Ice',                          openingTitle: 'History Maker',                  artist: 'Dean Fujioka',                      image: '/2016/OPENING/Cover/YURI.png',      audio: '/2016/OPENING/Audio/YURI.mp3'      },
-      { id: '15', animeName: 'D.Gray-man Hallow',                       openingTitle: 'Key -bring it on, my Destiny-', artist: 'Lenny code fiction',                image: '/2016/OPENING/Cover/DGRAY.png',     audio: '/2016/OPENING/Audio/DGRAY.mp3'     },
       { id: '16', animeName: "JoJo's Bizarre Adventure: Diamond is Unbreakable", openingTitle: 'CHASE',                    artist: 'Batta',                     op: 6,  image: '/2016/OPENING/Cover/JOJO6.png',     audio: '/2016/OPENING/Audio/JOJO6.mp3'     },
     ],
     animes: [
