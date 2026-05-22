@@ -112,6 +112,7 @@ export const nominees: Record<number, YearNominees> = {
       { id: '13', animeName: 'Twin Star Exorcists',                     openingTitle: 'sync',                           artist: 'lol',                       op: 3,  image: '/2016/OPENING/Cover/TWINSTAR.png',  audio: '/2016/OPENING/Audio/TWINSTAR.mp3'  },
       { id: '14', animeName: 'Yuri!!! on Ice',                          openingTitle: 'History Maker',                  artist: 'Dean Fujioka',                      image: '/2016/OPENING/Cover/YURI.png',      audio: '/2016/OPENING/Audio/YURI.mp3'      },
       { id: '15', animeName: 'D.Gray-man Hallow',                       openingTitle: 'Key -bring it on, my Destiny-', artist: 'Lenny code fiction',                image: '/2016/OPENING/Cover/DGRAY.png',     audio: '/2016/OPENING/Audio/DGRAY.mp3'     },
+      { id: '16', animeName: "JoJo's Bizarre Adventure: Diamond is Unbreakable", openingTitle: 'CHASE',                    artist: 'Batta',                     op: 6,  image: '/2016/OPENING/Cover/JOJO6.png',     audio: '/2016/OPENING/Audio/JOJO6.mp3'     },
     ],
     animes: [
       // { id: '1', name: 'Re:Zero', image: '/nominees/2016/animes/1/cover.jpg' },
@@ -134,7 +135,6 @@ export const nominees: Record<number, YearNominees> = {
       { id: '12', animeName: 'Fairy Tail',                                openingTitle: 'BREAK OUT',                                artist: 'V6',                                        op: 18, image: '/2015/OPENING/Cover/FAIRY18.png',     audio: '/2015/OPENING/Audio/FAIRY18.mp3'     },
       { id: '13', animeName: 'Pokémon XYZ',                               openingTitle: 'XY&Z',                                     artist: 'Rica Matsumoto',                                     image: '/2015/OPENING/Cover/POKEMON.png',     audio: '/2015/OPENING/Audio/POKEMON.mp3'     },
       { id: '15', animeName: 'Haikyu!!',                                  openingTitle: "I'm a Believer",                           artist: 'SPYAIR',                                    op: 3,  image: '/2015/OPENING/Cover/HAIKYU3.png',     audio: '/2015/OPENING/Audio/HAIKYU3.mp3'     },
-      { id: '16', animeName: "JoJo's Bizarre Adventure: Stardust Crusaders", openingTitle: 'Sono Chi no Kioku ~End of THE WORLD~', artist: 'JO☆STARS ~TOMMY, Coda, JIN~',            op: 4,  image: '/2015/OPENING/Cover/JOJO4.png',       audio: '/2015/OPENING/Audio/JOJO4.mp3'       },
     ],
     animes: [
       // { id: '1', name: 'One Punch Man', image: '/2015/ANIME/Cover/OPM.png', silhouette: '/2015/ANIME/Silhouette/OPM.png' },
