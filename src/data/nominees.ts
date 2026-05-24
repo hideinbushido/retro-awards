@@ -193,11 +193,23 @@ export const nominees: Record<number, YearNominees> = {
 
   2011: {
     openings: [
-      // { id: '1', animeName: 'Fairy Tail', openingTitle: 'Snow Fairy', image: '/nominees/2011/openings/1/cover.jpg', audio: '/nominees/2011/openings/1/audio.mp3' },
+      { id: '1',  animeName: 'Bleach',                                    openingTitle: 'BLUE',                  artist: 'ViViD',                        op: 14, image: '/2011/OPENING/Cover/BLEACH14.png',    audio: '/2011/OPENING/Audio/BLEACH14.MP3'    },
+      { id: '2',  animeName: 'One Piece',                                 openingTitle: 'We Go!',                artist: 'Hiroshi Kitadani',              op: 15, image: '/2011/OPENING/Cover/ONE15.png',       audio: '/2011/OPENING/Audio/ONE15.MP3'       },
+      { id: '3',  animeName: 'Blue Exorcist',                             openingTitle: 'CORE PRIDE',            artist: 'UVERworld',                            image: '/2011/OPENING/Cover/BLUEX.png',       audio: '/2011/OPENING/Audio/BLUEX.MP3'       },
+      { id: '4',  animeName: 'Hunter × Hunter',                           openingTitle: 'departure!',            artist: 'Masatoshi Ono',                        image: '/2011/OPENING/Cover/HXH.png',         audio: '/2011/OPENING/Audio/HXH.MP3'         },
+      { id: '5',  animeName: 'Naruto: Shippuden',                         openingTitle: 'Diver',                 artist: 'NICO Touches the Walls',        op: 8,  image: '/2011/OPENING/Cover/NARUTO8.png',     audio: '/2011/OPENING/Audio/NARUTO8.MP3'     },
+      { id: '6',  animeName: 'Guilty Crown',                              openingTitle: 'My Dearest',            artist: 'supercell',                            image: '/2011/OPENING/Cover/GUILTYCROWN.png', audio: '/2011/OPENING/Audio/GUILTYCROWN.MP3' },
+      { id: '7',  animeName: 'Future Diary',                              openingTitle: 'Kuusou Mesorogiwi',     artist: 'Yousei Teikoku',                       image: '/2011/OPENING/Cover/FUTUREDIARY.png', audio: '/2011/OPENING/Audio/FUTUREDIARY.MP3' },
+      { id: '8',  animeName: 'Anohana: The Flower We Saw That Day',       openingTitle: 'Aoi Shiori',            artist: 'Galileo Galilei',                      image: '/2011/OPENING/Cover/ANOHANA.png',     audio: '/2011/OPENING/Audio/ANOHANA.MP3'     },
+      { id: '9',  animeName: 'Steins;Gate',                               openingTitle: 'Hacking to the Gate',  artist: 'Kanako Itō',                           image: '/2011/OPENING/Cover/STEINSGATE.png',  audio: '/2011/OPENING/Audio/STEINSGATE.MP3'  },
+      { id: '10', animeName: 'Deadman Wonderland',                        openingTitle: 'One Reason',            artist: 'Fade',                                 image: '/2011/OPENING/Cover/DEADMAN.png',     audio: '/2011/OPENING/Audio/DEADMAN.MP3'     },
+      { id: '11', animeName: 'Fairy Tail',                                openingTitle: 'Fiesta',                artist: '+Plus',                         op: 6,  image: '/2011/OPENING/Cover/FT6.png',         audio: '/2011/OPENING/Audio/FT6.MP3'         },
+      { id: '12', animeName: 'Beelzebub',                                 openingTitle: 'Hey!!!',                artist: 'FLOW',                          op: 3,  image: '/2011/OPENING/Cover/BEELZEBUB3.png',  audio: '/2011/OPENING/Audio/BEELZEBUB3.MP3'  },
+      { id: '13', animeName: 'Toriko',                                    openingTitle: 'Guts Guts!!',           artist: 'Miyu Irino',                           image: '/2011/OPENING/Cover/TORIKO.png',      audio: '/2011/OPENING/Audio/TORIKO.MP3'      },
+      { id: '14', animeName: 'Bakuman. 2',                                openingTitle: 'Dream of Life',         artist: 'Shohei Ito',                           image: '/2011/OPENING/Cover/BAKUMAN2.png',    audio: '/2011/OPENING/Audio/BAKUMAN2.MP3'    },
+      { id: '15', animeName: 'Fate/Zero',                                 openingTitle: 'oath sign',             artist: 'LiSA',                                 image: '/2011/OPENING/Cover/FATEZERO1.png',   audio: '/2011/OPENING/Audio/FATEZERO1.MP3'   },
     ],
-    animes: [
-      // { id: '1', name: 'Fairy Tail', image: '/nominees/2011/animes/1/cover.jpg' },
-    ],
+    animes: [],
   },
 
   2010: {
