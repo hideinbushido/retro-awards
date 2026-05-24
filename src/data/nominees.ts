@@ -45,6 +45,7 @@ export const nominees: Record<number, YearNominees> = {
       { id: '11', animeName: 'Mob Psycho 100',                openingTitle: '99.9',                artist: 'Mob Choir',            op: 2,         image: '/2019/OPENING/Cover/MOB.png',      audio: '/2019/OPENING/Audio/MOB.MP3'          },
       { id: '12', animeName: 'Kaguya-sama: Love Is War',      openingTitle: 'Love Dramatic',       artist: 'Masayuki Suzuki feat. Rikka Ihara',   image: '/2019/OPENING/Cover/KAGUYA.png',   audio: '/2019/OPENING/Audio/KAGUYA.MP3'       },
       { id: '13', animeName: 'The Promised Neverland',        openingTitle: 'Touch Off',           artist: 'UVERworld',                           image: '/2019/OPENING/Cover/PROMISED.png', audio: '/2019/OPENING/Audio/PROMISED.MP3'     },
+      { id: '14', animeName: 'Given',                          openingTitle: 'Kizuato',             artist: 'Centimillimental',                    image: '/2019/OPENING/Cover/GIVEN.png',    audio: '/2019/OPENING/Audio/GIVEN.MP3'        },
     ],
     animes: [
       // { id: '1', name: 'Demon Slayer', image: '/nominees/2019/animes/1/cover.jpg' },
