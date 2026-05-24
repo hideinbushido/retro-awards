@@ -186,8 +186,7 @@ export const nominees: Record<number, YearNominees> = {
       { id: '11', animeName: 'Code:Breaker',                     openingTitle: 'Dark Shame',                 artist: 'GRANRODEO',                           image: '/2012/OPENING/Cover/CODEB.png',       audio: '/2012/OPENING/Audio/CODEB.MP3'       },
       { id: '12', animeName: 'Aquarion Evol',                    openingTitle: 'Paradoxical ZOO',            artist: 'AKINO with bless4',           op: 2,  image: '/2012/OPENING/Cover/AQUARION2.png',   audio: '/2012/OPENING/Audio/AQUARION2.MP3'   },
       { id: '13', animeName: 'Hyouka',                           openingTitle: 'Yasashisa no Riyuu',         artist: 'ChouCho',                             image: '/2012/OPENING/Cover/HYOUKA.png',      audio: '/2012/OPENING/Audio/HYOUKA.MP3'      },
-      { id: '14', animeName: 'Eureka Seven',                     openingTitle: 'DAYS',                       artist: 'FLOW',                                image: '/2012/OPENING/Cover/EUREKA.png',      audio: '/2012/OPENING/Audio/EUREKA.MP3'      },
-      { id: '15', animeName: 'Fate/Zero',                        openingTitle: 'To the Beginning',           artist: 'Kalafina',                    op: 2,  image: '/2012/OPENING/Cover/FATEZERO2.png',   audio: '/2012/OPENING/Audio/FATEZERO2.MP3'   },
+      { id: '14', animeName: 'Fate/Zero',                        openingTitle: 'To the Beginning',           artist: 'Kalafina',                    op: 2,  image: '/2012/OPENING/Cover/FATEZERO2.png',   audio: '/2012/OPENING/Audio/FATEZERO2.MP3'   },
     ],
     animes: [],
   },
@@ -248,7 +247,7 @@ export const nominees: Record<number, YearNominees> = {
 
   2005: {
     openings: [
-      // { id: '1', animeName: 'Fullmetal Alchemist', openingTitle: 'Melissa', image: '/nominees/2005/openings/1/cover.jpg', audio: '/nominees/2005/openings/1/audio.mp3' },
+      { id: '1', animeName: 'Eureka Seven', openingTitle: 'DAYS', artist: 'FLOW', image: '/2005/OPENING/Cover/EUREKA.png', audio: '/2005/OPENING/Audio/EUREKA.MP3' },
     ],
     animes: [
       // { id: '1', name: 'Fullmetal Alchemist', image: '/nominees/2005/animes/1/cover.jpg' },
