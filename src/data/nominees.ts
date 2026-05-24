@@ -151,10 +151,22 @@ export const nominees: Record<number, YearNominees> = {
 
   2013: {
     openings: [
-      // { id: '1', animeName: 'Attack on Titan', openingTitle: 'Guren no Yumiya', image: '/nominees/2013/openings/1/cover.jpg', audio: '/nominees/2013/openings/1/audio.mp3' },
+      { id: '1',  animeName: "JoJo's Bizarre Adventure",              openingTitle: 'Bloody Stream',                    artist: 'Coda',                                op: 2,  image: '/2013/OPENING/Cover/JOJO2.png',      audio: '/2013/OPENING/Audio/JOJO2.MP3'      },
+      { id: '2',  animeName: 'Attack on Titan',                       openingTitle: 'Guren no Yumiya',                  artist: 'Linked Horizon',                              image: '/2013/OPENING/Cover/AOT.png',        audio: '/2013/OPENING/Audio/AOT.MP3'        },
+      { id: '3',  animeName: 'Gintama',                               openingTitle: 'Tougenkyou Alien',                 artist: 'serial TV drama',                     op: 13, image: '/2013/OPENING/Cover/GINTAMA13.png',  audio: '/2013/OPENING/Audio/GINTAMA13.MP3'  },
+      { id: '4',  animeName: 'Log Horizon',                           openingTitle: 'database feat. TAKUMA (10-FEET)',  artist: 'MAN WITH A MISSION',                          image: '/2013/OPENING/Cover/LOG.png',        audio: '/2013/OPENING/Audio/LOG.MP3'        },
+      { id: '5',  animeName: 'Psycho-Pass',                           openingTitle: 'Out of Control',                   artist: "Nothing's Carved In Stone",           op: 2,  image: '/2013/OPENING/Cover/PSYCHO2.png',    audio: '/2013/OPENING/Audio/PSYCHO2.MP3'    },
+      { id: '6',  animeName: "Kuroko's Basketball",                   openingTitle: 'The Other self',                   artist: 'GRANRODEO',                           op: 3,  image: '/2013/OPENING/Cover/KUROKO3.png',    audio: '/2013/OPENING/Audio/KUROKO3.MP3'    },
+      { id: '7',  animeName: 'Magi: The Kingdom of Magic',            openingTitle: 'Hikari',                           artist: 'ViViD',                               op: 2,  image: '/2013/OPENING/Cover/MAGI2.png',      audio: '/2013/OPENING/Audio/MAGI2.MP3'      },
+      { id: '8',  animeName: 'My Little Pony: Friendship is Magic',   openingTitle: 'Tomodachi wa Mahou',               artist: 'Emiri Katō & Aya Hirano',                     image: '/2013/OPENING/Cover/MLP.png',        audio: '/2013/OPENING/Audio/MLP.MP3'        },
+      { id: '9',  animeName: 'Beyond the Boundary',                   openingTitle: 'Kyokai no Kanata',                 artist: 'Minori Chihara',                              image: '/2013/OPENING/Cover/BEYOND.png',     audio: '/2013/OPENING/Audio/BEYOND.MP3'     },
+      { id: '10', animeName: 'One Piece',                             openingTitle: 'Hands Up!',                        artist: 'Koda Kumi',                           op: 16, image: '/2013/OPENING/Cover/ONE16.png',      audio: '/2013/OPENING/Audio/ONE16.MP3'      },
+      { id: '11', animeName: 'Free!',                                 openingTitle: 'Rage On',                          artist: 'OLDCODEX',                                    image: '/2013/OPENING/Cover/FREE.png',       audio: '/2013/OPENING/Audio/FREE.MP3'       },
+      { id: '12', animeName: 'Blood Lad',                             openingTitle: 'ViViD',                            artist: "May'n",                                       image: '/2013/OPENING/Cover/BLOODLAD.png',   audio: '/2013/OPENING/Audio/BLOODLAD.MP3'   },
+      { id: '13', animeName: 'Kill la Kill',                          openingTitle: 'sirius',                           artist: 'Eir Aoi',                                     image: '/2013/OPENING/Cover/KLK.png',        audio: '/2013/OPENING/Audio/KLK.MP3'        },
     ],
     animes: [
-      // { id: '1', name: 'Attack on Titan', image: '/nominees/2013/animes/1/cover.jpg' },
+      // { id: '1', name: 'Attack on Titan', image: '/2013/ANIME/Cover/AOT.png' },
     ],
   },
 
