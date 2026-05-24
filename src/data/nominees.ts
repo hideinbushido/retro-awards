@@ -173,11 +173,22 @@ export const nominees: Record<number, YearNominees> = {
 
   2012: {
     openings: [
-      // { id: '1', animeName: 'Sword Art Online', openingTitle: 'Crossing Field', image: '/nominees/2012/openings/1/cover.jpg', audio: '/nominees/2012/openings/1/audio.mp3' },
+      { id: '1',  animeName: 'Fairy Tail',                       openingTitle: 'The Rock City Boy',          artist: 'JAMIL',                       op: 8,  image: '/2012/OPENING/Cover/FT8.png',         audio: '/2012/OPENING/Audio/FT8.MP3'         },
+      { id: '2',  animeName: "Kuroko's Basketball",              openingTitle: 'Can Do',                     artist: 'GRANRODEO',                           image: '/2012/OPENING/Cover/KUROKO1.png',     audio: '/2012/OPENING/Audio/KUROKO1.MP3'     },
+      { id: '3',  animeName: 'Magi: The Labyrinth of Magic',     openingTitle: 'V.I.P',                      artist: 'SID',                                 image: '/2012/OPENING/Cover/MAGI1.png',       audio: '/2012/OPENING/Audio/MAGI1.MP3'       },
+      { id: '4',  animeName: 'Btooom!',                          openingTitle: 'No Pain, No Game',           artist: 'Nano',                                image: '/2012/OPENING/Cover/BTOOOM.png',      audio: '/2012/OPENING/Audio/BTOOOM.MP3'      },
+      { id: '5',  animeName: "JoJo's Bizarre Adventure",        openingTitle: 'JoJo ~Sono Chi no Sadame~', artist: 'Hiroaki Tommy Tominaga',               image: '/2012/OPENING/Cover/JOJO1.png',       audio: '/2012/OPENING/Audio/JOJO1.MP3'       },
+      { id: '6',  animeName: 'Accel World',                      openingTitle: 'Chase the World',            artist: "May'n",                               image: '/2012/OPENING/Cover/ACCEL.png',       audio: '/2012/OPENING/Audio/ACCEL.MP3'       },
+      { id: '7',  animeName: 'Psycho-Pass',                      openingTitle: 'abnormalize',                artist: 'Ling Tosite Sigure',                   image: '/2012/OPENING/Cover/PSYCHO1.png',     audio: '/2012/OPENING/Audio/PSYCHO1.MP3'     },
+      { id: '8',  animeName: 'Sword Art Online',                 openingTitle: 'Crossing Field',             artist: 'LiSA',                                image: '/2012/OPENING/Cover/SAO1.png',        audio: '/2012/OPENING/Audio/SAO1.MP3'        },
+      { id: '9',  animeName: 'Hiiro no Kakera',                  openingTitle: 'Nee',                        artist: 'Fujita Maiko',                         image: '/2012/OPENING/Cover/HIIRO.png',       audio: '/2012/OPENING/Audio/HIIRO.MP3'       },
+      { id: '10', animeName: 'High School DxD',                  openingTitle: 'Trip -innocent of D-',       artist: 'Larval Stage Planning',               image: '/2012/OPENING/Cover/DXD.png',         audio: '/2012/OPENING/Audio/DXD.MP3'         },
+      { id: '11', animeName: 'Code:Breaker',                     openingTitle: 'Dark Shame',                 artist: 'GRANRODEO',                           image: '/2012/OPENING/Cover/CODEB.png',       audio: '/2012/OPENING/Audio/CODEB.MP3'       },
+      { id: '12', animeName: 'Aquarion Evol',                    openingTitle: 'Paradoxical ZOO',            artist: 'AKINO with bless4',           op: 2,  image: '/2012/OPENING/Cover/AQUARION2.png',   audio: '/2012/OPENING/Audio/AQUARION2.MP3'   },
+      { id: '13', animeName: 'Hyouka',                           openingTitle: 'Yasashisa no Riyuu',         artist: 'ChouCho',                             image: '/2012/OPENING/Cover/HYOUKA.png',      audio: '/2012/OPENING/Audio/HYOUKA.MP3'      },
+      { id: '14', animeName: 'Eureka Seven',                     openingTitle: 'DAYS',                       artist: 'FLOW',                                image: '/2012/OPENING/Cover/EUREKA.png',      audio: '/2012/OPENING/Audio/EUREKA.MP3'      },
     ],
-    animes: [
-      // { id: '1', name: 'Sword Art Online', image: '/nominees/2012/animes/1/cover.jpg' },
-    ],
+    animes: [],
   },
 
   2011: {
