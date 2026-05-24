@@ -187,6 +187,7 @@ export const nominees: Record<number, YearNominees> = {
       { id: '12', animeName: 'Aquarion Evol',                    openingTitle: 'Paradoxical ZOO',            artist: 'AKINO with bless4',           op: 2,  image: '/2012/OPENING/Cover/AQUARION2.png',   audio: '/2012/OPENING/Audio/AQUARION2.MP3'   },
       { id: '13', animeName: 'Hyouka',                           openingTitle: 'Yasashisa no Riyuu',         artist: 'ChouCho',                             image: '/2012/OPENING/Cover/HYOUKA.png',      audio: '/2012/OPENING/Audio/HYOUKA.MP3'      },
       { id: '14', animeName: 'Eureka Seven',                     openingTitle: 'DAYS',                       artist: 'FLOW',                                image: '/2012/OPENING/Cover/EUREKA.png',      audio: '/2012/OPENING/Audio/EUREKA.MP3'      },
+      { id: '15', animeName: 'Fate/Zero',                        openingTitle: 'To the Beginning',           artist: 'Kalafina',                    op: 2,  image: '/2012/OPENING/Cover/FATEZERO2.png',   audio: '/2012/OPENING/Audio/FATEZERO2.MP3'   },
     ],
     animes: [],
   },
