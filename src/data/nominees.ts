@@ -134,6 +134,7 @@ export const nominees: Record<number, YearNominees> = {
       { id: '13', animeName: 'Pokémon XYZ',                               openingTitle: 'XY&Z',                                     artist: 'Rica Matsumoto',                                     image: '/2015/OPENING/Cover/POKEMON.jpg',     audio: '/2015/OPENING/Audio/POKEMON.MP3'     },
       { id: '15', animeName: 'Haikyu!!',                                  openingTitle: "I'm a Believer",                           artist: 'SPYAIR',                                    op: 3,  image: '/2015/OPENING/Cover/HAIK.jpg',        audio: '/2015/OPENING/Audio/HAIKYUU3.MP3'    },
       { id: '16', animeName: 'Charlotte',                                 openingTitle: 'Bravely You',                              artist: 'Lia',                                                image: '/2015/OPENING/Cover/CHARLOTTE.jpg',   audio: '/2015/OPENING/Audio/CHARLOTTE.MP3'   },
+      { id: '17', animeName: 'Yamada-kun and the Seven Witches',          openingTitle: 'Kuchizuke Diamond',                        artist: 'WEAVER',                                             image: '/2015/OPENING/Cover/YAMADA.png',      audio: '/2015/OPENING/Audio/YAMADA.MP3'      },
     ],
     animes: [
       // { id: '1', name: 'One Punch Man', image: '/2015/ANIME/Cover/OPM.png', silhouette: '/2015/ANIME/Silhouette/OPM.png' },
