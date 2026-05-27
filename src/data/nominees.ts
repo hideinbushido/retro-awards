@@ -68,6 +68,7 @@ export const nominees: Record<number, YearNominees> = {
       { id: '11', animeName: 'Steins;Gate 0',                         openingTitle: 'Fatima',          artist: 'Kanako Itō',                                  image: '/2018/OPENING/Cover/STEINS0.png',    audio: '/2018/OPENING/Audio/STEINS.MP3'       },
       { id: '12', animeName: 'Attack on Titan',                       openingTitle: 'Red Swan',        artist: 'Yoshiki feat. Hyde',                  op: 4,  image: '/2018/OPENING/Cover/SNK.png',        audio: '/2018/OPENING/Audio/SNK4.MP3'         },
       { id: '13', animeName: 'Grand Blue',                            openingTitle: 'Grand Blue',      artist: 'Shōnan no Kaze feat. Atarashii Gakkou!',      image: '/2018/OPENING/Cover/GRANDBLUE.png',  audio: '/2018/OPENING/Audio/GRANDBLUE.MP3'    },
+      { id: '14', animeName: 'Nanatsu no Taizai',                   openingTitle: 'Ame ga Furu kara Niji ga Deru', artist: 'Sky Peace',            op: 5,  image: '/2018/OPENING/Cover/NANATSU5.png',   audio: '/2018/OPENING/Audio/NANATSU5.MP3'     },
     ],
     animes: [
       // { id: '1', name: 'Sword Art Online', image: '/2018/ANIME/Cover/SAO.png', silhouette: '/2018/ANIME/Silhouette/SAO.png' },
