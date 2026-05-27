@@ -148,7 +148,7 @@ export const nominees: Record<number, YearNominees> = {
 
   2014: {
     openings: [
-      { id: '1',  animeName: 'Naruto: Shippuden',                     openingTitle: 'Silhouette',               artist: 'KANA-BOON',                           op: 16, image: '/2014/OPENING/Cover/NARUTO16.png',    audio: '/2014/OPENING/Audio/NARUTO16.MP3'    },
+      { id: '1',  animeName: 'Naruto: Shippuden',                     openingTitle: 'Silhouette',               artist: 'KANA-BOON',                           op: 16, image: '/2014/OPENING/Cover/NARUTO16.jpg',    audio: '/2014/OPENING/Audio/NARUTO16.MP3'    },
       { id: '2',  animeName: 'The Seven Deadly Sins',                  openingTitle: 'Netsujou no Spectrum',     artist: 'Ikimonogakari',                               image: '/2014/OPENING/Cover/NANATSU1.png',    audio: '/2014/OPENING/Audio/NANATSU1.MP3'    },
       { id: '3',  animeName: 'No Game No Life',                        openingTitle: 'This Game',                artist: 'Konomi Suzuki',                               image: '/2014/OPENING/Cover/NGNO.png',        audio: '/2014/OPENING/Audio/NGNO.MP3'        },
       { id: '4',  animeName: 'Your Lie in April',                      openingTitle: 'Hikaru Nara',              artist: 'Goose house',                                 image: '/2014/OPENING/Cover/SHIGATSU.png',    audio: '/2014/OPENING/Audio/SHIGATSU.MP3'    },
