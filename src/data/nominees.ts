@@ -45,8 +45,8 @@ export const nominees: Record<number, YearNominees> = {
       { id: '11', animeName: 'Mob Psycho 100',                openingTitle: '99.9',                artist: 'Mob Choir',            op: 2,         image: '/2019/OPENING/Cover/MOB.png',      audio: '/2019/OPENING/Audio/MOB.MP3'          },
       { id: '12', animeName: 'Kaguya-sama: Love Is War',      openingTitle: 'Love Dramatic',       artist: 'Masayuki Suzuki feat. Rikka Ihara',   image: '/2019/OPENING/Cover/KAGUYA.png',   audio: '/2019/OPENING/Audio/KAGUYA.MP3'       },
       { id: '13', animeName: 'The Promised Neverland',        openingTitle: 'Touch Off',           artist: 'UVERworld',                           image: '/2019/OPENING/Cover/PROMISED.png', audio: '/2019/OPENING/Audio/PROMISED.MP3'     },
-      { id: '15', animeName: 'The Rising of the Shield Hero', openingTitle: 'FAITH',               artist: 'MADKID',               op: 2,         image: '/2019/OPENING/Cover/SHIELD2.png',  audio: '/2019/OPENING/Audio/SHIELD2.MP3'      },
-      { id: '16', animeName: 'BEASTARS',                      openingTitle: 'Wild Side',           artist: 'ALI',                                 image: '/2019/OPENING/Cover/BEASTARS.png', audio: '/2019/OPENING/Audio/BEASTARS.MP3'     },
+      { id: '15', animeName: 'The Rising of the Shield Hero', openingTitle: 'FAITH',               artist: 'MADKID',               op: 2,         image: '/2019/OPENING/Cover/SHIELD.png',   audio: '/2019/OPENING/Audio/RISING.MP3'       },
+      { id: '16', animeName: 'BEASTARS',                      openingTitle: 'Wild Side',           artist: 'ALI',                                 image: '/2019/OPENING/Cover/BEASTAR.png',  audio: '/2019/OPENING/Audio/BEASTARS.MP3'     },
     ],
     animes: [
       // { id: '1', name: 'Demon Slayer', image: '/nominees/2019/animes/1/cover.jpg' },
@@ -76,14 +76,14 @@ export const nominees: Record<number, YearNominees> = {
 
   2017: {
     openings: [
-      { id: '1',  animeName: 'My Hero Academia',                              openingTitle: 'Peace Sign',              artist: 'Kenshi Yonezu',             op: 2,  image: '/2017/OPENING/Cover/MHA.png',       audio: '/2017/OPENING/Audio/MHA2.MP3'      },
+      { id: '1',  animeName: 'My Hero Academia',                              openingTitle: 'Peace Sign',              artist: 'Kenshi Yonezu',             op: 2,  image: '/2017/OPENING/Cover/MHA2.jpg',      audio: '/2017/OPENING/Audio/MHA2.MP3'      },
       { id: '2',  animeName: 'Welcome to the Ballroom',                       openingTitle: '10% roll, 10% romance',  artist: 'UNISON SQUARE GARDEN',              image: '/2017/OPENING/Cover/BALLROOM.png',  audio: '/2017/OPENING/Audio/BALLROOM.MP3'  },
       { id: '3',  animeName: 'Fate/Apocrypha',                                openingTitle: 'ASH',                    artist: 'LiSA',                      op: 2,  image: '/2017/OPENING/Cover/APOCRYPHA.png', audio: '/2017/OPENING/Audio/APOCRYPHA.MP3' },
       { id: '4',  animeName: 'Attack on Titan',                               openingTitle: 'Shinzou wo Sasageyo!',   artist: 'Linked Horizon',            op: 3,  image: '/2017/OPENING/Cover/SNK.png',        audio: '/2017/OPENING/Audio/SNK3.MP3'          },
       { id: '5',  animeName: 'Blue Exorcist',                                 openingTitle: 'SCOREBOOK',              artist: 'Rin Akatsuki',              op: 3,  image: '/2017/OPENING/Cover/BLUEEXO.png',    audio: '/2017/OPENING/Audio/BLUEEXORCIST3.MP3' },
       { id: '6',  animeName: 'Boruto: Naruto Next Generations',               openingTitle: 'OVER',                   artist: 'Little Glee Monster',       op: 2,  image: '/2017/OPENING/Cover/BORUTO.png',     audio: '/2017/OPENING/Audio/BORUTO.MP3'        },
       { id: '7',  animeName: 'One Piece',                                     openingTitle: 'Hope',                   artist: 'Namie Amuro',               op: 20, image: '/2017/OPENING/Cover/ONEPICE.png',    audio: '/2017/OPENING/Audio/OP20.MP3'          },
-      { id: '8',  animeName: 'Saga of Tanya the Evil',                       openingTitle: 'JINGO JUNGLE',           artist: 'MYTH & ROID',                       image: '/2017/OPENING/Cover/YOUJO.png',      audio: '/2017/OPENING/Audio/YOUJO.MP3'         },
+      { id: '8',  animeName: 'Saga of Tanya the Evil',                       openingTitle: 'JINGO JUNGLE',           artist: 'MYTH & ROID',                       image: '/2017/OPENING/Cover/TANYA.png',      audio: '/2017/OPENING/Audio/YOUJO.MP3'         },
       { id: '9',  animeName: 'Twin Star Exorcists',                           openingTitle: 'Kanadeai',               artist: 'Itowokoashi',               op: 4,  image: '/2017/OPENING/Cover/TWINSTAR.png',   audio: '/2017/OPENING/Audio/TWIN.MP3'          },
       { id: '10', animeName: 'Dragon Ball Super',                             openingTitle: 'Limit-Break x Survivor', artist: 'Kiyoshi Hikawa',            op: 2,  image: '/2017/OPENING/Cover/DBS.png',        audio: '/2017/OPENING/Audio/DBS.MP3'           },
       { id: '11', animeName: 'Rokudenashi Majutsu Koushi to Akashic Records', openingTitle: 'Blow out',               artist: 'Konomi Suzuki',                     image: '/2017/OPENING/Cover/ROKUDENA.png',   audio: '/2017/OPENING/Audio/ROKUDE.MP3'        },
@@ -114,7 +114,7 @@ export const nominees: Record<number, YearNominees> = {
       { id: '12', animeName: "Haven't You Heard? I'm Sakamoto",         openingTitle: 'COOLEST',                        artist: 'CustomiZ',                          image: '/2016/OPENING/Cover/SAKAMOTO.png',       audio: '/2016/OPENING/Audio/SAKAMOTO.MP3'       },
       { id: '13', animeName: 'Twin Star Exorcists',                     openingTitle: 'sync',                           artist: 'lol',                       op: 3,  image: '/2016/OPENING/Cover/TWIN.png',           audio: '/2016/OPENING/Audio/TWIN.MP3'           },
       { id: '14', animeName: 'Yuri!!! on Ice',                          openingTitle: 'History Maker',                  artist: 'Dean Fujioka',                      image: '/2016/OPENING/Cover/YURI.png',           audio: '/2016/OPENING/Audio/YURI.MP3'           },
-      { id: '15', animeName: 'D.Gray-man Hallow',                       openingTitle: 'Key -bring it on, my Destiny-',  artist: 'Lenny code fiction',                image: '/2016/OPENING/Cover/DGRAY.png',          audio: '/2016/OPENING/Audio/DGRAY.MP3'          },
+      { id: '15', animeName: 'D.Gray-man Hallow',                       openingTitle: 'Key -bring it on, my Destiny-',  artist: 'Lenny code fiction',                image: '/2016/OPENING/Cover/DGRAYMAN.png',          audio: '/2016/OPENING/Audio/DGRAY.MP3'          },
       { id: '16', animeName: "JoJo's Bizarre Adventure: Diamond is Unbreakable", openingTitle: 'CHASE',                    artist: 'Batta',                     op: 6,  image: '/2016/OPENING/Cover/JOJO.png',           audio: '/2016/OPENING/Audio/Jojo.MP3'           },
     ],
     animes: [
