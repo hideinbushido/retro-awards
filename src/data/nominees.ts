@@ -93,7 +93,7 @@ export const nominees: Record<number, YearNominees> = {
       { id: '14', animeName: 'Black Clover',                                  openingTitle: 'Haruka Mirai',           artist: 'Kankaku Piero',                     image: '/2017/OPENING/Cover/BLACK.png',      audio: '/2017/OPENING/Audio/BC1.MP3'           },
       { id: '15', animeName: 'Kakegurui',                                     openingTitle: 'Deal with the devil',    artist: 'Tia',                               image: '/2017/OPENING/Cover/KAKEGURUI.png',  audio: '/2017/OPENING/Audio/KAKEGURUI.MP3'     },
       { id: '16', animeName: 'Naruto Shippuden',                              openingTitle: 'Kara na Kokoro',         artist: 'Anly',                      op: 20, image: '/2017/OPENING/Cover/NARUTO20.png',   audio: '/2017/OPENING/Audio/NARUTO20.MP3'      },
-      { id: '17', animeName: 'Nanatsu no Taizai',                           openingTitle: 'Howling',                artist: 'FLOW × GRANRODEO',          op: 4,  image: '/2017/OPENING/Cover/NANATSU4.png',   audio: '/2017/OPENING/Audio/NANATSU4.MP3'      },
+      { id: '17', animeName: 'Nanatsu no Taizai',                           openingTitle: 'Howling',                artist: 'FLOW × GRANRODEO',          op: 4,  image: '/2017/OPENING/Cover/NNT4.png',   audio: '/2017/OPENING/Audio/NANATSU4.MP3'      },
     ],
     animes: [
       // { id: '1', name: 'My Hero Academia', image: '/2017/ANIME/Cover/MHA.png', silhouette: '/2017/ANIME/Silhouette/MHA.png' },
@@ -150,7 +150,7 @@ export const nominees: Record<number, YearNominees> = {
   2014: {
     openings: [
       { id: '1',  animeName: 'Naruto: Shippuden',                     openingTitle: 'Silhouette',               artist: 'KANA-BOON',                           op: 16, image: '/2014/OPENING/Cover/NARUTO16.jpg',    audio: '/2014/OPENING/Audio/NARUTO16.MP3'    },
-      { id: '2',  animeName: 'The Seven Deadly Sins',                  openingTitle: 'Netsujou no Spectrum',     artist: 'Ikimonogakari',                               image: '/2014/OPENING/Cover/NNT.png',         audio: '/2014/OPENING/Audio/NANATSU1.MP3'    },
+      { id: '2',  animeName: 'The Seven Deadly Sins',                  openingTitle: 'Netsujou no Spectrum',     artist: 'Ikimonogakari',                               image: '/2014/OPENING/Cover/NNT.jpg',         audio: '/2014/OPENING/Audio/NANATSU1.MP3'    },
       { id: '3',  animeName: 'No Game No Life',                        openingTitle: 'This Game',                artist: 'Konomi Suzuki',                               image: '/2014/OPENING/Cover/NOGAME.jpg',      audio: '/2014/OPENING/Audio/NGNO.MP3'        },
       { id: '4',  animeName: 'Your Lie in April',                      openingTitle: 'Hikaru Nara',              artist: 'Goose house',                                 image: '/2014/OPENING/Cover/APRIL.jpg',       audio: '/2014/OPENING/Audio/SHIGATSU.MP3'    },
       { id: '5',  animeName: 'Parasyte -the maxim-',                   openingTitle: 'Let Me Hear',              artist: 'Fear, and Loathing in Las Vegas',              image: '/2014/OPENING/Cover/PARASYTE.jpg',    audio: '/2014/OPENING/Audio/PARASYTE.MP3'    },
