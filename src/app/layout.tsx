@@ -15,7 +15,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preload" href="/Fondaccueil2.mp4" as="video" type="video/mp4" />
       </head>
       <body className="min-h-full flex flex-col">
-        <MusicProvider src="/THEME SITE.mp3">
+        <MusicProvider src="/CRYSTAL.mp3">
           {children}
         </MusicProvider>
       </body>
