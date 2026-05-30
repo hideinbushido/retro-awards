@@ -186,6 +186,7 @@ export const nominees: Record<number, YearNominees> = {
       { id: '11', animeName: 'Free!',                                 openingTitle: 'Rage On',                          artist: 'OLDCODEX',                                    image: '/2013/OPENING/Cover/FREE.png',       audio: '/2013/OPENING/Audio/FREE.MP3'       },
       { id: '12', animeName: 'Blood Lad',                             openingTitle: 'ViViD',                            artist: "May'n",                                       image: '/2013/OPENING/Cover/BLOODLAD.png',   audio: '/2013/OPENING/Audio/BLOODLAD.MP3'   },
       { id: '13', animeName: 'Kill la Kill',                          openingTitle: 'sirius',                           artist: 'Eir Aoi',                                     image: '/2013/OPENING/Cover/KLK.png',        audio: '/2013/OPENING/Audio/KLK.MP3'        },
+      { id: '14', animeName: 'Beelzebub',                             openingTitle: 'Baby U!',                          artist: 'MBLAQ',                               op: 4,  image: '/2013/OPENING/Cover/BEELZEBUB4.png', audio: '/2013/OPENING/Audio/BEELZEBUB4.MP3' },
     ],
     animes: [
       // { id: '1', name: 'Attack on Titan', image: '/2013/ANIME/Cover/AOT.png' },
