@@ -68,7 +68,8 @@ export const nominees: Record<number, YearNominees> = {
       { id: '11', animeName: 'Steins;Gate 0',                         openingTitle: 'Fatima',          artist: 'Kanako Itō',                                  image: '/2018/OPENING/Cover/STEINS0.png',    audio: '/2018/OPENING/Audio/STEINS.MP3'       },
       { id: '12', animeName: 'Attack on Titan',                       openingTitle: 'Red Swan',        artist: 'Yoshiki feat. Hyde',                  op: 4,  image: '/2018/OPENING/Cover/SNK.png',        audio: '/2018/OPENING/Audio/SNK4.MP3'         },
       { id: '13', animeName: 'Grand Blue',                            openingTitle: 'Grand Blue',      artist: 'Shōnan no Kaze feat. Atarashii Gakkou!',      image: '/2018/OPENING/Cover/GRANDBLUE.png',  audio: '/2018/OPENING/Audio/GRANDBLUE.MP3'    },
-      { id: '14', animeName: 'Nanatsu no Taizai',                   openingTitle: 'Ame ga Furu kara Niji ga Deru', artist: 'Sky Peace',            op: 5,  image: '/2018/OPENING/Cover/NANATSU5.png',   audio: '/2018/OPENING/Audio/NANATSU5.MP3'     },
+      { id: '14', animeName: 'Nanatsu no Taizai',                   openingTitle: 'Ame ga Furu kara Niji ga Deru', artist: 'Sky Peace',            op: 5,  image: '/2018/OPENING/Cover/NNT.png',        audio: '/2018/OPENING/Audio/NANATSU5.MP3'     },
+      { id: '15', animeName: 'Fate/EXTRA Last Encore',              openingTitle: 'Bright Burning Shout',          artist: 'Takanori Nishikawa',                  image: '/2018/OPENING/Cover/FATELAST.jpg',   audio: '/2018/OPENING/Audio/FATELAST.MP3'     },
     ],
     animes: [
       // { id: '1', name: 'Sword Art Online', image: '/2018/ANIME/Cover/SAO.png', silhouette: '/2018/ANIME/Silhouette/SAO.png' },
@@ -93,7 +94,7 @@ export const nominees: Record<number, YearNominees> = {
       { id: '14', animeName: 'Black Clover',                                  openingTitle: 'Haruka Mirai',           artist: 'Kankaku Piero',                     image: '/2017/OPENING/Cover/BLACK.png',      audio: '/2017/OPENING/Audio/BC1.MP3'           },
       { id: '15', animeName: 'Kakegurui',                                     openingTitle: 'Deal with the devil',    artist: 'Tia',                               image: '/2017/OPENING/Cover/KAKEGURUI.png',  audio: '/2017/OPENING/Audio/KAKEGURUI.MP3'     },
       { id: '16', animeName: 'Naruto Shippuden',                              openingTitle: 'Kara na Kokoro',         artist: 'Anly',                      op: 20, image: '/2017/OPENING/Cover/NARUTO20.png',   audio: '/2017/OPENING/Audio/NARUTO20.MP3'      },
-      { id: '17', animeName: 'Nanatsu no Taizai',                           openingTitle: 'Howling',                artist: 'FLOW × GRANRODEO',          op: 4,  image: '/2017/OPENING/Cover/NNT4.png',   audio: '/2017/OPENING/Audio/NANATSU4.MP3'      },
+      { id: '17', animeName: 'Nanatsu no Taizai',                           openingTitle: 'Howling',                artist: 'FLOW × GRANRODEO',          op: 4,  image: '/2017/OPENING/Cover/NNT4.png',   audio: '/2017/OPENING/Audio/NNT.MP3'      },
     ],
     animes: [
       // { id: '1', name: 'My Hero Academia', image: '/2017/ANIME/Cover/MHA.png', silhouette: '/2017/ANIME/Silhouette/MHA.png' },
@@ -118,7 +119,7 @@ export const nominees: Record<number, YearNominees> = {
       { id: '14', animeName: 'Yuri!!! on Ice',                          openingTitle: 'History Maker',                  artist: 'Dean Fujioka',                      image: '/2016/OPENING/Cover/YURI.png',           audio: '/2016/OPENING/Audio/YURI.MP3'           },
       { id: '15', animeName: 'D.Gray-man Hallow',                       openingTitle: 'Key -bring it on, my Destiny-',  artist: 'Lenny code fiction',                image: '/2016/OPENING/Cover/DGRAYMAN.png',          audio: '/2016/OPENING/Audio/DGRAY.MP3'          },
       { id: '16', animeName: "JoJo's Bizarre Adventure: Diamond is Unbreakable", openingTitle: 'CHASE',                    artist: 'Batta',                     op: 6,  image: '/2016/OPENING/Cover/JOJO.png',           audio: '/2016/OPENING/Audio/Jojo.MP3'           },
-      { id: '17', animeName: 'Tales of Berseria',                       openingTitle: 'BURN',                           artist: 'FLOW',                              image: '/2016/OPENING/Cover/BERSERIA.png',       audio: '/2016/OPENING/Audio/BERSERIA.MP3'       },
+      { id: '17', animeName: 'Tales of Berseria',                       openingTitle: 'BURN',                           artist: 'FLOW',                              image: '/2016/OPENING/Cover/BERSERIA.jpg',       audio: '/2016/OPENING/Audio/BERSERIA.MP3'       },
     ],
     animes: [
       // { id: '1', name: 'Re:Zero', image: '/nominees/2016/animes/1/cover.jpg' },
@@ -229,7 +230,7 @@ export const nominees: Record<number, YearNominees> = {
       { id: '12', animeName: 'Beelzebub',                                 openingTitle: 'Hey!!!',                artist: 'FLOW',                          op: 3,  image: '/2011/OPENING/Cover/BELZEBUB.jpg',    audio: '/2011/OPENING/Audio/BEELZEBUB3.MP3'  },
       { id: '13', animeName: 'Toriko',                                    openingTitle: 'Guts Guts!!',           artist: 'Miyu Irino',                           image: '/2011/OPENING/Cover/TORIKO.jpg',      audio: '/2011/OPENING/Audio/TORIKO.MP3'      },
       { id: '14', animeName: 'Bakuman. 2',                                openingTitle: 'Dream of Life',         artist: 'Shohei Ito',                           image: '/2011/OPENING/Cover/BAKUMAN.jpg',     audio: '/2011/OPENING/Audio/BAKUMAN2.MP3'    },
-      { id: '15', animeName: 'Fate/Zero',                                 openingTitle: 'oath sign',             artist: 'LiSA',                                 image: '/2011/OPENING/Cover/FATEZERO.jpg',    audio: '/2011/OPENING/Audio/FATEZERO1.MP3'   },
+      { id: '15', animeName: 'Fate/Zero',                                 openingTitle: 'oath sign',             artist: 'LiSA',                                 image: '/2011/OPENING/Cover/FATE.jpg',    audio: '/2011/OPENING/Audio/FATEZERO1.MP3'   },
     ],
     animes: [],
   },
