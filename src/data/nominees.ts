@@ -237,20 +237,28 @@ export const nominees: Record<number, YearNominees> = {
 
   2010: {
     openings: [
-      // { id: '1', animeName: 'Fullmetal Alchemist: Brotherhood', openingTitle: 'Again', image: '/nominees/2010/openings/1/cover.jpg', audio: '/nominees/2010/openings/1/audio.mp3' },
+      { id: '1',  animeName: 'Highschool of the Dead',                openingTitle: 'HIGHSCHOOL OF THE DEAD',        artist: 'Kishida Kyoudan & The Akeboshi Rockets',      image: '/2010/OPENING/Cover/HOTD.png',       audio: '/2010/OPENING/Audio/HOTD.MP3'       },
+      { id: '2',  animeName: 'Dance in the Vampire Bund',             openingTitle: 'Friends',                        artist: 'Aiko Nakano',                                 image: '/2010/OPENING/Cover/VAMPIRE.png',    audio: '/2010/OPENING/Audio/VAMPIRE.MP3'    },
+      { id: '3',  animeName: 'The Qwaser of Stigmata',                openingTitle: 'Errand',                         artist: 'Nagi Yanagi',                                 image: '/2010/OPENING/Cover/QWASER.png',     audio: '/2010/OPENING/Audio/QWASER.MP3'     },
+      { id: '4',  animeName: 'Bleach',                                openingTitle: 'Ranbu no Melody',                artist: 'SID',                                 op: 13, image: '/2010/OPENING/Cover/BLEACH13.png',   audio: '/2010/OPENING/Audio/BLEACH13.MP3'   },
+      { id: '5',  animeName: 'One Piece',                             openingTitle: 'Fight Together',                 artist: 'Namie Amuro',                         op: 14, image: '/2010/OPENING/Cover/ONE14.png',      audio: '/2010/OPENING/Audio/ONE14.MP3'      },
+      { id: '6',  animeName: 'Reborn!',                               openingTitle: 'Listen to the Stereo!!',         artist: 'GOING UNDER GROUND',                  op: 8,  image: '/2010/OPENING/Cover/REBORN8.png',    audio: '/2010/OPENING/Audio/REBORN8.MP3'    },
+      { id: '7',  animeName: 'Naruto: Shippuden',                     openingTitle: 'Toumei Datta Sekai',             artist: 'Motohiro Hata',                       op: 7,  image: '/2010/OPENING/Cover/NARUTO7.png',    audio: '/2010/OPENING/Audio/NARUTO7.MP3'    },
+      { id: '8',  animeName: 'Major (Season 6)',                      openingTitle: 'Kokoro e',                       artist: 'TRIPLANE',                                    image: '/2010/OPENING/Cover/MAJOR.png',      audio: '/2010/OPENING/Audio/MAJOR.MP3'      },
+      { id: '9',  animeName: 'Fairy Tail',                            openingTitle: 'ft.',                            artist: 'FUNKIST',                             op: 3,  image: '/2010/OPENING/Cover/FT3.png',        audio: '/2010/OPENING/Audio/FT3.MP3'        },
+      { id: '10', animeName: 'Durarara!!',                            openingTitle: 'Complication',                   artist: "ROOKiEZ is PUNK'D",                   op: 2,  image: '/2010/OPENING/Cover/DRRR2.png',      audio: '/2010/OPENING/Audio/DRRR2.MP3'      },
+      { id: '11', animeName: "Yu-Gi-Oh! 5D's",                       openingTitle: 'Road to Tomorrow ~Going My Way!!~', artist: 'Masaaki Endoh',                    op: 5,  image: '/2010/OPENING/Cover/YUGIOH5.png',    audio: '/2010/OPENING/Audio/YUGIOH5.MP3'    },
+      { id: '12', animeName: 'Rainbow: Nisha Rokubou no Shichinin',   openingTitle: "We're not alone",                artist: 'coldrain',                                    image: '/2010/OPENING/Cover/RAINBOW.png',    audio: '/2010/OPENING/Audio/RAINBOW.MP3'    },
+      { id: '13', animeName: 'Fullmetal Alchemist: Brotherhood',      openingTitle: 'Rain',                           artist: 'SID',                                 op: 5,  image: '/2010/OPENING/Cover/FMA5.png',       audio: '/2010/OPENING/Audio/FMA5.MP3'       },
     ],
-    animes: [
-      // { id: '1', name: 'Fullmetal Alchemist: Brotherhood', image: '/nominees/2010/animes/1/cover.jpg' },
-    ],
+    animes: [],
   },
 
   2009: {
     openings: [
-      // { id: '1', animeName: 'Naruto Shippuden', openingTitle: 'Heroes Come Back', image: '/nominees/2009/openings/1/cover.jpg', audio: '/nominees/2009/openings/1/audio.mp3' },
+      { id: '1',  animeName: 'Durarara!!',                            openingTitle: 'Uragiri no Yuuyake',             artist: 'THEATRE BROOK',                               image: '/2009/OPENING/Cover/DRRR1.png',      audio: '/2009/OPENING/Audio/DRRR1.MP3'      },
     ],
-    animes: [
-      // { id: '1', name: 'Naruto Shippuden', image: '/nominees/2009/animes/1/cover.jpg' },
-    ],
+    animes: [],
   },
 
   2008: {
