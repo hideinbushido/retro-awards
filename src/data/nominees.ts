@@ -187,8 +187,8 @@ export const nominees: Record<number, YearNominees> = {
       { id: '12', animeName: 'Blood Lad',                             openingTitle: 'ViViD',                            artist: "May'n",                                       image: '/2013/OPENING/Cover/BLOOD.jpg',      audio: '/2013/OPENING/Audio/BLOODLAD.MP3'   },
       { id: '13', animeName: 'Kill la Kill',                          openingTitle: 'sirius',                           artist: 'Eir Aoi',                                     image: '/2013/OPENING/Cover/KILL.jpg',       audio: '/2013/OPENING/Audio/KLK.MP3'        },
       { id: '14', animeName: 'Beelzebub',                             openingTitle: 'Baby U!',                          artist: 'MBLAQ',                               op: 4,  image: '/2013/OPENING/Cover/BELZEBUB.jpg',   audio: '/2013/OPENING/Audio/BEELZEBUB4.MP3' },
-      { id: '15', animeName: 'Naruto: Shippuden',                     openingTitle: 'Niwaka Ame ni mo Makezu',          artist: 'NICO Touches the Walls',              op: 13, image: '/2013/OPENING/Cover/NARUTO13.png',    audio: '/2013/OPENING/Audio/NARUTO13.MP3'    },
-      { id: '16', animeName: 'Fairy Tail',                            openingTitle: 'Yakusoku no Hi e',                 artist: 'Chihiro Yonekura',                    op: 14, image: '/2013/OPENING/Cover/FT14.png',        audio: '/2013/OPENING/Audio/FT14.MP3'        },
+      { id: '15', animeName: 'Naruto: Shippuden',                     openingTitle: 'Niwaka Ame ni mo Makezu',          artist: 'NICO Touches the Walls',              op: 13, image: '/2013/OPENING/Cover/NARUTO.jpg',    audio: '/2013/OPENING/Audio/NARUTO13.MP3'    },
+      { id: '16', animeName: 'Fairy Tail',                            openingTitle: 'Yakusoku no Hi e',                 artist: 'Chihiro Yonekura',                    op: 14, image: '/2013/OPENING/Cover/FAIRY.jpg',        audio: '/2013/OPENING/Audio/FT14.MP3'        },
     ],
     animes: [
       // { id: '1', name: 'Attack on Titan', image: '/2013/ANIME/Cover/AOT.png' },
