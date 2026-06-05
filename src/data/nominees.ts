@@ -211,6 +211,7 @@ export const nominees: Record<number, YearNominees> = {
       { id: '12', animeName: 'Aquarion Evol',                    openingTitle: 'Paradoxical ZOO',            artist: 'AKINO with bless4',           op: 2,  image: '/2012/OPENING/Cover/AQUARION.jpg',     audio: '/2012/OPENING/Audio/AQUARION2.MP3'   },
       { id: '13', animeName: 'Hyouka',                           openingTitle: 'Yasashisa no Riyuu',         artist: 'ChouCho',                             image: '/2012/OPENING/Cover/HYOUKA.jpg',       audio: '/2012/OPENING/Audio/HYOUKA.MP3'      },
       { id: '14', animeName: 'Fate/Zero',                        openingTitle: 'To the Beginning',           artist: 'Kalafina',                    op: 2,  image: '/2012/OPENING/Cover/FATE.jpg',         audio: '/2012/OPENING/Audio/FATEZERO2.MP3'   },
+      { id: '15', animeName: 'Inazuma Eleven Go: Chrono Stone',   openingTitle: 'Shoshin wo KEEP ON!',        artist: 'T-Pistonz+KMC',               op: 3,  image: '/2012/OPENING/Cover/INAZUMA3.png',     audio: '/2012/OPENING/Audio/INAZUMA3.MP3'    },
     ],
     animes: [],
   },
