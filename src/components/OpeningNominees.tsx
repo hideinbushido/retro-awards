@@ -65,6 +65,11 @@ export default function OpeningNominees({ year, openings, teaser = false }: Prop
     resumeFromOpening();
   }, [resumeFromOpening]);
 
+  function handleResetAll() {
+    setRevealed(new Set());
+    try { localStorage.removeItem(REVEALED_KEY(year)); } catch {}
+  }
+
   function handleReveal(id: string) {
     if (glitching) return;
     setGlitching(id);
@@ -90,6 +95,17 @@ export default function OpeningNominees({ year, openings, teaser = false }: Prop
   }
 
   return (
+    <>
+    {teaser && revealed.size > 0 && (
+      <div className="flex justify-end mb-4">
+        <button
+          onClick={handleResetAll}
+          className="btn-neon text-xs px-4 py-2 rounded flex items-center gap-2"
+        >
+          <span style={{ fontSize: '1rem' }}>?</span> Tout masquer
+        </button>
+      </div>
+    )}
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
       {openings.map((op) => {
         const isHidden  = teaser && !revealed.has(op.id);
@@ -211,5 +227,6 @@ export default function OpeningNominees({ year, openings, teaser = false }: Prop
         );
       })}
     </div>
+    </>
   );
 }
