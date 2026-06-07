@@ -74,7 +74,7 @@ export default function OpeningNominees({ year, openings, teaser = false }: Prop
       setRevealed(next);
       setGlitching(null);
       try { localStorage.setItem(REVEALED_KEY(year), JSON.stringify([...next])); } catch {}
-    }, 680);
+    }, 1450);
   }
 
   async function handleVote(id: string) {

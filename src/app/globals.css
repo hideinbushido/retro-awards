@@ -223,7 +223,7 @@ body::after {
   90%  { filter: hue-rotate(90deg);                      transform: translateX(-1px); opacity: 0.9; }
   100% { filter: none;                                   transform: translateX(0); opacity: 1; }
 }
-.teaser-glitch { animation: teaser-glitch 0.65s steps(1) forwards; }
+.teaser-glitch { animation: teaser-glitch 1.4s steps(1) forwards; }
 
 @keyframes teaser-scanline {
   0%   { background-position: 0 0; }
