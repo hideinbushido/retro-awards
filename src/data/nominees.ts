@@ -1,4 +1,4 @@
-export const TEASER_MODE = true;
+export const TEASER_MODE = false;
 
 export type Opening = {
   id: string;
