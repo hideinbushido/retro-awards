@@ -2,27 +2,35 @@
 
 import { useState, useRef, useCallback, useEffect } from 'react';
 import Image from 'next/image';
-import { Music, Volume2, Check } from 'lucide-react';
+import { Music, Check } from 'lucide-react';
 import { voteOpening } from '@/lib/firestore';
 import { Opening } from '@/data/nominees';
 import { useMusicContext } from '@/contexts/MusicContext';
 
-type Props = { year: number; openings: Opening[] };
+type Props = { year: number; openings: Opening[]; teaser?: boolean };
 
-const VOTED_KEY = (year: number) => `retro_voted_opening_${year}`;
+const VOTED_KEY    = (year: number) => `retro_voted_opening_${year}`;
+const REVEALED_KEY = (year: number) => `retro_teaser_revealed_${year}`;
 
-export default function OpeningNominees({ year, openings }: Props) {
+export default function OpeningNominees({ year, openings, teaser = false }: Props) {
   const [votedId, setVotedId] = useState<string | null>(() => {
     if (typeof window === 'undefined') return null;
     return localStorage.getItem(VOTED_KEY(year));
   });
+  const [revealed, setRevealed] = useState<Set<string>>(() => {
+    if (typeof window === 'undefined') return new Set();
+    try {
+      const stored = localStorage.getItem(REVEALED_KEY(year));
+      return stored ? new Set(JSON.parse(stored)) : new Set();
+    } catch { return new Set(); }
+  });
+  const [glitching, setGlitching] = useState<string | null>(null);
   const [playingId, setPlayingId] = useState<string | null>(null);
-  const [loading, setLoading] = useState<string | null>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [loading, setLoading]     = useState<string | null>(null);
+  const audioRef    = useRef<HTMLAudioElement | null>(null);
   const audioMapRef = useRef<Map<string, HTMLAudioElement>>(new Map());
   const { pauseForOpening, resumeFromOpening } = useMusicContext();
 
-  // Précharge tous les audios dès le chargement de la page
   useEffect(() => {
     openings.forEach(op => {
       if (!op.audio) return;
@@ -57,6 +65,18 @@ export default function OpeningNominees({ year, openings }: Props) {
     resumeFromOpening();
   }, [resumeFromOpening]);
 
+  function handleReveal(id: string) {
+    if (glitching) return;
+    setGlitching(id);
+    setTimeout(() => {
+      const next = new Set(revealed);
+      next.add(id);
+      setRevealed(next);
+      setGlitching(null);
+      try { localStorage.setItem(REVEALED_KEY(year), JSON.stringify([...next])); } catch {}
+    }, 680);
+  }
+
   async function handleVote(id: string) {
     if (votedId || loading) return;
     setLoading(id);
@@ -72,19 +92,65 @@ export default function OpeningNominees({ year, openings }: Props) {
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
       {openings.map((op) => {
+        const isHidden  = teaser && !revealed.has(op.id);
+        const isGlitch  = glitching === op.id;
         const isPlaying = playingId === op.id;
-        const isMyVote = votedId === op.id;
-        const hasVoted = !!votedId;
+        const isMyVote  = votedId === op.id;
+        const hasVoted  = !!votedId;
 
+        /* ── MYSTERY CARD ── */
+        if (isHidden) {
+          return (
+            <div
+              key={op.id}
+              className={`retro-card rounded-lg overflow-hidden flex flex-col cursor-pointer select-none${isGlitch ? ' teaser-glitch' : ''}`}
+              onClick={() => handleReveal(op.id)}
+            >
+              <div
+                className="relative aspect-[3/4] flex items-center justify-center overflow-hidden"
+                style={{ background: 'var(--bg2)' }}
+              >
+                {/* Scanlines overlay */}
+                <div className="absolute inset-0 teaser-scanlines pointer-events-none" />
+                {/* Neon border pulse */}
+                <div
+                  className="absolute inset-0 pointer-events-none"
+                  style={{ boxShadow: 'inset 0 0 30px rgba(0,255,204,0.08)', border: '1px solid var(--border)' }}
+                />
+                {/* Question mark */}
+                <span
+                  className="font-black select-none"
+                  style={{
+                    fontSize: '5rem',
+                    color: 'var(--neon)',
+                    textShadow: '0 0 20px var(--neon), 0 0 60px rgba(0,255,204,0.4)',
+                    lineHeight: 1,
+                  }}
+                >
+                  ?
+                </span>
+              </div>
+              <div className="p-3 flex flex-col gap-1 flex-1 items-center justify-center text-center">
+                <p className="text-xs font-bold tracking-widest uppercase" style={{ color: 'var(--sepia-dim)' }}>
+                  NOMINÉ
+                </p>
+                <p className="text-xs" style={{ color: 'var(--neon)', opacity: 0.7 }}>
+                  Cliquer pour révéler
+                </p>
+              </div>
+            </div>
+          );
+        }
+
+        /* ── REVEALED / NORMAL CARD ── */
         return (
           <div
             key={op.id}
             className="retro-card rounded-lg overflow-hidden flex flex-col group cursor-pointer relative"
-            onMouseEnter={() => playAudio(op)}
-            onMouseLeave={stopAudio}
-            onTouchStart={() => isPlaying ? stopAudio() : playAudio(op)}
+            onMouseEnter={() => !teaser && playAudio(op)}
+            onMouseLeave={() => !teaser && stopAudio()}
+            onTouchStart={() => !teaser && (isPlaying ? stopAudio() : playAudio(op))}
           >
-            {/* Image */}
             <div className="relative aspect-[3/4] overflow-hidden">
               <Image
                 src={op.image}
@@ -100,7 +166,6 @@ export default function OpeningNominees({ year, openings }: Props) {
                   opacity: isPlaying ? 1 : 0,
                 }}
               />
-              {/* Playing bars */}
               {isPlaying && (
                 <div className="absolute top-2 right-2 flex items-end gap-0.5" style={{ height: '20px' }}>
                   {[0,1,2,3].map((i) => (
@@ -118,7 +183,6 @@ export default function OpeningNominees({ year, openings }: Props) {
               )}
             </div>
 
-            {/* Info */}
             <div className="p-3 flex flex-col gap-2 flex-1">
               <div>
                 <p className="font-black text-sm leading-tight" style={{ color: 'var(--sepia)' }}>{op.animeName}</p>
@@ -132,16 +196,17 @@ export default function OpeningNominees({ year, openings }: Props) {
                   {op.op && op.op > 1 ? `Opening ${op.op}` : 'Opening'}
                 </p>
               </div>
-              <button
-                onClick={() => handleVote(op.id)}
-                disabled={hasVoted || loading === op.id}
-                className="btn-neon text-xs py-1.5 px-3 rounded w-full mt-auto"
-                style={isMyVote ? { background: 'var(--neon)', color: 'var(--bg)' } : {}}
-              >
-                {isMyVote ? '✓ Voté' : hasVoted ? 'Voté' : loading === op.id ? '...' : 'Voter'}
-              </button>
+              {!teaser && (
+                <button
+                  onClick={() => handleVote(op.id)}
+                  disabled={hasVoted || loading === op.id}
+                  className="btn-neon text-xs py-1.5 px-3 rounded w-full mt-auto"
+                  style={isMyVote ? { background: 'var(--neon)', color: 'var(--bg)' } : {}}
+                >
+                  {isMyVote ? '✓ Voté' : hasVoted ? 'Voté' : loading === op.id ? '...' : 'Voter'}
+                </button>
+              )}
             </div>
-
           </div>
         );
       })}

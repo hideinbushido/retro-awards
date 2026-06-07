@@ -4,7 +4,7 @@ import { ChevronLeft, ChevronRight, Music } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import OpeningNominees from '@/components/OpeningNominees';
 import { YEARS } from '@/lib/firestore';
-import { nominees } from '@/data/nominees';
+import { nominees, TEASER_MODE } from '@/data/nominees';
 
 type Props = { params: Promise<{ year: string }> };
 
@@ -61,7 +61,7 @@ export default async function OpeningYearPage({ params }: Props) {
               <p className="text-sm">Aucun opening nominé pour {year}.</p>
             </div>
           ) : (
-            <OpeningNominees year={year} openings={openings} />
+            <OpeningNominees year={year} openings={openings} teaser={TEASER_MODE} />
           )}
 
           <div className="text-center mt-12">

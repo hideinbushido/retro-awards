@@ -207,6 +207,39 @@ body::after {
 .audio-bar:nth-child(3) { animation-delay: 0.30s; }
 .audio-bar:nth-child(4) { animation-delay: 0.45s; }
 
+/* ── TEASER GLITCH REVEAL ── */
+@keyframes teaser-glitch {
+  0%   { filter: none;                                    transform: translateX(0); opacity: 1; }
+  8%   { filter: hue-rotate(90deg) saturate(400%);       transform: translateX(-4px); }
+  16%  { filter: invert(1) brightness(3);                transform: translateX(4px); opacity: 0.6; }
+  24%  { filter: hue-rotate(180deg) contrast(3);         transform: translateX(-2px); }
+  32%  { filter: brightness(5);                          transform: translateX(3px); opacity: 0.8; }
+  40%  { filter: invert(0.7) hue-rotate(270deg);        transform: translateX(-3px); }
+  48%  { filter: saturate(600%) brightness(2);           transform: translateX(2px); opacity: 0.5; }
+  56%  { filter: hue-rotate(45deg) contrast(4);          transform: translateX(-1px); }
+  64%  { filter: invert(1) brightness(4);                transform: translateX(3px); opacity: 0.9; }
+  72%  { filter: hue-rotate(135deg) saturate(300%);      transform: translateX(-2px); }
+  80%  { filter: brightness(6) contrast(2);              transform: translateX(1px); opacity: 0.7; }
+  90%  { filter: hue-rotate(90deg);                      transform: translateX(-1px); opacity: 0.9; }
+  100% { filter: none;                                   transform: translateX(0); opacity: 1; }
+}
+.teaser-glitch { animation: teaser-glitch 0.65s steps(1) forwards; }
+
+@keyframes teaser-scanline {
+  0%   { background-position: 0 0; }
+  100% { background-position: 0 100px; }
+}
+.teaser-scanlines {
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,255,204,0.03) 2px,
+    rgba(0,255,204,0.03) 4px
+  );
+  animation: teaser-scanline 2s linear infinite;
+}
+
 /* ── SLIDE IN FROM RIGHT (year carousel) ── */
 @keyframes slideInRight {
   from { opacity: 0; transform: translateX(60px); }

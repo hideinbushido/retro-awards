@@ -1,3 +1,5 @@
+export const TEASER_MODE = true;
+
 export type Opening = {
   id: string;
   animeName: string;
