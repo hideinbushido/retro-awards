@@ -363,7 +363,7 @@ function YearSlide({
 
         {/* Silhouette (anime, desktop only) */}
         {isAnime && silhouetteSrc && (
-          <div className="flex-shrink-0 self-end animate-fade-in hidden md:block" style={{ height: '85%' }}>
+          <div className="flex-shrink-0 self-end animate-fade-in silhouette-drift hidden md:block" style={{ height: '85%' }}>
             <img
               src={silhouetteSrc}
               alt=""

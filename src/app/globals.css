@@ -168,6 +168,12 @@ body::after {
 .animate-fade-up { animation: fadeUp 0.6s ease forwards; }
 .animate-fade-in { animation: fadeIn 0.5s ease forwards; }
 
+@keyframes silhouetteDrift {
+  0%, 100% { transform: translateX(0); }
+  50%      { transform: translateX(-24px); }
+}
+.silhouette-drift { animation: silhouetteDrift 6s ease-in-out infinite; }
+
 /* ── VHS FLICKER ── */
 @keyframes flicker {
   0%, 100% { opacity: 1;    }
