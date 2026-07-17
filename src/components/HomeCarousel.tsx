@@ -219,9 +219,12 @@ function YearSlide({
       ? (nominee as { type: 'anime'; data: Anime }).data.image
       : null;
 
-  const silhouetteSrc = isAnime
-    ? (nominee as { type: 'anime'; data: Anime }).data.silhouette ?? null
-    : null;
+  const [silhouetteSrc] = useState<string | null>(() => {
+    if (!isAnime) return null;
+    const s = (nominee as { type: 'anime'; data: Anime }).data.silhouette;
+    if (!s) return null;
+    return Array.isArray(s) ? s[Math.floor(Math.random() * s.length)] : s;
+  });
 
   const titleLine = isOpening
     ? (nominee as { type: 'opening'; data: Opening }).data.openingTitle

@@ -14,7 +14,7 @@ export type Anime = {
   id: string;
   name: string;
   image: string;
-  silhouette?: string;
+  silhouette?: string | string[]; // string[] → un perso est tiré au hasard à chaque passage dans le carousel
 };
 
 export type YearNominees = {
@@ -51,7 +51,12 @@ export const nominees: Record<number, YearNominees> = {
       { id: '16', animeName: 'BEASTARS',                      openingTitle: 'Wild Side',           artist: 'ALI',                                 image: '/2019/OPENING/Cover/BEASTAR.png',  audio: '/2019/OPENING/Audio/BEASTARS.MP3'     },
     ],
     animes: [
-      // { id: '1', name: 'Demon Slayer', image: '/nominees/2019/animes/1/cover.jpg' },
+      {
+        id: '1',
+        name: 'Demon Slayer',
+        image: '/2019/ANIME/Cover/DEMON.png',
+        silhouette: Array.from({ length: 13 }, (_, i) => `/2019/ANIME/Silhouette/Demon Slayer/${i + 1}.png`),
+      },
     ],
   },
 
