@@ -25,7 +25,10 @@ type Phase = 'hero' | 'timetravel' | 'year';
 type DisplayNominee =
   | { type: 'opening'; data: Opening }
   | { type: 'anime'; data: Anime }
+  | { type: 'combined'; opening: Opening; anime: Anime }
   | null;
+
+const normTitle = (s: string) => s.trim().toLowerCase();
 
 function pickNominee(year: number): DisplayNominee {
   const data = nominees[year];
@@ -38,11 +41,14 @@ function pickNominee(year: number): DisplayNominee {
   const useAnime = hasAnimes && (!hasOpenings || Math.random() < 0.5);
 
   if (useAnime) {
-    const arr = data.animes;
-    return { type: 'anime', data: arr[Math.floor(Math.random() * arr.length)] };
+    const anime = data.animes[Math.floor(Math.random() * data.animes.length)];
+    // Même titre nominé aussi en Opening cette année-là → slide fusionné.
+    const opening = data.openings.find(o => normTitle(o.animeName) === normTitle(anime.name));
+    return opening ? { type: 'combined', opening, anime } : { type: 'anime', data: anime };
   }
-  const arr = data.openings;
-  return { type: 'opening', data: arr[Math.floor(Math.random() * arr.length)] };
+  const opening = data.openings[Math.floor(Math.random() * data.openings.length)];
+  const anime = data.animes.find(a => normTitle(a.name) === normTitle(opening.animeName));
+  return anime ? { type: 'combined', opening, anime } : { type: 'opening', data: opening };
 }
 
 // ── Shared decorations ──
@@ -194,21 +200,27 @@ function YearSlide({
 }) {
   const isOpening = nominee?.type === 'opening';
   const isAnime = nominee?.type === 'anime';
+  const isCombined = nominee?.type === 'combined';
+
+  const combinedOpening = isCombined ? (nominee as { type: 'combined'; opening: Opening; anime: Anime }).opening : null;
+  const combinedAnime = isCombined ? (nominee as { type: 'combined'; opening: Opening; anime: Anime }).anime : null;
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [audioPlaying, setAudioPlaying] = useState(false);
 
-  // Auto-play audio for openings
+  // Auto-play audio for openings (y compris le côté opening d'un slide fusionné)
   useEffect(() => {
-    if (!isOpening) return;
-    const opening = (nominee as { type: 'opening'; data: Opening }).data;
-    const audio = new Audio(opening.audio);
+    const openingData = isOpening
+      ? (nominee as { type: 'opening'; data: Opening }).data
+      : combinedOpening;
+    if (!openingData) return;
+    const audio = new Audio(openingData.audio);
     audio.volume = 0.5;
     audioRef.current = audio;
     audio.play().then(() => setAudioPlaying(true)).catch(() => setAudioPlaying(false));
     audio.onended = () => setAudioPlaying(false);
     return () => { audio.pause(); audio.src = ''; audioRef.current = null; setAudioPlaying(false); };
-  }, [isOpening, nominee]);
+  }, [isOpening, combinedOpening, nominee]);
 
   function toggleAudio() {
     const audio = audioRef.current;
@@ -228,8 +240,9 @@ function YearSlide({
       : null;
 
   const [silhouetteSrc] = useState<string | null>(() => {
-    if (!isAnime) return null;
-    const s = (nominee as { type: 'anime'; data: Anime }).data.silhouette;
+    const s = isAnime
+      ? (nominee as { type: 'anime'; data: Anime }).data.silhouette
+      : combinedAnime?.silhouette;
     if (!s) return null;
     return Array.isArray(s) ? s[Math.floor(Math.random() * s.length)] : s;
   });
@@ -269,7 +282,85 @@ function YearSlide({
       </video>
       <SlideDecorations />
 
-      {/* Main layout — responsive via CSS classes */}
+      {isCombined && combinedOpening && combinedAnime ? (
+        <div className="year-layout-combined animate-fade-in">
+          <h2 className="year-number glitch" data-text={String(year)}>{year}</h2>
+
+          <div className="combined-row">
+            {/* Gauche — Opening */}
+            <div className="combined-side">
+              <span className="text-xs font-bold tracking-widest uppercase flex items-center gap-1.5" style={{ color: 'var(--neon)', opacity: 0.8 }}>
+                <Music size={12} /> {combinedOpening.op && combinedOpening.op > 1 ? `Opening ${combinedOpening.op}` : 'Opening'}
+              </span>
+              <div className="year-cover-sm">
+                <NextImage
+                  src={combinedOpening.image}
+                  alt={combinedOpening.openingTitle}
+                  fill
+                  priority
+                  sizes="150px"
+                  style={{ objectFit: 'cover' }}
+                />
+              </div>
+              <p className="year-title">{combinedOpening.openingTitle}</p>
+              {combinedOpening.artist && <p className="year-subtitle">{combinedOpening.artist}</p>}
+              <div className="year-buttons">
+                <button
+                  onClick={toggleAudio}
+                  className="flex items-center gap-1.5 px-3 py-1.5 md:px-5 md:py-2 rounded text-xs font-bold tracking-widest uppercase transition-all"
+                  style={{
+                    border: '1px solid var(--neon)',
+                    color: 'var(--neon)',
+                    background: audioPlaying ? 'rgba(0,255,204,0.12)' : 'transparent',
+                    touchAction: 'manipulation',
+                  }}
+                >
+                  {audioPlaying ? (
+                    <><span style={{ fontSize: '14px' }}>⏸</span> PAUSE</>
+                  ) : (
+                    <><span style={{ fontSize: '14px' }}>▶</span> ÉCOUTER</>
+                  )}
+                </button>
+                <Link href={`/opening/${year}`} className="btn-neon px-3 py-1.5 md:px-5 md:py-2 rounded text-xs tracking-widest">
+                  VOIR NOMINÉS
+                </Link>
+              </div>
+            </div>
+
+            {/* Centre — Silhouette (desktop only) */}
+            {silhouetteSrc && (
+              <div className="flex-shrink-0 self-end animate-fade-in silhouette-drift hidden md:block" style={{ height: '55vh' }}>
+                <img
+                  src={silhouetteSrc}
+                  alt=""
+                  style={{ height: '100%', width: 'auto', objectFit: 'contain', filter: 'drop-shadow(0 0 24px rgba(0,255,204,0.3))' }}
+                />
+              </div>
+            )}
+
+            {/* Droite — Anime */}
+            <div className="combined-side combined-side-right">
+              <span className="text-xs font-bold tracking-widest uppercase flex items-center gap-1.5" style={{ color: 'var(--neon)', opacity: 0.8 }}>
+                <Tv size={12} /> Anime de l&apos;année
+              </span>
+              <p className="year-title">{combinedAnime.name}</p>
+              <div className="year-buttons">
+                <Link href={`/anime/${year}`} className="btn-neon px-3 py-1.5 md:px-5 md:py-2 rounded text-xs tracking-widest">
+                  VOIR NOMINÉS
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          <Link
+            href={`/annee/${year}`}
+            className="px-3 py-1.5 md:px-5 md:py-2 rounded text-xs font-bold tracking-widest uppercase"
+            style={{ border: '1px solid var(--sepia-dim)', color: 'var(--sepia-dim)' }}
+          >
+            VOTER {year}
+          </Link>
+        </div>
+      ) : (
       <div className="year-layout animate-fade-in">
 
         {/* Cover */}
@@ -372,6 +463,7 @@ function YearSlide({
           </div>
         )}
       </div>
+      )}
 
     </div>
   );
