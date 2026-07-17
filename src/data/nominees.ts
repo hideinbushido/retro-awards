@@ -54,7 +54,7 @@ export const nominees: Record<number, YearNominees> = {
       {
         id: '1',
         name: 'Demon Slayer',
-        image: '/2019/ANIME/Cover/DEMON.png',
+        image: '/2019/ANIME/Cover/Demon_Slayer.jpg',
         silhouette: Array.from({ length: 13 }, (_, i) => `/2019/ANIME/Silhouette/Demon Slayer/${i + 1}.png`),
       },
     ],
