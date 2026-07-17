@@ -29,12 +29,20 @@ type DisplayNominee =
 
 function pickNominee(year: number): DisplayNominee {
   const data = nominees[year];
-  const pool: DisplayNominee[] = [
-    ...data.openings.map(d => ({ type: 'opening' as const, data: d })),
-    ...data.animes.map(d => ({ type: 'anime' as const, data: d })),
-  ];
-  if (!pool.length) return null;
-  return pool[Math.floor(Math.random() * pool.length)];
+  const hasOpenings = data.openings.length > 0;
+  const hasAnimes = data.animes.length > 0;
+  if (!hasOpenings && !hasAnimes) return null;
+
+  // Tirage 50/50 par catégorie (pas par item) pour que "anime" ressorte aussi
+  // souvent que "opening" même quand il y a beaucoup moins de nominés animes.
+  const useAnime = hasAnimes && (!hasOpenings || Math.random() < 0.5);
+
+  if (useAnime) {
+    const arr = data.animes;
+    return { type: 'anime', data: arr[Math.floor(Math.random() * arr.length)] };
+  }
+  const arr = data.openings;
+  return { type: 'opening', data: arr[Math.floor(Math.random() * arr.length)] };
 }
 
 // ── Shared decorations ──
