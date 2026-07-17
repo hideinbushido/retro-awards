@@ -23,9 +23,8 @@ const YEARS = [2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009,
 
 type Phase = 'hero' | 'timetravel' | 'year';
 type DisplayNominee =
-  | { type: 'opening'; data: Opening }
-  | { type: 'anime'; data: Anime }
-  | { type: 'combined'; opening: Opening; anime: Anime }
+  | { type: 'opening'; data: Opening; alsoAnime?: Anime }
+  | { type: 'anime'; data: Anime; alsoOpening?: Opening }
   | null;
 
 const normTitle = (s: string) => s.trim().toLowerCase();
@@ -42,13 +41,13 @@ function pickNominee(year: number): DisplayNominee {
 
   if (useAnime) {
     const anime = data.animes[Math.floor(Math.random() * data.animes.length)];
-    // Même titre nominé aussi en Opening cette année-là → slide fusionné.
-    const opening = data.openings.find(o => normTitle(o.animeName) === normTitle(anime.name));
-    return opening ? { type: 'combined', opening, anime } : { type: 'anime', data: anime };
+    // Même titre nominé aussi en Opening cette année-là → petit lien en plus, layout inchangé.
+    const alsoOpening = data.openings.find(o => normTitle(o.animeName) === normTitle(anime.name));
+    return { type: 'anime', data: anime, alsoOpening };
   }
   const opening = data.openings[Math.floor(Math.random() * data.openings.length)];
-  const anime = data.animes.find(a => normTitle(a.name) === normTitle(opening.animeName));
-  return anime ? { type: 'combined', opening, anime } : { type: 'opening', data: opening };
+  const alsoAnime = data.animes.find(a => normTitle(a.name) === normTitle(opening.animeName));
+  return { type: 'opening', data: opening, alsoAnime };
 }
 
 // ── Shared decorations ──
@@ -200,27 +199,25 @@ function YearSlide({
 }) {
   const isOpening = nominee?.type === 'opening';
   const isAnime = nominee?.type === 'anime';
-  const isCombined = nominee?.type === 'combined';
 
-  const combinedOpening = isCombined ? (nominee as { type: 'combined'; opening: Opening; anime: Anime }).opening : null;
-  const combinedAnime = isCombined ? (nominee as { type: 'combined'; opening: Opening; anime: Anime }).anime : null;
+  // Même titre nominé aussi dans l'autre catégorie cette année-là (juste un petit lien, pas de refonte)
+  const alsoAnime = nominee?.type === 'opening' ? nominee.alsoAnime ?? null : null;
+  const alsoOpening = nominee?.type === 'anime' ? nominee.alsoOpening ?? null : null;
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [audioPlaying, setAudioPlaying] = useState(false);
 
-  // Auto-play audio for openings (y compris le côté opening d'un slide fusionné)
+  // Auto-play audio for openings
   useEffect(() => {
-    const openingData = isOpening
-      ? (nominee as { type: 'opening'; data: Opening }).data
-      : combinedOpening;
-    if (!openingData) return;
-    const audio = new Audio(openingData.audio);
+    if (!isOpening) return;
+    const opening = (nominee as { type: 'opening'; data: Opening }).data;
+    const audio = new Audio(opening.audio);
     audio.volume = 0.5;
     audioRef.current = audio;
     audio.play().then(() => setAudioPlaying(true)).catch(() => setAudioPlaying(false));
     audio.onended = () => setAudioPlaying(false);
     return () => { audio.pause(); audio.src = ''; audioRef.current = null; setAudioPlaying(false); };
-  }, [isOpening, combinedOpening, nominee]);
+  }, [isOpening, nominee]);
 
   function toggleAudio() {
     const audio = audioRef.current;
@@ -240,9 +237,15 @@ function YearSlide({
       : null;
 
   const [silhouetteSrc] = useState<string | null>(() => {
-    const s = isAnime
-      ? (nominee as { type: 'anime'; data: Anime }).data.silhouette
-      : combinedAnime?.silhouette;
+    if (!isAnime) return null;
+    const s = (nominee as { type: 'anime'; data: Anime }).data.silhouette;
+    if (!s) return null;
+    return Array.isArray(s) ? s[Math.floor(Math.random() * s.length)] : s;
+  });
+
+  // Mini silhouette pour le teaser "aussi nominé en Anime de l'année"
+  const [alsoSilhouetteSrc] = useState<string | null>(() => {
+    const s = alsoAnime?.silhouette;
     if (!s) return null;
     return Array.isArray(s) ? s[Math.floor(Math.random() * s.length)] : s;
   });
@@ -282,89 +285,10 @@ function YearSlide({
       </video>
       <SlideDecorations />
 
-      {isCombined && combinedOpening && combinedAnime ? (
-        <div className="year-layout-combined animate-fade-in">
-          <h2 className="year-number glitch" data-text={String(year)}>{year}</h2>
-
-          <div className="combined-row">
-            {/* Gauche — Opening */}
-            <div className="combined-side">
-              <span className="text-xs font-bold tracking-widest uppercase flex items-center gap-1.5" style={{ color: 'var(--neon)', opacity: 0.8 }}>
-                <Music size={12} /> {combinedOpening.op && combinedOpening.op > 1 ? `Opening ${combinedOpening.op}` : 'Opening'}
-              </span>
-              <div className="year-cover-sm">
-                <NextImage
-                  src={combinedOpening.image}
-                  alt={combinedOpening.openingTitle}
-                  fill
-                  priority
-                  sizes="150px"
-                  style={{ objectFit: 'cover' }}
-                />
-              </div>
-              <p className="year-title">{combinedOpening.openingTitle}</p>
-              {combinedOpening.artist && <p className="year-subtitle">{combinedOpening.artist}</p>}
-              <div className="year-buttons">
-                <button
-                  onClick={toggleAudio}
-                  className="flex items-center gap-1.5 px-3 py-1.5 md:px-5 md:py-2 rounded text-xs font-bold tracking-widest uppercase transition-all"
-                  style={{
-                    border: '1px solid var(--neon)',
-                    color: 'var(--neon)',
-                    background: audioPlaying ? 'rgba(0,255,204,0.12)' : 'transparent',
-                    touchAction: 'manipulation',
-                  }}
-                >
-                  {audioPlaying ? (
-                    <><span style={{ fontSize: '14px' }}>⏸</span> PAUSE</>
-                  ) : (
-                    <><span style={{ fontSize: '14px' }}>▶</span> ÉCOUTER</>
-                  )}
-                </button>
-                <Link href={`/opening/${year}`} className="btn-neon px-3 py-1.5 md:px-5 md:py-2 rounded text-xs tracking-widest">
-                  VOIR NOMINÉS
-                </Link>
-              </div>
-            </div>
-
-            {/* Centre — Silhouette (desktop only) */}
-            {silhouetteSrc && (
-              <div className="flex-shrink-0 self-end animate-fade-in silhouette-drift hidden md:block" style={{ height: '55vh' }}>
-                <img
-                  src={silhouetteSrc}
-                  alt=""
-                  style={{ height: '100%', width: 'auto', objectFit: 'contain', filter: 'drop-shadow(0 0 24px rgba(0,255,204,0.3))' }}
-                />
-              </div>
-            )}
-
-            {/* Droite — Anime */}
-            <div className="combined-side combined-side-right">
-              <span className="text-xs font-bold tracking-widest uppercase flex items-center gap-1.5" style={{ color: 'var(--neon)', opacity: 0.8 }}>
-                <Tv size={12} /> Anime de l&apos;année
-              </span>
-              <p className="year-title">{combinedAnime.name}</p>
-              <div className="year-buttons">
-                <Link href={`/anime/${year}`} className="btn-neon px-3 py-1.5 md:px-5 md:py-2 rounded text-xs tracking-widest">
-                  VOIR NOMINÉS
-                </Link>
-              </div>
-            </div>
-          </div>
-
-          <Link
-            href={`/annee/${year}`}
-            className="px-3 py-1.5 md:px-5 md:py-2 rounded text-xs font-bold tracking-widest uppercase"
-            style={{ border: '1px solid var(--sepia-dim)', color: 'var(--sepia-dim)' }}
-          >
-            VOTER {year}
-          </Link>
-        </div>
-      ) : (
       <div className="year-layout animate-fade-in">
 
         {/* Cover */}
-        <div className="year-cover" style={{ position: 'relative' }}>
+        <div className={`year-cover${alsoAnime ? ' year-cover--compact' : ''}`} style={{ position: 'relative' }}>
           {coverSrc ? (
             <NextImage
               src={coverSrc}
@@ -409,9 +333,14 @@ function YearSlide({
                 </span>
               )}
               <div>
-                <p className="year-title">{titleLine}</p>
+                <p className={`year-title${alsoAnime ? ' year-title--compact' : ''}`}>{titleLine}</p>
                 {artistLine && <p className="year-subtitle mt-1">{artistLine}</p>}
-                {subLine && <p className="text-xs mt-1" style={{ color: 'var(--sepia-dim)', opacity: 0.7 }}>{subLine}</p>}
+                {subLine && <p className="text-sm md:text-base font-bold mt-1" style={{ color: 'var(--sepia-dim)', opacity: 0.9 }}>{subLine}</p>}
+                {alsoOpening && (
+                  <Link href={`/opening/${year}`} className="text-xs mt-1 inline-flex items-center gap-1 hover:underline" style={{ color: 'var(--neon)', opacity: 0.8 }}>
+                    <Music size={10} /> Aussi nominé en Opening
+                  </Link>
+                )}
               </div>
               <div className="h-px w-32 hidden md:block" style={{ background: 'var(--border)' }} />
               <div className="year-buttons">
@@ -462,8 +391,30 @@ function YearSlide({
             />
           </div>
         )}
+
+        {/* Teaser "aussi nominé en Anime de l'année" — mini silhouette à droite, desktop only */}
+        {alsoAnime && (
+          <Link
+            href={`/anime/${year}`}
+            className="flex-shrink-0 self-end animate-fade-in hidden md:flex flex-col items-center gap-2"
+            style={{ height: '55%' }}
+          >
+            {alsoSilhouetteSrc && (
+              <img
+                src={alsoSilhouetteSrc}
+                alt=""
+                style={{ height: '100%', width: 'auto', objectFit: 'contain', filter: 'drop-shadow(0 0 16px rgba(0,255,204,0.2))', opacity: 0.75 }}
+              />
+            )}
+            <span className="text-xs text-center leading-tight" style={{ color: 'var(--neon)', opacity: 0.85 }}>
+              <Tv size={10} className="inline mr-1" style={{ verticalAlign: '-1px' }} />
+              {alsoAnime.name}
+              <br />
+              Anime de l&apos;année
+            </span>
+          </Link>
+        )}
       </div>
-      )}
 
     </div>
   );
