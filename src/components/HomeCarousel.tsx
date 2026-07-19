@@ -238,11 +238,26 @@ function YearSlide({
       ? (nominee as { type: 'anime'; data: Anime }).data.image
       : null;
 
-  const [silhouetteSrc] = useState<string | null>(() => {
-    const s = pairAnime?.silhouette;
+  function pickSilhouette(s: Anime['silhouette'] | undefined, exclude?: string | null): string | null {
     if (!s) return null;
-    return Array.isArray(s) ? s[Math.floor(Math.random() * s.length)] : s;
-  });
+    if (!Array.isArray(s)) return s;
+    if (s.length === 1) return s[0];
+    let next = s[Math.floor(Math.random() * s.length)];
+    while (next === exclude) next = s[Math.floor(Math.random() * s.length)];
+    return next;
+  }
+
+  const [silhouetteSrc, setSilhouetteSrc] = useState<string | null>(() => pickSilhouette(pairAnime?.silhouette));
+
+  // Change de personnage toutes les 5s tant que le slide est affiché
+  useEffect(() => {
+    const pool = pairAnime?.silhouette;
+    if (!Array.isArray(pool) || pool.length < 2) return;
+    const t = setInterval(() => {
+      setSilhouetteSrc(prev => pickSilhouette(pool, prev));
+    }, 5000);
+    return () => clearInterval(t);
+  }, [pairAnime]);
 
   const titleLine = isOpening
     ? (nominee as { type: 'opening'; data: Opening }).data.openingTitle
@@ -293,8 +308,8 @@ function YearSlide({
               <span className="text-xs font-bold tracking-widest uppercase flex items-center gap-1.5" style={{ color: 'var(--neon)', opacity: 0.8 }}>
                 <Music size={12} /> {pairOpening.op && pairOpening.op > 1 ? `Opening ${pairOpening.op}` : 'Opening'}
               </span>
-              <div className="year-cover-sm">
-                <NextImage src={pairOpening.image} alt={pairOpening.openingTitle} fill sizes="150px" style={{ objectFit: 'cover' }} />
+              <div className="year-cover">
+                <NextImage src={pairOpening.image} alt={pairOpening.openingTitle} fill sizes="(max-width: 768px) 40vw, 22vw" style={{ objectFit: 'cover' }} />
               </div>
               <p className="year-title" style={{ fontSize: 'clamp(1.1rem, 2.2vw, 1.8rem)' }}>{pairOpening.openingTitle}</p>
               {pairOpening.artist && <p className="year-subtitle" style={{ fontSize: 'clamp(0.75rem, 1.3vw, 1rem)' }}>{pairOpening.artist}</p>}
@@ -323,7 +338,7 @@ function YearSlide({
 
             {/* Centre — Silhouette, bien visible, desktop only */}
             {silhouetteSrc && (
-              <div className="combined-silhouette hidden md:flex silhouette-drift animate-fade-in">
+              <div key={silhouetteSrc} className="combined-silhouette hidden md:flex silhouette-drift animate-fade-in">
                 <img
                   src={silhouetteSrc}
                   alt=""
@@ -337,8 +352,8 @@ function YearSlide({
               <span className="text-xs font-bold tracking-widest uppercase flex items-center gap-1.5" style={{ color: 'var(--neon)', opacity: 0.8 }}>
                 <Tv size={12} /> Anime de l&apos;année
               </span>
-              <div className="year-cover-sm">
-                <NextImage src={pairAnime.image} alt={pairAnime.name} fill sizes="150px" style={{ objectFit: 'cover' }} />
+              <div className="year-cover">
+                <NextImage src={pairAnime.image} alt={pairAnime.name} fill sizes="(max-width: 768px) 40vw, 22vw" style={{ objectFit: 'cover' }} />
               </div>
               <p className="year-title" style={{ fontSize: 'clamp(1.1rem, 2.2vw, 1.8rem)' }}>{pairAnime.name}</p>
               <div className="year-buttons">
@@ -451,7 +466,7 @@ function YearSlide({
 
         {/* Silhouette (anime, desktop only) */}
         {isAnime && silhouetteSrc && (
-          <div className="flex-shrink-0 self-end animate-fade-in silhouette-drift hidden md:block" style={{ height: '85%' }}>
+          <div key={silhouetteSrc} className="flex-shrink-0 self-end animate-fade-in silhouette-drift hidden md:block" style={{ height: '85%' }}>
             <img
               src={silhouetteSrc}
               alt=""
@@ -498,10 +513,10 @@ export default function HomeCarousel() {
     setPhase('timetravel');
   }, [yearIndex]);
 
-  // Timer 40s pour l'avancement automatique sur desktop uniquement
+  // Timer pour l'avancement automatique sur desktop uniquement (allongé pour laisser le temps aux rotations de perso)
   useEffect(() => {
     if (phase !== 'year' || isMobile) return;
-    const t = setTimeout(handleAutoAdvance, 40000);
+    const t = setTimeout(handleAutoAdvance, 60000);
     return () => clearTimeout(t);
   }, [phase, yearIndex, isMobile, handleAutoAdvance]);
 
