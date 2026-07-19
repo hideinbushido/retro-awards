@@ -413,8 +413,8 @@ body::after {
     text-align: left;
     justify-content: center;
     flex: 0 0 auto;
-    width: 24vw;
-    max-width: 300px;
+    width: 30vw;
+    max-width: 380px;
   }
   .combined-side-right {
     align-items: flex-end;
