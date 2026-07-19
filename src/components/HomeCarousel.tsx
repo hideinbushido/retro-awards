@@ -249,13 +249,13 @@ function YearSlide({
 
   const [silhouetteSrc, setSilhouetteSrc] = useState<string | null>(() => pickSilhouette(pairAnime?.silhouette));
 
-  // Change de personnage toutes les 5s tant que le slide est affiché
+  // Change de personnage toutes les 10s tant que le slide est affiché
   useEffect(() => {
     const pool = pairAnime?.silhouette;
     if (!Array.isArray(pool) || pool.length < 2) return;
     const t = setInterval(() => {
       setSilhouetteSrc(prev => pickSilhouette(pool, prev));
-    }, 5000);
+    }, 10000);
     return () => clearInterval(t);
   }, [pairAnime]);
 
@@ -342,7 +342,7 @@ function YearSlide({
                 <img
                   src={silhouetteSrc}
                   alt=""
-                  style={{ height: '100%', width: 'auto', objectFit: 'contain', filter: 'drop-shadow(0 0 28px rgba(0,255,204,0.35))' }}
+                  style={{ maxHeight: '100%', maxWidth: '100%', width: 'auto', height: 'auto', objectFit: 'contain', filter: 'drop-shadow(0 0 28px rgba(0,255,204,0.35))' }}
                 />
               </div>
             )}
