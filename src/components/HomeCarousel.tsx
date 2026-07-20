@@ -80,7 +80,7 @@ function HeroSlide({ onEnd }: { onEnd: () => void }) {
         style={{ opacity: 0.35, zIndex: 0 }}
         onEnded={onEnd}
       >
-        <source src="/Fondaccueil2.mp4" type="video/mp4" />
+        <source src="/Fon1.mp4" type="video/mp4" />
       </video>
       <SlideDecorations />
 
