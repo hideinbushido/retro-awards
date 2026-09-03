@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ChevronDown, Music, Tv, Rewind } from 'lucide-react';
+import { ChevronDown, ChevronRight, Music, Tv, Rewind } from 'lucide-react';
 
 export default function Hero() {
   return (
@@ -43,13 +43,13 @@ export default function Hero() {
         </div>
 
         {/* CTA vers le carrousel */}
-        <a href="#editions" className="btn-neon inline-flex items-center gap-2 px-6 py-3 rounded text-xs tracking-widest">
-          Explorer les éditions <ChevronDown size={14} />
-        </a>
+        <Link href="/carrousel" className="btn-neon inline-flex items-center gap-2 px-6 py-3 rounded text-xs tracking-widest">
+          ALLEZ DANS LE CARROUSSEL <ChevronRight size={14} />
+        </Link>
       </div>
 
       <a
-        href="#comment-ca-marche"
+        href="#presentateurs"
         aria-label="Défiler vers le bas"
         className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 scroll-cue"
       >

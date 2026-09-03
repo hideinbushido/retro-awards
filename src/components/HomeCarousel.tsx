@@ -39,24 +39,6 @@ function pickNominee(year: number): DisplayNominee {
   return { type: 'opening', data: opening, alsoAnime };
 }
 
-// Pick déterministe (premier item) pour l'état initial — évite tout tirage aléatoire au montage
-// (donc aucun mismatch d'hydratation et aucun setState dans un effect).
-function pickFirstNominee(year: number): DisplayNominee {
-  const data = nominees[year];
-  const hasOpenings = data.openings.length > 0;
-  const hasAnimes = data.animes.length > 0;
-  if (!hasOpenings && !hasAnimes) return null;
-
-  if (hasOpenings) {
-    const opening = data.openings[0];
-    const alsoAnime = data.animes.find(a => normTitle(a.name) === normTitle(opening.animeName));
-    return { type: 'opening', data: opening, alsoAnime };
-  }
-  const anime = data.animes[0];
-  const alsoOpening = data.openings.find(o => normTitle(o.animeName) === normTitle(anime.name));
-  return { type: 'anime', data: anime, alsoOpening };
-}
-
 // ── Shared decorations ──
 function SlideDecorations() {
   return (
@@ -166,15 +148,7 @@ function YearSlide({
     return next;
   }
 
-  // Premier rendu déterministe (pas de Math.random) — cette valeur peut être rendue côté serveur,
-  // la rotation aléatoire ne démarre qu'ensuite via l'intervalle ci-dessous.
-  function pickFirstSilhouette(s: Anime['silhouette'] | undefined): string | null {
-    if (!s) return null;
-    if (!Array.isArray(s)) return s;
-    return s[0] ?? null;
-  }
-
-  const [silhouetteSrc, setSilhouetteSrc] = useState<string | null>(() => pickFirstSilhouette(pairAnime?.silhouette));
+  const [silhouetteSrc, setSilhouetteSrc] = useState<string | null>(() => pickSilhouette(pairAnime?.silhouette));
 
   // Change de personnage toutes les 10s tant que le slide est affiché
   useEffect(() => {
@@ -412,8 +386,8 @@ function YearSlide({
 // ── Main carousel ──
 export default function HomeCarousel() {
   const [yearIndex, setYearIndex] = useState(0);
-  const [phase, setPhase] = useState<Phase>('year');
-  const [nominee, setNominee] = useState<DisplayNominee>(() => pickFirstNominee(YEARS[0]));
+  const [phase, setPhase] = useState<Phase>('timetravel');
+  const [nominee, setNominee] = useState<DisplayNominee>(null);
   const nextIdxRef = useRef<number>(0);
   const { pauseForOpening, resumeFromOpening } = useMusicContext();
 

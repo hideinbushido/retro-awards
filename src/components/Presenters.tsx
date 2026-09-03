@@ -2,10 +2,10 @@ import { User } from 'lucide-react';
 
 export default function Presenters() {
   return (
-    <section className="relative py-20 md:py-28 px-4" style={{ background: 'var(--bg)' }}>
+    <section id="presentateurs" className="relative py-20 md:py-28 px-4" style={{ background: 'var(--bg)' }}>
       <div className="max-w-4xl mx-auto text-center">
         <p className="text-xs font-bold tracking-widest uppercase mb-2" style={{ color: 'var(--neon)' }}>
-          Cette édition
+          Retro Awards
         </p>
         <h2 className="font-black mb-4" style={{ fontSize: 'clamp(1.6rem, 4vw, 2.6rem)', color: 'var(--sepia)' }}>
           Présentateurs
