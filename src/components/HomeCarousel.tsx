@@ -3,25 +3,14 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import Link from 'next/link';
 import NextImage from 'next/image';
-import { ChevronLeft, ChevronRight, Rewind, Music, Tv } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Music, Tv } from 'lucide-react';
 import { nominees } from '@/data/nominees';
 import type { Opening, Anime } from '@/data/nominees';
 import { useMusicContext } from '@/contexts/MusicContext';
 
-function useIsMobile() {
-  const [mobile, setMobile] = useState(false);
-  useEffect(() => {
-    const check = () => setMobile(window.innerWidth < 768);
-    check();
-    window.addEventListener('resize', check);
-    return () => window.removeEventListener('resize', check);
-  }, []);
-  return mobile;
-}
-
 const YEARS = [2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006, 2005] as const;
 
-type Phase = 'hero' | 'timetravel' | 'year';
+type Phase = 'timetravel' | 'year';
 type DisplayNominee =
   | { type: 'opening'; data: Opening; alsoAnime?: Anime }
   | { type: 'anime'; data: Anime; alsoOpening?: Opening }
@@ -67,94 +56,6 @@ function SlideDecorations() {
         }}
       />
     </>
-  );
-}
-
-// ── Hero slide ──
-function HeroSlide({ onEnd }: { onEnd: () => void }) {
-  return (
-    <div className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden slide-flicker">
-      <video
-        autoPlay muted playsInline preload="auto"
-        className="absolute inset-0 w-full h-full object-cover"
-        style={{ opacity: 0.35, zIndex: 0 }}
-        onEnded={onEnd}
-      >
-        <source src="/Fon1.mp4" type="video/mp4" />
-      </video>
-      <SlideDecorations />
-
-      <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
-        style={{ width: '800px', height: '500px', background: 'radial-gradient(ellipse, rgba(0,255,204,0.08) 0%, transparent 70%)', zIndex: 2 }}
-      />
-
-      <div className="relative text-center px-4 md:px-6 max-w-5xl mx-auto w-full animate-fade-up" style={{ zIndex: 3 }}>
-
-        {/* Badge */}
-        <div
-          className="inline-flex items-center gap-2 px-3 py-1 mb-4 md:mb-8 text-xs font-bold tracking-widest uppercase rounded"
-          style={{ border: '1px solid var(--border)', color: 'var(--neon)', background: 'rgba(0,255,204,0.05)' }}
-        >
-          <Rewind size={10} /> ZENKAI HORS-SÉRIE
-        </div>
-
-        {/* Title */}
-        <h1 className="font-black leading-none mb-3 md:mb-6" style={{ fontSize: 'clamp(2.8rem, 16vw, 9rem)' }}>
-          <span className="block glitch" data-text="RETRO" style={{ color: 'var(--sepia)', letterSpacing: '-0.02em' }}>RETRO</span>
-          <span className="block neon-text" style={{ fontSize: '55%', letterSpacing: '0.3em', marginTop: '-0.1em' }}>AWARDS</span>
-        </h1>
-
-        {/* Year range */}
-        <p className="text-xs md:text-sm mb-2 md:mb-4" style={{ color: 'var(--sepia-dim)', letterSpacing: '0.1em' }}>2005 — 2019</p>
-
-        {/* Description — masquée sur mobile */}
-        <p className="hidden md:block text-xs mb-10 max-w-lg mx-auto leading-relaxed" style={{ color: 'var(--sepia-dim)' }}>
-          Reviens aux sources. Vote pour les meilleurs openings et animes de chaque année, de 2019 jusqu'aux origines.
-        </p>
-
-        {/* Cards */}
-        <div className="grid grid-cols-2 gap-3 md:gap-5 max-w-2xl mx-auto mt-4 md:mt-0">
-
-          <Link href="/opening" className="group retro-card rounded-xl p-4 md:p-8 flex flex-col items-center gap-2 md:gap-4 relative overflow-hidden">
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-              style={{ background: 'radial-gradient(ellipse at center, rgba(0,255,204,0.06) 0%, transparent 70%)' }} />
-            <div className="w-10 h-10 md:w-16 md:h-16 rounded-full flex items-center justify-center"
-              style={{ background: 'rgba(0,255,204,0.08)', border: '1px solid var(--border)' }}>
-              <Music size={18} className="md:hidden" style={{ color: 'var(--neon)' }} />
-              <Music size={28} className="hidden md:block" style={{ color: 'var(--neon)' }} />
-            </div>
-            <div>
-              <p className="text-xs font-bold tracking-widest uppercase mb-0.5 hidden md:block" style={{ color: 'var(--sepia-dim)' }}>Catégorie 01</p>
-              <h2 className="text-base md:text-2xl font-black" style={{ color: 'var(--sepia)' }}>Opening</h2>
-            </div>
-            <p className="text-xs hidden md:block" style={{ color: 'var(--sepia-dim)' }}>15 années · meilleur opening</p>
-            <div className="flex items-center gap-1 text-xs font-bold tracking-widest neon-text opacity-0 group-hover:opacity-100 transition-opacity">
-              VOTER <ChevronRight size={10} />
-            </div>
-          </Link>
-
-          <Link href="/anime" className="group retro-card rounded-xl p-4 md:p-8 flex flex-col items-center gap-2 md:gap-4 relative overflow-hidden">
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-              style={{ background: 'radial-gradient(ellipse at center, rgba(0,255,204,0.06) 0%, transparent 70%)' }} />
-            <div className="w-10 h-10 md:w-16 md:h-16 rounded-full flex items-center justify-center"
-              style={{ background: 'rgba(0,255,204,0.08)', border: '1px solid var(--border)' }}>
-              <Tv size={18} className="md:hidden" style={{ color: 'var(--neon)' }} />
-              <Tv size={28} className="hidden md:block" style={{ color: 'var(--neon)' }} />
-            </div>
-            <div>
-              <p className="text-xs font-bold tracking-widest uppercase mb-0.5 hidden md:block" style={{ color: 'var(--sepia-dim)' }}>Catégorie 02</p>
-              <h2 className="text-base md:text-2xl font-black" style={{ color: 'var(--sepia)' }}>Anime</h2>
-            </div>
-            <p className="text-xs hidden md:block" style={{ color: 'var(--sepia-dim)' }}>15 années · meilleur anime</p>
-            <div className="flex items-center gap-1 text-xs font-bold tracking-widest neon-text opacity-0 group-hover:opacity-100 transition-opacity">
-              VOTER <ChevronRight size={10} />
-            </div>
-          </Link>
-
-        </div>
-      </div>
-    </div>
   );
 }
 
@@ -484,52 +385,33 @@ function YearSlide({
 
 // ── Main carousel ──
 export default function HomeCarousel() {
-  const [yearIndex, setYearIndex] = useState(-1);
-  const [phase, setPhase] = useState<Phase>('hero');
+  const [yearIndex, setYearIndex] = useState(0);
+  const [phase, setPhase] = useState<Phase>('timetravel');
   const [nominee, setNominee] = useState<DisplayNominee>(null);
   const nextIdxRef = useRef<number>(0);
-  const isMobile = useIsMobile();
   const { pauseForOpening, resumeFromOpening } = useMusicContext();
 
   // Pause musique quand un opening est affiché, reprend sinon
   useEffect(() => {
-    if (phase === 'year' && nominee?.type === 'opening') {
+    if (nominee?.type === 'opening') {
       pauseForOpening();
     } else {
       resumeFromOpening();
     }
-  }, [phase, nominee, pauseForOpening, resumeFromOpening]);
+  }, [nominee, pauseForOpening, resumeFromOpening]);
 
-  const currentYear = yearIndex >= 0 ? YEARS[yearIndex] : null;
+  const currentYear = YEARS[yearIndex];
 
   const goToYear = useCallback((idx: number) => {
     nextIdxRef.current = idx;
     setPhase('timetravel');
   }, []);
 
-  const handleAutoAdvance = useCallback(() => {
-    const next = yearIndex + 1;
-    nextIdxRef.current = next >= YEARS.length ? -1 : next;
-    setPhase('timetravel');
-  }, [yearIndex]);
-
-  // Timer pour l'avancement automatique sur desktop uniquement (allongé pour laisser le temps aux rotations de perso)
-  useEffect(() => {
-    if (phase !== 'year' || isMobile) return;
-    const t = setTimeout(handleAutoAdvance, 60000);
-    return () => clearTimeout(t);
-  }, [phase, yearIndex, isMobile, handleAutoAdvance]);
-
   const afterTimeTravel = useCallback(() => {
     const idx = nextIdxRef.current;
-    if (idx < 0 || idx >= YEARS.length) {
-      setYearIndex(-1);
-      setPhase('hero');
-    } else {
-      setNominee(pickNominee(YEARS[idx]));
-      setYearIndex(idx);
-      setPhase('year');
-    }
+    setNominee(pickNominee(YEARS[idx]));
+    setYearIndex(idx);
+    setPhase('year');
   }, []);
 
   const isTransitioning = phase === 'timetravel';
@@ -537,9 +419,7 @@ export default function HomeCarousel() {
   const canRight = !isTransitioning && yearIndex < YEARS.length - 1;
 
   const handleLeft = () => { if (canLeft) goToYear(yearIndex - 1); };
-  const handleRight = () => {
-    if (!isTransitioning) goToYear(yearIndex === -1 ? 0 : yearIndex + 1);
-  };
+  const handleRight = () => { if (canRight) goToYear(yearIndex + 1); };
 
   // Fallback timetravel si la vidéo ne se déclenche pas
   useEffect(() => {
@@ -550,9 +430,7 @@ export default function HomeCarousel() {
 
   return (
     <div className="relative w-full h-full overflow-hidden bg-black">
-      {phase === 'hero' && <HeroSlide onEnd={handleAutoAdvance} />}
-
-      {phase === 'year' && currentYear !== null && (
+      {phase === 'year' && (
         <YearSlide
           key={currentYear}
           year={currentYear}

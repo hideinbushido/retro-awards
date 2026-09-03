@@ -1,12 +1,14 @@
 import Navbar from '@/components/Navbar';
-import HomeCarousel from '@/components/HomeCarousel';
+import Hero from '@/components/Hero';
+import Presenters from '@/components/Presenters';
 
 export default function HomePage() {
   return (
     <>
       <Navbar />
-      <main className="fixed inset-0 pt-16 overflow-hidden">
-        <HomeCarousel />
+      <main>
+        <Hero />
+        <Presenters />
       </main>
     </>
   );
