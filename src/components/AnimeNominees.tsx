@@ -58,7 +58,17 @@ export default function AnimeNominees({ year, animes }: Props) {
                 </div>
               </div>
               <div className="p-3 flex flex-col gap-2 flex-1">
-                <p className="font-black text-sm leading-tight" style={{ color: 'var(--sepia)' }}>{anime.name}</p>
+                <div>
+                  <p className="font-black text-sm leading-tight" style={{ color: 'var(--sepia)' }}>{anime.name}</p>
+                  {anime.season && (
+                    <p className="text-[10px] uppercase tracking-wider mt-0.5" style={{ color: 'var(--neon)' }}>{anime.season}</p>
+                  )}
+                  {(anime.studio || anime.author) && (
+                    <p className="text-[10px] leading-snug mt-1 opacity-70" style={{ color: 'var(--sepia)' }}>
+                      {[anime.studio, anime.author].filter(Boolean).join(' · ')}
+                    </p>
+                  )}
+                </div>
                 <button
                   onClick={() => handleVote(anime.id)}
                   disabled={hasVoted || loading === anime.id}
@@ -91,6 +101,15 @@ export default function AnimeNominees({ year, animes }: Props) {
             </div>
             <div className="text-center mt-4">
               <h3 className="font-black text-lg" style={{ color: 'var(--sepia)' }}>{zoomed.name}</h3>
+              {zoomed.season && (
+                <p className="text-xs uppercase tracking-widest mt-1" style={{ color: 'var(--neon)' }}>{zoomed.season}</p>
+              )}
+              {zoomed.studio && (
+                <p className="text-xs mt-2 opacity-80" style={{ color: 'var(--sepia)' }}>Studio : {zoomed.studio}</p>
+              )}
+              {zoomed.author && (
+                <p className="text-xs opacity-80" style={{ color: 'var(--sepia)' }}>Auteur : {zoomed.author}</p>
+              )}
               <button
                 onClick={() => { handleVote(zoomed.id); setZoomed(null); }}
                 disabled={!!votedId}

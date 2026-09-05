@@ -170,6 +170,10 @@ function YearSlide({
     ? (nominee as { type: 'opening'; data: Opening }).data.animeName
     : null;
 
+  const animeSeason = isAnime
+    ? (nominee as { type: 'anime'; data: Anime }).data.season ?? null
+    : null;
+
   const artistLine = isOpening
     ? (nominee as { type: 'opening'; data: Opening }).data.artist ?? null
     : null;
@@ -257,6 +261,11 @@ function YearSlide({
                 <NextImage src={pairAnime.image} alt={pairAnime.name} fill sizes="(max-width: 768px) 40vw, 22vw" style={{ objectFit: 'cover' }} />
               </div>
               <p className="year-title" style={{ fontSize: 'clamp(1.1rem, 2.2vw, 1.8rem)' }}>{pairAnime.name}</p>
+              {pairAnime.season && (
+                <p className="text-[11px] md:text-xs font-bold tracking-wider uppercase mt-1 leading-snug" style={{ color: 'var(--neon)', opacity: 0.85 }}>
+                  {pairAnime.season}
+                </p>
+              )}
               <div className="year-buttons">
                 <Link href={`/anime/${year}`} className="btn-neon px-3 py-1.5 md:px-4 md:py-2 rounded text-xs tracking-widest">
                   VOIR
@@ -323,6 +332,11 @@ function YearSlide({
               )}
               <div>
                 <p className="year-title">{titleLine}</p>
+                {animeSeason && (
+                  <p className="text-xs md:text-sm font-bold tracking-wider uppercase mt-1 leading-snug" style={{ color: 'var(--neon)', opacity: 0.85 }}>
+                    {animeSeason}
+                  </p>
+                )}
                 {artistLine && <p className="year-subtitle mt-1">{artistLine}</p>}
                 {subLine && <p className="text-sm md:text-base font-bold mt-1" style={{ color: 'var(--sepia-dim)', opacity: 0.9 }}>{subLine}</p>}
               </div>

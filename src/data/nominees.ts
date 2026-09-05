@@ -14,6 +14,9 @@ export type Anime = {
   id: string;
   name: string;
   image: string;
+  season?: string;  // "Saison 1", "Saison 3 Part 2", ou le titre de l'arc/saison
+  studio?: string;  // studio d'animation
+  author?: string;  // auteur de l'œuvre originale
   silhouette?: string | string[]; // string[] → un perso est tiré au hasard à chaque passage dans le carousel
 };
 
@@ -54,97 +57,145 @@ export const nominees: Record<number, YearNominees> = {
       {
         id: '1',
         name: 'Demon Slayer',
-        image: '/2019/ANIME/Cover/Demon_Slayer.jpg',
+        image: '/2019/ANIME/Cover/DemonSlayer.jpg',
+        season: 'Saison 1 - Arc de la Résolution inébranlable',
+        studio: 'ufotable',
+        author: 'Koyoharu Gotouge',
         silhouette: Array.from({ length: 13 }, (_, i) => `/2019/ANIME/Silhouette/Demon Slayer/${i + 1}.png`),
       },
       {
         id: '2',
         name: 'Attack on Titan: Season 3 Part 2 — Return to Shiganshina',
-        image: '/2019/ANIME/Cover/SNK.jpg',
+        image: '/2019/ANIME/Cover/AttackOnTitan.jpg',
+        season: 'Saison 3 Partie 2 - Arc Retour à Shiganshina',
+        studio: 'WIT Studio',
+        author: 'Hajime Isayama',
         silhouette: Array.from({ length: 10 }, (_, i) => `/2019/ANIME/Silhouette/SNK/${15 + i}.png`),
       },
       {
         id: '3',
         name: 'Cop Craft',
-        image: '/2019/ANIME/Cover/COP.jpg',
+        image: '/2019/ANIME/Cover/CopCraft.jpg',
+        season: 'Saison 1 - Arc de la Crise de San-Teresa', // thematique
+        studio: 'Millepensee',
+        author: 'Shoji Gatoh',
         silhouette: Array.from({ length: 6 }, (_, i) => `/2019/ANIME/Silhouette/Cop Craft/${54 + i}.png`),
       },
       {
         id: '4',
         name: 'Carole & Tuesday',
-        image: '/2019/ANIME/Cover/Carole & Tuesday.jpg',
+        image: '/2019/ANIME/Cover/CaroleAndTuesday.jpg',
+        season: 'Anime original - Histoire du Miracle des 7 minutes', // thematique (fil rouge de l'oeuvre, pas un arc)
+        studio: 'Bones',
+        author: 'Shinichiro Watanabe',
         silhouette: Array.from({ length: 6 }, (_, i) => `/2019/ANIME/Silhouette/Carole and Tuesday/${47 + i}.png`),
       },
       {
         id: '5',
         name: 'BEASTARS',
-        image: '/2019/ANIME/Cover/Beastar.jpg',
+        image: '/2019/ANIME/Cover/Beastars.jpg',
+        season: 'Saison 1 - Arc du Club de Théâtre + Arc du Festival des Météores',
+        studio: 'Orange',
+        author: 'Paru Itagaki',
         silhouette: Array.from({ length: 8 }, (_, i) => `/2019/ANIME/Silhouette/Beastars/${26 + i}.png`),
       },
       {
         id: '6',
         name: 'Bungo Stray Dogs',
-        image: '/2019/ANIME/Cover/Bungo.jpg',
+        image: '/2019/ANIME/Cover/BungoStrayDogs.jpg',
+        season: 'Saison 3 - Arc Cannibalism',
+        studio: 'Bones',
+        author: 'Kafka Asagiri',
         silhouette: Array.from({ length: 11 }, (_, i) => `/2019/ANIME/Silhouette/Bungou Stray Dogs/${35 + i}.png`),
       },
       {
         id: '7',
         name: 'Dororo',
         image: '/2019/ANIME/Cover/Dororo.jpg',
+        season: 'Saison 1 - Arc de la Reconquête de Soi', // thematique
+        studio: 'MAPPA x Tezuka Productions',
+        author: 'Osamu Tezuka',
         silhouette: Array.from({ length: 5 }, (_, i) => `/2019/ANIME/Silhouette/Dororo/${61 + i}.png`),
       },
       {
         id: '8',
         name: 'Dr. Stone',
-        image: '/2019/ANIME/Cover/Stone.jpg',
+        image: '/2019/ANIME/Cover/DrStone.jpg',
+        season: 'Saison 1 - Arc Royaume de la Science',
+        studio: 'TMS Entertainment',
+        author: 'Riichiro Inagaki & Boichi',
         silhouette: Array.from({ length: 9 }, (_, i) => `/2019/ANIME/Silhouette/Dr.Stone/${67 + i}.png`),
       },
       {
         id: '9',
         name: 'Fire Force',
         image: '/2019/ANIME/Cover/FireForce.jpg',
+        season: 'Saison 1 - Arc de l’Introduction du Grand Prédicateur', // thematique (fusion de 2 arcs reels)
+        studio: 'David Production',
+        author: 'Atsushi Okubo',
         silhouette: Array.from({ length: 11 }, (_, i) => `/2019/ANIME/Silhouette/Fire Force/${77 + i}.png`),
       },
       {
         id: '10',
         name: 'Kaguya-sama: Love Is War',
-        image: '/2019/ANIME/Cover/Kaguya.jpg',
+        image: '/2019/ANIME/Cover/KaguyaSama.jpg',
+        season: 'Saison 1 - Arc de la Guerre Psychologique', // thematique
+        studio: 'A-1 Pictures',
+        author: 'Aka Akasaka',
         silhouette: Array.from({ length: 7 }, (_, i) => `/2019/ANIME/Silhouette/Kaguya-Sama/${88 + i}.png`),
       },
       {
         id: '11',
         name: 'Mob Psycho 100',
-        image: '/2019/ANIME/Cover/mob2.jpg',
+        image: '/2019/ANIME/Cover/MobPsycho100.jpg',
+        season: 'Saison 2 - Arc de la Domination du Monde',
+        studio: 'Bones',
+        author: 'ONE',
         silhouette: Array.from({ length: 9 }, (_, i) => `/2019/ANIME/Silhouette/Mob 2/${96 + i}.png`),
       },
       {
         id: '12',
         name: 'My Hero Academia',
-        image: '/2019/ANIME/Cover/mha.jpg',
+        image: '/2019/ANIME/Cover/MyHeroAcademia.jpg',
+        season: 'Saison 4 - Arc Shie Hassaikai (Overhaul) + Arc Festival de Yuei',
+        studio: 'Bones',
+        author: 'Kohei Horikoshi',
         silhouette: Array.from({ length: 8 }, (_, i) => `/2019/ANIME/Silhouette/My Hero Academia/${106 + i}.png`),
       },
       {
         id: '13',
         name: 'One Piece',
-        image: '/2019/ANIME/Cover/one.jpg',
+        image: '/2019/ANIME/Cover/OnePiece.jpg',
+        season: 'Arc Pays des Wa',
+        studio: 'Toei Animation',
+        author: 'Eiichiro Oda',
         silhouette: Array.from({ length: 16 }, (_, i) => `/2019/ANIME/Silhouette/One Piece/${115 + i}.png`),
       },
       {
         id: '14',
         name: 'The Promised Neverland',
-        image: '/2019/ANIME/Cover/promised.jpg',
+        image: '/2019/ANIME/Cover/ThePromisedNeverland.jpg',
+        season: 'Saison 1 - Arc Grace Field',
+        studio: 'CloverWorks',
+        author: 'Kaiu Shirai & Posuka Demizu',
         silhouette: Array.from({ length: 10 }, (_, i) => `/2019/ANIME/Silhouette/Promised Neverland/${132 + i}.png`),
       },
       {
         id: '15',
         name: 'Sword Art Online: Alicization',
-        image: '/2019/ANIME/Cover/SAO Alicization.jpg',
+        image: '/2019/ANIME/Cover/SwordArtOnlineAlicization.jpg',
+        season: 'Saison 3 - Alicization',
+        studio: 'A-1 Pictures',
+        author: 'Reki Kawahara',
         silhouette: Array.from({ length: 6 }, (_, i) => `/2019/ANIME/Silhouette/Sao Alicization/${143 + i}.png`),
       },
       {
         id: '16',
         name: 'Vinland Saga',
-        image: '/2019/ANIME/Cover/vinland saga.jpg',
+        image: '/2019/ANIME/Cover/VinlandSaga.jpg',
+        season: 'Saison 1 - Arc de la Guerre',
+        studio: 'WIT Studio',
+        author: 'Makoto Yukimura',
         silhouette: Array.from({ length: 7 }, (_, i) => `/2019/ANIME/Silhouette/Vinland Saga/${150 + i}.png`),
       },
     ],
@@ -169,7 +220,126 @@ export const nominees: Record<number, YearNominees> = {
       { id: '15', animeName: 'Fate/EXTRA Last Encore',              openingTitle: 'Bright Burning Shout',          artist: 'Takanori Nishikawa',                  image: '/2018/OPENING/Cover/FATELAST.jpg',   audio: '/2018/OPENING/Audio/FATEEXTRA.MP3'     },
     ],
     animes: [
-      // { id: '1', name: 'Sword Art Online', image: '/2018/ANIME/Cover/SAO.png', silhouette: '/2018/ANIME/Silhouette/SAO.png' },
+      {
+        id: '1',
+        name: 'Steins;Gate 0',
+        image: '/2018/ANIME/Cover/SteinsGate0.jpg',
+        season: 'Suite - Arc de la Ligne du Monde Bêta', // thematique
+        studio: 'White Fox',
+        author: '5pb. & Nitroplus',
+      },
+      {
+        id: '2',
+        name: 'My Hero Academia',
+        image: '/2018/ANIME/Cover/MyHeroAcademia.jpg',
+        season: 'Saison 3 - Arc du Camp d’Entraînement + Arc de l’Assaut du Repaire + Arc du Permis Provisoire',
+        studio: 'Bones',
+        author: 'Kohei Horikoshi',
+      },
+      {
+        id: '3',
+        name: 'Grand Blue',
+        image: '/2018/ANIME/Cover/GrandBlue.jpg',
+        season: 'Saison 1 - Arc du Club de Plongée', // thematique
+        studio: 'Zero-G',
+        author: 'Kenji Inoue & Kimitake Yoshioka',
+      },
+      {
+        id: '4',
+        name: 'Golden Kamuy',
+        image: '/2018/ANIME/Cover/GoldenKamuy.jpg',
+        season: 'Saisons 1 & 2 - Arc de la Chasse à l’Or', // thematique
+        studio: 'Geno Studio',
+        author: 'Satoru Noda',
+      },
+      {
+        id: '5',
+        name: 'Banana Fish',
+        image: '/2018/ANIME/Cover/BananaFish.jpg',
+        season: 'Saison unique - Arc du Banana Fish', // thematique
+        studio: 'MAPPA',
+        author: 'Akimi Yoshida',
+      },
+      {
+        id: '6',
+        name: 'Wotakoi: Love Is Hard for Otaku',
+        image: '/2018/ANIME/Cover/WotakoiLoveIsHardForOtaku.jpg',
+        season: 'Saison 1 - Arc des Amours Otaku', // thematique
+        studio: 'A-1 Pictures',
+        author: 'Fujita',
+      },
+      {
+        id: '7',
+        name: 'Violet Evergarden',
+        image: '/2018/ANIME/Cover/VioletEvergarden.jpg',
+        season: 'Saison 1 - Arc des Poupées de Souvenirs Automatiques', // thematique
+        studio: 'Kyoto Animation',
+        author: 'Kana Akatsuki',
+      },
+      {
+        id: '8',
+        name: 'Moi quand je me réincarne en Slime',
+        image: '/2018/ANIME/Cover/MoiQuandJeMeReincarneEnSlime.jpg',
+        season: 'Saison 1 - Arc de la Fondation de Tempest', // thematique
+        studio: 'Eight Bit',
+        author: 'Fuse',
+      },
+      {
+        id: '9',
+        name: 'Black Clover',
+        image: '/2018/ANIME/Cover/BlackClover.jpg',
+        season: 'Saison 1 - Arc de l’Œil du Minuit Blanc', // thematique
+        studio: 'Studio Pierrot',
+        author: 'Yuki Tabata',
+      },
+      {
+        id: '10',
+        name: 'Attack on Titan',
+        image: '/2018/ANIME/Cover/AttackOnTitan.jpg',
+        season: 'Saison 3 Partie 1 - Arc de la Révolte',
+        studio: 'WIT Studio',
+        author: 'Hajime Isayama',
+      },
+      {
+        id: '11',
+        name: 'Nanatsu no Taizai',
+        image: '/2018/ANIME/Cover/NanatsuNoTaizai.jpg',
+        season: 'Saison 2 - Revival of the Commandments',
+        studio: 'A-1 Pictures',
+        author: 'Nakaba Suzuki',
+      },
+      {
+        id: '12',
+        name: 'Food Wars! The Third Plate',
+        image: '/2018/ANIME/Cover/FoodWarsTheThirdPlate.jpg',
+        season: 'Saison 3 - Arc Central',
+        studio: 'J.C.Staff',
+        author: 'Yuto Tsukuda & Shun Saeki',
+      },
+      {
+        id: '13',
+        name: 'JoJo’s Bizarre Adventure',
+        image: '/2018/ANIME/Cover/JoJosBizarreAdventure.jpg',
+        season: 'Saison 4 / Partie 5 - Golden Wind',
+        studio: 'David Production',
+        author: 'Hirohiko Araki',
+      },
+      {
+        id: '14',
+        name: 'Devilman Crybaby',
+        image: '/2018/ANIME/Cover/DevilmanCrybaby.jpg',
+        season: 'Saison unique - Arc de l’Éveil du Devilman', // thematique
+        studio: 'Science SARU',
+        author: 'Go Nagai',
+      },
+      {
+        id: '15',
+        name: 'Baki',
+        image: '/2018/ANIME/Cover/Baki.jpg',
+        season: 'Saison 1 - Arc des Condamnés à Mort les plus Maléfiques',
+        studio: 'TMS Entertainment',
+        author: 'Keisuke Itagaki',
+      },
     ],
   },
 
