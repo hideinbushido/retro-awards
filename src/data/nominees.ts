@@ -166,7 +166,7 @@ export const nominees: Record<number, YearNominees> = {
         id: '13',
         name: 'One Piece',
         image: '/2019/ANIME/Cover/OnePiece.jpg',
-        season: 'Arc Pays des Wa',
+        season: 'Arc Reverie',
         studio: 'Toei Animation',
         author: 'Eiichiro Oda',
         silhouette: Array.from({ length: 16 }, (_, i) => `/2019/ANIME/Silhouette/One Piece/${115 + i}.png`),
@@ -364,7 +364,118 @@ export const nominees: Record<number, YearNominees> = {
       { id: '17', animeName: 'Nanatsu no Taizai',                           openingTitle: 'Howling',                artist: 'FLOW × GRANRODEO',          op: 4,  image: '/2017/OPENING/Cover/NNT4.png',   audio: '/2017/OPENING/Audio/NNT.MP3'      },
     ],
     animes: [
-      // { id: '1', name: 'My Hero Academia', image: '/2017/ANIME/Cover/MHA.png', silhouette: '/2017/ANIME/Silhouette/MHA.png' },
+      {
+        id: '1',
+        name: 'Saga of Tanya the Evil',
+        image: '/2017/ANIME/Cover/SagaOfTanyaTheEvil.jpg',
+        season: 'Saison 1 - Arc de la Guerre de l’Empire', // thematique
+        studio: 'NUT',
+        author: 'Carlo Zen',
+      },
+      {
+        id: '2',
+        name: 'Blue Exorcist: Kyoto Saga',
+        image: '/2017/ANIME/Cover/BlueExorcistKyotoSaga.jpg',
+        season: 'Saison 2 - Arc du Roi Impur',
+        studio: 'A-1 Pictures',
+        author: 'Kazue Katō',
+      },
+      {
+        id: '3',
+        name: 'Tales of Zestiria the X',
+        image: '/2017/ANIME/Cover/TalesOfZestiriaTheX.jpg',
+        season: 'Saison 2 - Arc du Berger et des Seigneurs', // thematique
+        studio: 'ufotable',
+        author: 'Hideo Baba',
+      },
+      {
+        id: '4',
+        name: 'ACCA: 13-Territory Inspection Dept.',
+        image: '/2017/ANIME/Cover/ACCA13TerritoryInspectionDept.jpg',
+        season: 'Saison unique - Arc de l’Inspection des 13 Territoires', // thematique
+        studio: 'Madhouse',
+        author: 'Natsume Ono',
+      },
+      {
+        id: '5',
+        name: 'Yowamushi Pedal: New Generation',
+        image: '/2017/ANIME/Cover/YowamushiPedalNewGeneration.jpg',
+        season: 'Saison 3 - Arc de la 42e Inter-High', // thematique
+        studio: 'TMS Entertainment',
+        author: 'Wataru Watanabe',
+      },
+      {
+        id: '6',
+        name: 'Attack on Titan',
+        image: '/2017/ANIME/Cover/AttackOnTitan.jpg',
+        season: 'Saison 2 - Arc du Choc des Titans',
+        studio: 'WIT Studio',
+        author: 'Hajime Isayama',
+      },
+      {
+        id: '7',
+        name: 'My Hero Academia',
+        image: '/2017/ANIME/Cover/MyHeroAcademia.jpg',
+        season: 'Saison 2 - Saga du Début de l’Apocalypse', // thematique
+        studio: 'Bones',
+        author: 'Kohei Horikoshi',
+      },
+      {
+        id: '8',
+        name: 'Dragon Ball Super',
+        image: '/2017/ANIME/Cover/DragonBallSuper.jpg',
+        season: 'Arc de la Survie de l’Univers (Tournoi du Pouvoir)',
+        studio: 'Toei Animation',
+        author: 'Akira Toriyama',
+      },
+      {
+        id: '9',
+        name: 'Made in Abyss',
+        image: '/2017/ANIME/Cover/MadeInAbyss.jpg',
+        season: 'Saison 1 - Arc de la Descente dans l’Abîme', // thematique
+        studio: 'Kinema Citrus',
+        author: 'Akihito Tsukushi',
+      },
+      {
+        id: '10',
+        name: 'Kakegurui',
+        image: '/2017/ANIME/Cover/Kakegurui.jpg',
+        season: 'Saison 1 - Arc de l’Académie Hyakkaou', // thematique
+        studio: 'MAPPA',
+        author: 'Homura Kawamoto & Tōru Naomura',
+      },
+      {
+        id: '11',
+        name: 'Twin Star Exorcists',
+        image: '/2017/ANIME/Cover/TwinStarExorcists.jpg',
+        season: 'Fin de série - Arc de l’Ame-no-Mihashira', // thematique
+        studio: 'Studio Pierrot',
+        author: 'Yoshiaki Sukeno',
+      },
+      {
+        id: '12',
+        name: 'One Piece',
+        image: '/2017/ANIME/Cover/OnePiece.jpg',
+        season: 'Arc de Whole Cake Island',
+        studio: 'Toei Animation',
+        author: 'Eiichiro Oda',
+      },
+      {
+        id: '13',
+        name: 'Naruto Shippuden',
+        image: '/2017/ANIME/Cover/NarutoShippuden.jpg',
+        season: 'Épilogue : Arc Konoha Hiden',
+        studio: 'Studio Pierrot',
+        author: 'Masashi Kishimoto',
+      },
+      {
+        id: '14',
+        name: 'Fate/Apocrypha',
+        image: '/2017/ANIME/Cover/FateApocrypha.jpg',
+        season: 'Saison unique - Arc de la Grande Guerre du Saint Graal', // thematique
+        studio: 'A-1 Pictures',
+        author: 'Yūichirō Higashide',
+      },
     ],
   },
 
