@@ -730,7 +730,7 @@ export const nominees: Record<number, YearNominees> = {
       {
         id: '15',
         name: 'Bleach',
-        image: '/2011/ANIME/Cover/Bleach.jpg',
+        image: '/2011/ANIME/Cover/Bleach.webp',
         season: 'Fin de l’Arc des Arrancars + Arc de l’Armée d’Invasion + début de l’Arc Fullbring',
         studio: 'Studio Pierrot',
         author: 'Tite Kubo',
