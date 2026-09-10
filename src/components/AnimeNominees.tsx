@@ -42,7 +42,9 @@ export default function AnimeNominees({ year, animes }: Props) {
                 className="relative aspect-[3/4] overflow-hidden cursor-zoom-in"
                 onClick={() => setZoomed(anime)}
               >
-                <Image src={anime.image} alt={anime.name} fill sizes="(max-width: 640px) 50vw, 33vw" className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                {/* copie floutee de la cover : remplit le cadre sans rogner la vraie image */}
+                <Image src={anime.image} alt="" aria-hidden fill sizes="(max-width: 640px) 50vw, 33vw" className="object-cover scale-110 blur-2xl opacity-40 group-hover:scale-125 transition-transform duration-500" />
+                <Image src={anime.image} alt={anime.name} fill sizes="(max-width: 640px) 50vw, 33vw" className="object-contain group-hover:brightness-110 transition-[filter] duration-500" />
                 {isMyVote && (
                   <div className="absolute top-2 left-2 flex items-center gap-1 px-2 py-1 rounded text-xs font-bold"
                     style={{ background: 'var(--neon)', color: 'var(--bg)' }}
@@ -96,7 +98,9 @@ export default function AnimeNominees({ year, animes }: Props) {
             </button>
             <div className="rounded-xl overflow-hidden neon-border">
               <div className="relative" style={{ aspectRatio: '3/4' }}>
-                <Image src={zoomed.image} alt={zoomed.name} fill sizes="90vw" className="object-cover" />
+                {/* copie floutee de la cover : remplit le cadre sans rogner la vraie image */}
+                <Image src={zoomed.image} alt="" aria-hidden fill sizes="90vw" className="object-cover scale-110 blur-2xl opacity-40" />
+                <Image src={zoomed.image} alt={zoomed.name} fill sizes="90vw" className="object-contain" />
               </div>
             </div>
             <div className="text-center mt-4">
