@@ -613,7 +613,136 @@ export const nominees: Record<number, YearNominees> = {
       { id: '15', animeName: 'Fate/Zero',                                 openingTitle: 'oath sign',             artist: 'LiSA',                                 image: '/2011/OPENING/Cover/FATE1.jpg',       audio: '/2011/OPENING/Audio/FATE.MP3'        },
       { id: '16', animeName: 'Inazuma Eleven',                             openingTitle: 'Bokura no Goal!',       artist: 'T-Pistonz+KMC',                 op: 6,  image: '/2011/OPENING/Cover/INAZUMA.jpg',    audio: '/2011/OPENING/Audio/INAZUMA.MP3'     },
     ],
-    animes: [],
+    animes: [
+      {
+        id: '1',
+        name: 'Puella Magi Madoka Magica',
+        image: '/2011/ANIME/Cover/PuellaMagiMadokaMagica.jpg',
+        season: 'Saison unique - Arc de Walpurgisnacht', // thematique
+        studio: 'Shaft',
+        author: 'Magica Quartet (Gen Urobuchi)',
+      },
+      {
+        id: '2',
+        name: 'Beelzebub',
+        image: '/2011/ANIME/Cover/Beelzebub.jpg',
+        season: 'Saison 1 - Arc de la Crise Scolaire', // thematique
+        studio: 'Studio Pierrot',
+        author: 'Ryūhei Tamura',
+      },
+      {
+        id: '3',
+        name: 'Toriko',
+        image: '/2011/ANIME/Cover/Toriko.jpg',
+        season: 'Saison 1 - Arc Gourmet', // thematique
+        studio: 'Toei Animation',
+        author: 'Mitsutoshi Shimabukuro',
+      },
+      {
+        id: '4',
+        name: 'Steins;Gate',
+        image: '/2011/ANIME/Cover/SteinsGate.jpg',
+        season: 'Saison 1 - Arc de la Ligne du Monde Alpha', // thematique
+        studio: 'White Fox',
+        author: '5pb. & Nitroplus',
+      },
+      {
+        id: '5',
+        name: 'Anohana: The Flower We Saw That Day',
+        image: '/2011/ANIME/Cover/Anohana.jpg',
+        season: 'Saison unique - Arc de la Promesse à Menma', // thematique
+        studio: 'A-1 Pictures',
+        author: 'Mari Okada',
+      },
+      {
+        id: '6',
+        name: 'Deadman Wonderland',
+        image: '/2011/ANIME/Cover/DeadmanWonderland.jpg',
+        season: 'Saison unique - Arc du Carnival Corpse', // thematique
+        studio: 'Manglobe',
+        author: 'Jinsei Kataoka & Kazuma Kondō',
+      },
+      {
+        id: '7',
+        name: 'Blue Exorcist',
+        image: '/2011/ANIME/Cover/BlueExorcist.jpg',
+        season: 'Saison 1 - Arc de l’Académie de la Croix-Vraie', // thematique
+        studio: 'A-1 Pictures',
+        author: 'Kazue Katō',
+      },
+      {
+        id: '8',
+        name: 'One Piece',
+        image: '/2011/ANIME/Cover/OnePiece.jpg',
+        season: 'Arc de l’Après-Guerre',
+        studio: 'Toei Animation',
+        author: 'Eiichiro Oda',
+      },
+      {
+        id: '9',
+        name: 'Inazuma Eleven GO',
+        image: '/2011/ANIME/Cover/InazumaElevenGo.jpg',
+        season: 'Saison 1 - Arc du Cinquième Secteur',
+        studio: 'OLM',
+        author: 'Level-5',
+      },
+      {
+        id: '10',
+        name: 'Blood-C',
+        image: '/2011/ANIME/Cover/BloodC.jpg',
+        season: 'Saison unique - Arc des Anciens', // thematique
+        studio: 'Production I.G',
+        author: 'CLAMP',
+      },
+      {
+        id: '11',
+        name: 'Fate/Zero',
+        image: '/2011/ANIME/Cover/FateZero.jpg',
+        season: 'Saison 1 - Arc de la Quatrième Guerre du Saint Graal', // thematique
+        studio: 'ufotable',
+        author: 'Gen Urobuchi',
+      },
+      {
+        id: '12',
+        name: 'Hunter × Hunter',
+        image: '/2011/ANIME/Cover/HunterXHunter.jpg',
+        season: 'Saison 1 - Arc de l’Examen Hunter',
+        studio: 'Madhouse',
+        author: 'Yoshihiro Togashi',
+      },
+      {
+        id: '13',
+        name: 'Mirai Nikki',
+        image: '/2011/ANIME/Cover/MiraiNikki.jpg',
+        season: 'Saison 1 - Arc du Jeu de Survie', // thematique
+        studio: 'asread.',
+        author: 'Sakae Esuno',
+      },
+      {
+        id: '14',
+        name: 'Kaiji: Against All Rules',
+        image: '/2011/ANIME/Cover/KaijiAgainstAllRules.jpg',
+        season: 'Saison 2 - Arc de la Prison Souterraine et du Pachinko Géant', // thematique
+        studio: 'Madhouse',
+        author: 'Nobuyuki Fukumoto',
+      },
+      {
+        id: '15',
+        name: 'Bleach',
+        image: '/2011/ANIME/Cover/Bleach.jpg',
+        season: 'Fin de l’Arc des Arrancars + Arc de l’Armée d’Invasion + début de l’Arc Fullbring',
+        studio: 'Studio Pierrot',
+        author: 'Tite Kubo',
+      },
+      {
+        id: '16',
+        name: 'Naruto Shippuden',
+        image: '/2011/ANIME/Cover/NarutoShippuden.jpg',
+        season: 'Arc du Sommet des Cinq Kage + début de la 4e Grande Guerre Ninja',
+        studio: 'Studio Pierrot',
+        author: 'Masashi Kishimoto',
+      },
+    ],
   },
 
   2010: {
