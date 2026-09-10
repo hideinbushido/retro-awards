@@ -39,12 +39,11 @@ export default function AnimeNominees({ year, animes }: Props) {
           return (
             <div key={anime.id} className="retro-card rounded-lg overflow-hidden flex flex-col group">
               <div
-                className="relative aspect-[3/4] overflow-hidden cursor-zoom-in"
+                className="relative aspect-[2/3] overflow-hidden cursor-zoom-in"
                 onClick={() => setZoomed(anime)}
               >
-                {/* copie floutee de la cover : remplit le cadre sans rogner la vraie image */}
-                <Image src={anime.image} alt="" aria-hidden fill sizes="(max-width: 640px) 50vw, 33vw" className="object-cover scale-110 blur-2xl opacity-40 group-hover:scale-125 transition-transform duration-500" />
-                <Image src={anime.image} alt={anime.name} fill sizes="(max-width: 640px) 50vw, 33vw" className="object-contain group-hover:brightness-110 transition-[filter] duration-500" />
+                {/* cadre 2:3 = le ratio de la plupart des jaquettes : remplit sans bandes, et le bas reste visible */}
+                <Image src={anime.image} alt={anime.name} fill sizes="(max-width: 640px) 50vw, 33vw" className="object-cover group-hover:brightness-110 transition-[filter] duration-500" style={{ objectPosition: '50% 75%' }} />
                 {isMyVote && (
                   <div className="absolute top-2 left-2 flex items-center gap-1 px-2 py-1 rounded text-xs font-bold"
                     style={{ background: 'var(--neon)', color: 'var(--bg)' }}
@@ -97,10 +96,8 @@ export default function AnimeNominees({ year, animes }: Props) {
               <X size={16} />
             </button>
             <div className="rounded-xl overflow-hidden neon-border">
-              <div className="relative" style={{ aspectRatio: '3/4' }}>
-                {/* copie floutee de la cover : remplit le cadre sans rogner la vraie image */}
-                <Image src={zoomed.image} alt="" aria-hidden fill sizes="90vw" className="object-cover scale-110 blur-2xl opacity-40" />
-                <Image src={zoomed.image} alt={zoomed.name} fill sizes="90vw" className="object-contain" />
+              <div className="relative" style={{ aspectRatio: '2/3' }}>
+                <Image src={zoomed.image} alt={zoomed.name} fill sizes="90vw" className="object-cover" style={{ objectPosition: '50% 75%' }} />
               </div>
             </div>
             <div className="text-center mt-4">
