@@ -166,7 +166,7 @@ export const nominees: Record<number, YearNominees> = {
         id: '13',
         name: 'One Piece',
         image: '/2019/ANIME/Cover/OnePiece.jpg',
-        season: 'Arc Reverie',
+        season: 'Arc de Wano',
         studio: 'Toei Animation',
         author: 'Eiichiro Oda',
         silhouette: Array.from({ length: 16 }, (_, i) => `/2019/ANIME/Silhouette/One Piece/${115 + i}.png`),
@@ -184,7 +184,7 @@ export const nominees: Record<number, YearNominees> = {
         id: '15',
         name: 'Sword Art Online: Alicization',
         image: '/2019/ANIME/Cover/SwordArtOnlineAlicization.jpg',
-        season: 'Saison 3 - Alicization',
+        season: 'Saison 1 - Arc de l’Arrivée dans l’Underworld', // thematique
         studio: 'A-1 Pictures',
         author: 'Reki Kawahara',
         silhouette: Array.from({ length: 6 }, (_, i) => `/2019/ANIME/Silhouette/Sao Alicization/${143 + i}.png`),
@@ -592,7 +592,136 @@ export const nominees: Record<number, YearNominees> = {
       { id: '14', animeName: 'Fate/Zero',                        openingTitle: 'To the Beginning',           artist: 'Kalafina',                    op: 2,  image: '/2012/OPENING/Cover/FATE.jpg',         audio: '/2012/OPENING/Audio/FATEZERO2.MP3'   },
       { id: '15', animeName: 'Inazuma Eleven Go: Chrono Stone',   openingTitle: 'Shoshin wo KEEP ON!',        artist: 'T-Pistonz+KMC',               op: 3,  image: '/2012/OPENING/Cover/INAZUMAELEVENGOCHRONO.jpg',     audio: '/2012/OPENING/Audio/INAZUMA.MP3'    },
     ],
-    animes: [],
+    animes: [
+      {
+        id: '1',
+        name: 'High School DxD',
+        image: '/2012/ANIME/Cover/HighSchoolDxD.jpg',
+        season: 'Saison 1 - Arc de Riser Phenex', // thematique
+        studio: 'TNK',
+        author: 'Ichiei Ishibumi',
+      },
+      {
+        id: '2',
+        name: 'Naruto Shippuden',
+        image: '/2012/ANIME/Cover/NarutoShippuden.jpg',
+        season: 'Arc de la 4e Grande Guerre Ninja : Affrontement',
+        studio: 'Studio Pierrot',
+        author: 'Masashi Kishimoto',
+      },
+      {
+        id: '3',
+        name: 'Aquarion Evol',
+        image: '/2012/ANIME/Cover/AquarionEvol.jpg',
+        season: 'Anime original - Arc de l’Académie Neo-Deava', // thematique
+        studio: 'Satelight',
+        author: 'Shōji Kawamori',
+      },
+      {
+        id: '4',
+        name: 'JoJo’s Bizarre Adventure',
+        image: '/2012/ANIME/Cover/JoJosBizarreAdventure.jpg',
+        season: 'Saison 1 / Partie 1 - Phantom Blood',
+        studio: 'David Production',
+        author: 'Hirohiko Araki',
+      },
+      {
+        id: '5',
+        name: 'Accel World',
+        image: '/2012/ANIME/Cover/AccelWorld.jpg',
+        season: 'Saison unique - Arc du Brain Burst', // thematique
+        studio: 'Sunrise',
+        author: 'Reki Kawahara',
+      },
+      {
+        id: '6',
+        name: 'Sword Art Online',
+        image: '/2012/ANIME/Cover/SwordArtOnline.jpg',
+        season: 'Saison 1 - Arc d’Aincrad',
+        studio: 'A-1 Pictures',
+        author: 'Reki Kawahara',
+      },
+      {
+        id: '7',
+        name: 'Fate/Zero',
+        image: '/2012/ANIME/Cover/FateZero.jpg',
+        season: 'Saison 2 - Fin de la Quatrième Guerre du Saint Graal', // thematique
+        studio: 'ufotable',
+        author: 'Gen Urobuchi',
+      },
+      {
+        id: '8',
+        name: 'Kuroko’s Basketball',
+        image: '/2012/ANIME/Cover/KurokosBasketball.jpg',
+        season: 'Saison 1 - Arc de l’Inter-High', // thematique
+        studio: 'Production I.G',
+        author: 'Tadatoshi Fujimaki',
+      },
+      {
+        id: '9',
+        name: 'Inazuma Eleven GO: Chrono Stone',
+        image: '/2012/ANIME/Cover/InazumaElevenGoChronoStone.jpg',
+        season: 'Saison 2 - Arc du Voyage dans le Temps', // thematique
+        studio: 'OLM',
+        author: 'Level-5',
+      },
+      {
+        id: '10',
+        name: 'Hyouka',
+        image: '/2012/ANIME/Cover/Hyouka.jpg',
+        season: 'Saison unique - Arc du Club de Littérature Classique', // thematique
+        studio: 'Kyoto Animation',
+        author: 'Honobu Yonezawa',
+      },
+      {
+        id: '11',
+        name: 'Bleach',
+        image: '/2012/ANIME/Cover/Bleach.jpg',
+        season: 'Fin de série - Arc de l’Agent Perdu',
+        studio: 'Studio Pierrot',
+        author: 'Tite Kubo',
+      },
+      {
+        id: '12',
+        name: 'One Piece',
+        image: '/2012/ANIME/Cover/OnePiece.jpg',
+        season: 'Arc de l’Île des Hommes-Poissons',
+        studio: 'Toei Animation',
+        author: 'Eiichiro Oda',
+      },
+      {
+        id: '13',
+        name: 'Btooom!',
+        image: '/2012/ANIME/Cover/Btooom.jpg',
+        season: 'Saison unique - Arc de l’Île du Btooom!', // thematique
+        studio: 'Madhouse',
+        author: 'Junya Inoue',
+      },
+      {
+        id: '14',
+        name: 'Code:Breaker',
+        image: '/2012/ANIME/Cover/CodeBreaker.jpg',
+        season: 'Saison unique - Arc des Code:Breakers', // thematique
+        studio: 'Kinema Citrus',
+        author: 'Akimine Kamijyo',
+      },
+      {
+        id: '15',
+        name: 'Magi: The Labyrinth of Magic',
+        image: '/2012/ANIME/Cover/Magi.jpg',
+        season: 'Saison 1 - Arc de Balbadd',
+        studio: 'A-1 Pictures',
+        author: 'Shinobu Ohtaka',
+      },
+      {
+        id: '16',
+        name: 'Psycho-Pass',
+        image: '/2012/ANIME/Cover/PsychoPass.jpg',
+        season: 'Anime original - Arc de l’Affaire Makishima', // thematique
+        studio: 'Production I.G',
+        author: 'Gen Urobuchi',
+      },
+    ],
   },
 
   2011: {
@@ -765,7 +894,80 @@ export const nominees: Record<number, YearNominees> = {
       { id: '16', animeName: 'Inazuma Eleven',                       openingTitle: 'Katte Nakou ze!',                artist: 'T-Pistonz+KMC',                       op: 4,  image: '/2010/OPENING/Cover/INAZUMA.jpg',   audio: '/2010/OPENING/Audio/INAZUMA4.MP3'   },
       { id: '15', animeName: 'Angel Beats!',                         openingTitle: 'My Soul, Your Beats!',           artist: 'Lia',                                         image: '/2010/OPENING/Cover/ANGEL.jpg',      audio: '/2010/OPENING/Audio/ANGEL.MP3'      },
     ],
-    animes: [],
+    animes: [
+      {
+        id: '1',
+        name: 'Cobra the Animation',
+        image: '/2010/ANIME/Cover/Cobra.jpg',
+        season: 'Saison unique - Arc des Six Guerriers',
+        studio: 'Magic Bus',
+        author: 'Buichi Terasawa',
+      },
+      {
+        id: '2',
+        name: 'Naruto Shippuden',
+        image: '/2010/ANIME/Cover/NarutoShippuden.jpg',
+        season: 'Arc de l’Invasion de Pain',
+        studio: 'Studio Pierrot',
+        author: 'Masashi Kishimoto',
+      },
+      {
+        id: '3',
+        name: 'Reborn!',
+        image: '/2010/ANIME/Cover/Reborn.jpg',
+        season: 'Fin de l’Arc du Futur',
+        studio: 'Artland',
+        author: 'Akira Amano',
+      },
+      {
+        id: '4',
+        name: 'Durarara!!',
+        image: '/2010/ANIME/Cover/Durarara.jpg',
+        season: 'Saison 1 - Arc des Dollars', // thematique
+        studio: 'Brain’s Base',
+        author: 'Ryōgo Narita',
+      },
+      {
+        id: '5',
+        name: 'Bleach',
+        image: '/2010/ANIME/Cover/Bleach.jpg',
+        season: 'Arc de la Chute des Arrancar',
+        studio: 'Studio Pierrot',
+        author: 'Tite Kubo',
+      },
+      {
+        id: '6',
+        name: 'Black Butler',
+        image: '/2010/ANIME/Cover/BlackButler.jpg',
+        season: 'Saison 2 - Arc d’Alois Trancy', // thematique (histoire originale de l'anime)
+        studio: 'A-1 Pictures',
+        author: 'Yana Toboso',
+      },
+      {
+        id: '7',
+        name: 'Highschool of the Dead',
+        image: '/2010/ANIME/Cover/HighschoolOfTheDead.jpg',
+        season: 'Saison unique - Arc de l’Épidémie de Zombies', // thematique
+        studio: 'Madhouse',
+        author: 'Daisuke Satō & Shōji Satō',
+      },
+      {
+        id: '8',
+        name: 'Bakuman.',
+        image: '/2010/ANIME/Cover/Bakuman.jpg',
+        season: 'Saison 1 - Arc des Débuts de Muto Ashirogi', // thematique
+        studio: 'J.C.Staff',
+        author: 'Tsugumi Ohba & Takeshi Obata',
+      },
+      {
+        id: '9',
+        name: 'Fullmetal Alchemist: Brotherhood',
+        image: '/2010/ANIME/Cover/FullmetalAlchemistBrotherhood.jpg',
+        season: 'Saison unique - Arc du Jour Promis',
+        studio: 'Bones',
+        author: 'Hiromu Arakawa',
+      },
+    ],
   },
 
   2009: {
@@ -783,7 +985,112 @@ export const nominees: Record<number, YearNominees> = {
       { id: '11', animeName: 'Inazuma Eleven',                        openingTitle: 'Maji de Kansha!',                artist: 'T-Pistonz+KMC',                       op: 2,  image: '/2009/OPENING/Cover/INAZUMA.jpg',    audio: '/2009/OPENING/Audio/INAZUMA2.MP3'    },
       { id: '12', animeName: 'Bakemonogatari',                        openingTitle: 'Renai Circulation',              artist: 'Kana Hanazawa',                       op: 4,  image: '/2009/OPENING/Cover/BAKEMONO.jpg',       audio: '/2009/OPENING/Audio/BAKE4.MP3'       },
     ],
-    animes: [],
+    animes: [
+      {
+        id: '1',
+        name: 'Hajime no Ippo: New Challenger',
+        image: '/2009/ANIME/Cover/HajimeNoIppo.jpg',
+        season: 'Saison 2 - Arc des Défenses du Titre Japonais', // thematique
+        studio: 'Madhouse',
+        author: 'George Morikawa',
+      },
+      {
+        id: '2',
+        name: 'Major',
+        image: '/2009/ANIME/Cover/Major.jpg',
+        season: 'Saison 5 - Arc de la Coupe du Monde', // thematique
+        studio: 'SynergySP',
+        author: 'Takuya Mitsuda',
+      },
+      {
+        id: '3',
+        name: 'K-On!',
+        image: '/2009/ANIME/Cover/KOn.jpg',
+        season: 'Saison 1 - Arc du Club de Musique Légère', // thematique
+        studio: 'Kyoto Animation',
+        author: 'Kakifly',
+      },
+      {
+        id: '4',
+        name: 'Beyblade: Metal Fusion',
+        image: '/2009/ANIME/Cover/BeybladeMetalFusion.jpg',
+        season: 'Saison 1 - Arc de la Dark Nebula', // thematique
+        studio: 'SynergySP',
+        author: 'Takafumi Adachi',
+      },
+      {
+        id: '5',
+        name: 'Fullmetal Alchemist: Brotherhood',
+        image: '/2009/ANIME/Cover/FullmetalAlchemistBrotherhood.jpg',
+        season: 'Saison unique - Arc de la Quête de la Pierre Philosophale', // thematique
+        studio: 'Bones',
+        author: 'Hiromu Arakawa',
+      },
+      {
+        id: '6',
+        name: 'Dragon Ball Z Kai',
+        image: '/2009/ANIME/Cover/DragonBallZKai.jpg',
+        season: 'Arc des Saiyans',
+        studio: 'Toei Animation',
+        author: 'Akira Toriyama',
+      },
+      {
+        id: '7',
+        name: 'Reborn!',
+        image: '/2009/ANIME/Cover/Reborn.jpg',
+        season: 'Arc du Futur',
+        studio: 'Artland',
+        author: 'Akira Amano',
+      },
+      {
+        id: '8',
+        name: 'Naruto Shippuden',
+        image: '/2009/ANIME/Cover/NarutoShippuden.jpg',
+        season: 'Arc du Combat Fatidique entre Frères',
+        studio: 'Studio Pierrot',
+        author: 'Masashi Kishimoto',
+      },
+      {
+        id: '9',
+        name: 'One Piece',
+        image: '/2009/ANIME/Cover/OnePiece.jpg',
+        season: 'Arc de l’Archipel des Sabaody',
+        studio: 'Toei Animation',
+        author: 'Eiichiro Oda',
+      },
+      {
+        id: '10',
+        name: 'Fairy Tail',
+        image: '/2009/ANIME/Cover/FairyTail.jpg',
+        season: 'Saison 1 - Arc d’Eisenwald',
+        studio: 'A-1 Pictures & Satelight',
+        author: 'Hiro Mashima',
+      },
+      {
+        id: '11',
+        name: 'Les Chevaliers du Zodiaque : The Lost Canvas',
+        image: '/2009/ANIME/Cover/LostCanvas.jpg',
+        season: 'Chapitre 1 - Arc de la Guerre Sainte contre Hadès', // thematique
+        studio: 'TMS Entertainment',
+        author: 'Shiori Teshirogi & Masami Kurumada',
+      },
+      {
+        id: '12',
+        name: 'Bakemonogatari',
+        image: '/2009/ANIME/Cover/Bakemonogatari.jpg',
+        season: 'Saison unique - Arc Hitagi Crab',
+        studio: 'Shaft',
+        author: 'Nisio Isin',
+      },
+      {
+        id: '13',
+        name: 'A Certain Scientific Railgun',
+        image: '/2009/ANIME/Cover/ACertainScientificRailgun.jpg',
+        season: 'Saison 1 - Arc du Level Upper',
+        studio: 'J.C.Staff',
+        author: 'Kazuma Kamachi & Motoi Fuyukawa',
+      },
+    ],
   },
 
   2008: {
@@ -791,7 +1098,86 @@ export const nominees: Record<number, YearNominees> = {
       // { id: '1', animeName: 'Code Geass R2', openingTitle: 'Colors', image: '/nominees/2008/openings/1/cover.jpg', audio: '/nominees/2008/openings/1/audio.mp3' },
     ],
     animes: [
-      // { id: '1', name: 'Code Geass R2', image: '/nominees/2008/animes/1/cover.jpg' },
+      {
+        id: '1',
+        name: 'Major',
+        image: '/2008/ANIME/Cover/Major.jpg',
+        season: 'Saison 4 - Arc des Ligues Mineures Américaines', // thematique
+        studio: 'SynergySP',
+        author: 'Takuya Mitsuda',
+      },
+      {
+        id: '2',
+        name: 'Naruto Shippuden',
+        image: '/2008/ANIME/Cover/NarutoShippuden.jpg',
+        season: 'Arc de l’Élimination de l’Akatsuki',
+        studio: 'Studio Pierrot',
+        author: 'Masashi Kishimoto',
+      },
+      {
+        id: '3',
+        name: 'Spice and Wolf',
+        image: '/2008/ANIME/Cover/SpiceAndWolf.jpg',
+        season: 'Saison 1 - Arc de la Route vers le Nord', // thematique
+        studio: 'Imagin',
+        author: 'Isuna Hasekura',
+      },
+      {
+        id: '4',
+        name: 'Yu-Gi-Oh! 5D’s',
+        image: '/2008/ANIME/Cover/YuGiOh5Ds.jpg',
+        season: 'Saison 1 - Arc de la Fortune Cup',
+        studio: 'Gallop',
+        author: 'Kazuki Takahashi',
+      },
+      {
+        id: '5',
+        name: 'Code Geass: Lelouch of the Rebellion R2',
+        image: '/2008/ANIME/Cover/CodeGeassR2.jpg',
+        season: 'Saison 2 - Arc du Zero Requiem', // thematique
+        studio: 'Sunrise',
+        author: 'Gorō Taniguchi',
+      },
+      {
+        id: '6',
+        name: 'Soul Eater',
+        image: '/2008/ANIME/Cover/SoulEater.jpg',
+        season: 'Saison unique - Arc de la Résurrection du Kishin', // thematique
+        studio: 'Bones',
+        author: 'Atsushi Ōkubo',
+      },
+      {
+        id: '7',
+        name: 'Toradora!',
+        image: '/2008/ANIME/Cover/Toradora.jpg',
+        season: 'Saison unique - Arc de l’Alliance Taiga-Ryūji', // thematique
+        studio: 'J.C.Staff',
+        author: 'Yuyuko Takemiya',
+      },
+      {
+        id: '8',
+        name: 'Black Butler',
+        image: '/2008/ANIME/Cover/BlackButler.jpg',
+        season: 'Saison 1 - Arc de Jack l’Éventreur',
+        studio: 'A-1 Pictures',
+        author: 'Yana Toboso',
+      },
+      {
+        id: '9',
+        name: 'One Piece',
+        image: '/2008/ANIME/Cover/OnePiece.jpg',
+        season: 'Arc de Thriller Bark',
+        studio: 'Toei Animation',
+        author: 'Eiichiro Oda',
+      },
+      {
+        id: '10',
+        name: 'Bleach',
+        image: '/2008/ANIME/Cover/Bleach.jpg',
+        season: 'Arc de Hueco Mundo',
+        studio: 'Studio Pierrot',
+        author: 'Tite Kubo',
+      },
     ],
   },
 
@@ -800,7 +1186,86 @@ export const nominees: Record<number, YearNominees> = {
       // { id: '1', animeName: 'Gurren Lagann', openingTitle: 'Sorairo Days', image: '/nominees/2007/openings/1/cover.jpg', audio: '/nominees/2007/openings/1/audio.mp3' },
     ],
     animes: [
-      // { id: '1', name: 'Gurren Lagann', image: '/nominees/2007/animes/1/cover.jpg' },
+      {
+        id: '1',
+        name: 'Major',
+        image: '/2007/ANIME/Cover/Major.jpg',
+        season: 'Saison 3 - Arc du Lycée Seishū', // thematique
+        studio: 'SynergySP',
+        author: 'Takuya Mitsuda',
+      },
+      {
+        id: '2',
+        name: 'Tengen Toppa Gurren Lagann',
+        image: '/2007/ANIME/Cover/GurrenLagann.jpg',
+        season: 'Anime original - Arc de la Team Dai-Gurren', // thematique
+        studio: 'Gainax',
+        author: 'Hiroyuki Imaishi',
+      },
+      {
+        id: '3',
+        name: 'Darker than Black',
+        image: '/2007/ANIME/Cover/DarkerThanBlack.jpg',
+        season: 'Anime original - Arc de la Porte de l’Enfer', // thematique
+        studio: 'Bones',
+        author: 'Tensai Okamura',
+      },
+      {
+        id: '4',
+        name: 'Lucky Star',
+        image: '/2007/ANIME/Cover/LuckyStar.jpg',
+        season: 'Saison unique - Chroniques du Lycée Ryōō', // thematique (serie episodique)
+        studio: 'Kyoto Animation',
+        author: 'Kagami Yoshimizu',
+      },
+      {
+        id: '5',
+        name: 'Afro Samurai',
+        image: '/2007/ANIME/Cover/AfroSamurai.jpg',
+        season: 'Saison unique - Arc du Bandeau Numéro Un', // thematique
+        studio: 'Gonzo',
+        author: 'Takashi Okazaki',
+      },
+      {
+        id: '6',
+        name: 'Baccano!',
+        image: '/2007/ANIME/Cover/Baccano.jpg',
+        season: 'Saison unique - Arc du Flying Pussyfoot', // thematique
+        studio: 'Brain’s Base',
+        author: 'Ryōgo Narita',
+      },
+      {
+        id: '7',
+        name: 'Kaiji: Ultimate Survivor',
+        image: '/2007/ANIME/Cover/Kaiji.jpg',
+        season: 'Saison 1 - Arc de l’Espoir', // thematique
+        studio: 'Madhouse',
+        author: 'Nobuyuki Fukumoto',
+      },
+      {
+        id: '8',
+        name: 'Naruto Shippuden',
+        image: '/2007/ANIME/Cover/NarutoShippuden.jpg',
+        season: 'Arc du Sauvetage du Kazekage',
+        studio: 'Studio Pierrot',
+        author: 'Masashi Kishimoto',
+      },
+      {
+        id: '9',
+        name: 'Bleach',
+        image: '/2007/ANIME/Cover/Bleach.jpg',
+        season: 'Arc des Arrancar',
+        studio: 'Studio Pierrot',
+        author: 'Tite Kubo',
+      },
+      {
+        id: '10',
+        name: 'Clannad',
+        image: '/2007/ANIME/Cover/Clannad.jpg',
+        season: 'Saison 1 - Arc de Fūko',
+        studio: 'Kyoto Animation',
+        author: 'Jun Maeda',
+      },
     ],
   },
 
@@ -809,7 +1274,94 @@ export const nominees: Record<number, YearNominees> = {
       // { id: '1', animeName: 'Code Geass', openingTitle: 'Colors', image: '/nominees/2006/openings/1/cover.jpg', audio: '/nominees/2006/openings/1/audio.mp3' },
     ],
     animes: [
-      // { id: '1', name: 'Code Geass', image: '/nominees/2006/animes/1/cover.jpg' },
+      {
+        id: '1',
+        name: 'Fate/stay night',
+        image: '/2006/ANIME/Cover/FateStayNight.jpg',
+        season: 'Saison unique - Arc de la Cinquième Guerre du Saint Graal', // thematique
+        studio: 'Studio Deen',
+        author: 'Kinoko Nasu',
+      },
+      {
+        id: '2',
+        name: 'Ergo Proxy',
+        image: '/2006/ANIME/Cover/ErgoProxy.jpg',
+        season: 'Anime original - Arc de Romdo', // thematique
+        studio: 'Manglobe',
+        author: 'Shūkō Murase',
+      },
+      {
+        id: '3',
+        name: 'Gintama',
+        image: '/2006/ANIME/Cover/Gintama.jpg',
+        season: 'Saison 1 - Débuts de la Yorozuya', // thematique (serie episodique)
+        studio: 'Sunrise',
+        author: 'Hideaki Sorachi',
+      },
+      {
+        id: '4',
+        name: 'Air Gear',
+        image: '/2006/ANIME/Cover/AirGear.jpg',
+        season: 'Saison unique - Arc des Kogarasumaru', // thematique
+        studio: 'Toei Animation',
+        author: 'Oh! Great',
+      },
+      {
+        id: '5',
+        name: 'Nana',
+        image: '/2006/ANIME/Cover/Nana.jpg',
+        season: 'Saison unique - Arc de Tokyo', // thematique
+        studio: 'Madhouse',
+        author: 'Ai Yazawa',
+      },
+      {
+        id: '6',
+        name: 'Black Lagoon',
+        image: '/2006/ANIME/Cover/BlackLagoon.jpg',
+        season: 'Saisons 1 & 2 - Arc de Roanapur', // thematique
+        studio: 'Madhouse',
+        author: 'Rei Hiroe',
+      },
+      {
+        id: '7',
+        name: 'D.Gray-man',
+        image: '/2006/ANIME/Cover/DGrayMan.jpg',
+        season: 'Saison 1 - Arc de l’Entrée dans la Congrégation de l’Ombre', // thematique
+        studio: 'TMS Entertainment',
+        author: 'Katsura Hoshino',
+      },
+      {
+        id: '8',
+        name: 'Death Note',
+        image: '/2006/ANIME/Cover/DeathNote.jpg',
+        season: 'Saison unique - Arc de L', // thematique
+        studio: 'Madhouse',
+        author: 'Tsugumi Ohba & Takeshi Obata',
+      },
+      {
+        id: '9',
+        name: 'Code Geass: Lelouch of the Rebellion',
+        image: '/2006/ANIME/Cover/CodeGeass.jpg',
+        season: 'Anime original - Arc de la Rébellion de Zero', // thematique
+        studio: 'Sunrise',
+        author: 'Gorō Taniguchi',
+      },
+      {
+        id: '10',
+        name: 'Reborn!',
+        image: '/2006/ANIME/Cover/Reborn.jpg',
+        season: 'Saison 1 - Arc de la Vie Quotidienne', // thematique
+        studio: 'Artland',
+        author: 'Akira Amano',
+      },
+      {
+        id: '11',
+        name: 'One Piece',
+        image: '/2006/ANIME/Cover/OnePiece.jpg',
+        season: 'Arc d’Enies Lobby',
+        studio: 'Toei Animation',
+        author: 'Eiichiro Oda',
+      },
     ],
   },
 
@@ -818,7 +1370,126 @@ export const nominees: Record<number, YearNominees> = {
       { id: '1', animeName: 'Eureka Seven', openingTitle: 'DAYS', artist: 'FLOW', image: '/2005/OPENING/Cover/EUREKA.png', audio: '/2005/OPENING/Audio/EUREKA.MP3' },
     ],
     animes: [
-      // { id: '1', name: 'Fullmetal Alchemist', image: '/nominees/2005/animes/1/cover.jpg' },
+      {
+        id: '1',
+        name: 'Eyeshield 21',
+        image: '/2005/ANIME/Cover/Eyeshield21.jpg',
+        season: 'Saison 1 - Arc du Tournoi de Printemps', // thematique
+        studio: 'Gallop',
+        author: 'Riichiro Inagaki & Yusuke Murata',
+      },
+      {
+        id: '2',
+        name: 'Eureka Seven',
+        image: '/2005/ANIME/Cover/EurekaSeven.jpg',
+        season: 'Anime original - Arc du Gekkostate', // thematique
+        studio: 'Bones',
+        author: 'Tomoki Kyoda',
+      },
+      {
+        id: '3',
+        name: 'Aria the Animation',
+        image: '/2005/ANIME/Cover/AriaTheAnimation.jpg',
+        season: 'Saison 1 - Arc des Ondines de Neo-Venezia', // thematique
+        studio: 'Hal Film Maker',
+        author: 'Kozue Amano',
+      },
+      {
+        id: '4',
+        name: 'Mushishi',
+        image: '/2005/ANIME/Cover/Mushishi.jpg',
+        season: 'Saison 1 - Récits du Mushishi', // thematique (serie episodique, sans arc)
+        studio: 'Artland',
+        author: 'Yuki Urushibara',
+      },
+      {
+        id: '5',
+        name: 'Akagi',
+        image: '/2005/ANIME/Cover/Akagi.jpg',
+        season: 'Saison 1 - Arc de l’Ascension d’Akagi', // thematique
+        studio: 'Madhouse',
+        author: 'Nobuyuki Fukumoto',
+      },
+      {
+        id: '6',
+        name: 'Blood+',
+        image: '/2005/ANIME/Cover/BloodPlus.jpg',
+        season: 'Saison unique - Arc d’Okinawa', // thematique
+        studio: 'Production I.G',
+        author: 'Junichi Fujisaku',
+      },
+      {
+        id: '7',
+        name: 'Major',
+        image: '/2005/ANIME/Cover/Major.jpg',
+        season: 'Saisons 1 & 2 - Arc de l’Enfance et du Collège', // thematique
+        studio: 'SynergySP',
+        author: 'Takuya Mitsuda',
+      },
+      {
+        id: '8',
+        name: 'Naruto',
+        image: '/2005/ANIME/Cover/Naruto.jpg',
+        season: 'Arc de la Récupération de Sasuke',
+        studio: 'Studio Pierrot',
+        author: 'Masashi Kishimoto',
+      },
+      {
+        id: '9',
+        name: 'Bleach',
+        image: '/2005/ANIME/Cover/Bleach.jpg',
+        season: 'Arc de la Soul Society',
+        studio: 'Studio Pierrot',
+        author: 'Tite Kubo',
+      },
+      {
+        id: '10',
+        name: 'One Piece',
+        image: '/2005/ANIME/Cover/OnePiece.jpg',
+        season: 'Arc de Skypiea',
+        studio: 'Toei Animation',
+        author: 'Eiichiro Oda',
+      },
+      {
+        id: '11',
+        name: 'Full Metal Panic! The Second Raid',
+        image: '/2005/ANIME/Cover/FullMetalPanicTheSecondRaid.jpg',
+        season: 'Saison 3 - Arc de Hong Kong', // thematique
+        studio: 'Kyoto Animation',
+        author: 'Shoji Gatoh',
+      },
+      {
+        id: '12',
+        name: 'Détective Conan',
+        image: '/2005/ANIME/Cover/DetectiveConan.jpg',
+        season: 'Saison 14 - Enquêtes de Conan Edogawa', // thematique (serie episodique, sans arc)
+        studio: 'TMS Entertainment',
+        author: 'Gosho Aoyama',
+      },
+      {
+        id: '13',
+        name: 'Pokémon Advanced Generation',
+        image: '/2005/ANIME/Cover/PokemonAdvancedGeneration.jpg',
+        season: 'Fin de la Ligue Hoenn + début du Battle Frontier',
+        studio: 'OLM',
+        author: 'Satoshi Tajiri',
+      },
+      {
+        id: '14',
+        name: 'Yu-Gi-Oh! GX',
+        image: '/2005/ANIME/Cover/YuGiOhGX.jpg',
+        season: 'Saison 1 - Arc des Shadow Riders',
+        studio: 'Gallop',
+        author: 'Kazuki Takahashi',
+      },
+      {
+        id: '15',
+        name: 'Mobile Suit Gundam SEED Destiny',
+        image: '/2005/ANIME/Cover/GundamSeedDestiny.jpg',
+        season: 'Anime original - Arc de la Seconde Guerre de la Bloody Valentine', // thematique
+        studio: 'Sunrise',
+        author: 'Mitsuo Fukuda',
+      },
     ],
   },
 };
