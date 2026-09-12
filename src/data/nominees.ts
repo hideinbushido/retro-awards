@@ -721,6 +721,14 @@ export const nominees: Record<number, YearNominees> = {
         studio: 'Production I.G',
         author: 'Gen Urobuchi',
       },
+      {
+        id: '17',
+        name: 'Le Garçon d’à côté',
+        image: '/2012/ANIME/Cover/LeGarconDaCote.jpg',
+        season: 'Saison unique - Arc de Shizuku et Haru', // thematique
+        studio: 'Brain’s Base',
+        author: 'Robico',
+      },
     ],
   },
 
@@ -906,21 +914,13 @@ export const nominees: Record<number, YearNominees> = {
       {
         id: '2',
         name: 'Naruto Shippuden',
-        image: '/2010/ANIME/Cover/NarutoShippuden.jpg',
+        image: '/2010/ANIME/Cover/NarutoShippuden.png',
         season: 'Arc de l’Invasion de Pain',
         studio: 'Studio Pierrot',
         author: 'Masashi Kishimoto',
       },
       {
         id: '3',
-        name: 'Reborn!',
-        image: '/2010/ANIME/Cover/Reborn.jpg',
-        season: 'Fin de l’Arc du Futur',
-        studio: 'Artland',
-        author: 'Akira Amano',
-      },
-      {
-        id: '4',
         name: 'Durarara!!',
         image: '/2010/ANIME/Cover/Durarara.jpg',
         season: 'Saison 1 - Arc des Dollars', // thematique
@@ -928,23 +928,15 @@ export const nominees: Record<number, YearNominees> = {
         author: 'Ryōgo Narita',
       },
       {
-        id: '5',
-        name: 'Bleach',
-        image: '/2010/ANIME/Cover/Bleach.jpg',
-        season: 'Arc de la Chute des Arrancar',
-        studio: 'Studio Pierrot',
-        author: 'Tite Kubo',
-      },
-      {
-        id: '6',
+        id: '4',
         name: 'Black Butler',
-        image: '/2010/ANIME/Cover/BlackButler.jpg',
+        image: '/2010/ANIME/Cover/BlackButler.png',
         season: 'Saison 2 - Arc d’Alois Trancy', // thematique (histoire originale de l'anime)
         studio: 'A-1 Pictures',
         author: 'Yana Toboso',
       },
       {
-        id: '7',
+        id: '5',
         name: 'Highschool of the Dead',
         image: '/2010/ANIME/Cover/HighschoolOfTheDead.jpg',
         season: 'Saison unique - Arc de l’Épidémie de Zombies', // thematique
@@ -952,7 +944,7 @@ export const nominees: Record<number, YearNominees> = {
         author: 'Daisuke Satō & Shōji Satō',
       },
       {
-        id: '8',
+        id: '6',
         name: 'Bakuman.',
         image: '/2010/ANIME/Cover/Bakuman.jpg',
         season: 'Saison 1 - Arc des Débuts de Muto Ashirogi', // thematique
@@ -960,12 +952,60 @@ export const nominees: Record<number, YearNominees> = {
         author: 'Tsugumi Ohba & Takeshi Obata',
       },
       {
-        id: '9',
+        id: '7',
         name: 'Fullmetal Alchemist: Brotherhood',
         image: '/2010/ANIME/Cover/FullmetalAlchemistBrotherhood.jpg',
         season: 'Saison unique - Arc du Jour Promis',
         studio: 'Bones',
         author: 'Hiromu Arakawa',
+      },
+      {
+        id: '8',
+        name: 'Maid Sama!',
+        image: '/2010/ANIME/Cover/MaidSama.jpg',
+        season: 'Saison unique - Arc du Maid Latte', // thematique
+        studio: 'J.C.Staff',
+        author: 'Hiro Fujiwara',
+      },
+      {
+        id: '9',
+        name: 'K-On!!',
+        image: '/2010/ANIME/Cover/KOn.png',
+        season: 'Saison 2 - Arc de la Dernière Année du Club', // thematique
+        studio: 'Kyoto Animation',
+        author: 'Kakifly',
+      },
+      {
+        id: '10',
+        name: 'Angel Beats!',
+        image: '/2010/ANIME/Cover/AngelBeats.jpg',
+        season: 'Anime original - Arc du Front de l’Après-Vie', // thematique
+        studio: 'P.A. Works',
+        author: 'Jun Maeda',
+      },
+      {
+        id: '11',
+        name: 'Black Lagoon: Roberta’s Blood Trail',
+        image: '/2010/ANIME/Cover/BlackLagoonRobertasBloodTrail.png',
+        season: 'OVA - Arc de la Traque de Roberta', // thematique
+        studio: 'Madhouse',
+        author: 'Rei Hiroe',
+      },
+      {
+        id: '12',
+        name: 'Panty & Stocking with Garterbelt',
+        image: '/2010/ANIME/Cover/PantyAndStockingWithGarterbelt.jpg',
+        season: 'Anime original - Arc des Anges de Daten City', // thematique
+        studio: 'Gainax',
+        author: 'Hiroyuki Imaishi',
+      },
+      {
+        id: '13',
+        name: 'Shiki',
+        image: '/2010/ANIME/Cover/Shiki.jpg',
+        season: 'Saison unique - Arc du Village de Sotoba', // thematique
+        studio: 'Daume',
+        author: 'Fuyumi Ono',
       },
     ],
   },
@@ -1101,21 +1141,13 @@ export const nominees: Record<number, YearNominees> = {
       {
         id: '1',
         name: 'Major',
-        image: '/2008/ANIME/Cover/Major.jpg',
+        image: '/2008/ANIME/Cover/Major.webp',
         season: 'Saison 4 - Arc des Ligues Mineures Américaines', // thematique
         studio: 'SynergySP',
         author: 'Takuya Mitsuda',
       },
       {
         id: '2',
-        name: 'Naruto Shippuden',
-        image: '/2008/ANIME/Cover/NarutoShippuden.jpg',
-        season: 'Arc de l’Élimination de l’Akatsuki',
-        studio: 'Studio Pierrot',
-        author: 'Masashi Kishimoto',
-      },
-      {
-        id: '3',
         name: 'Spice and Wolf',
         image: '/2008/ANIME/Cover/SpiceAndWolf.jpg',
         season: 'Saison 1 - Arc de la Route vers le Nord', // thematique
@@ -1123,7 +1155,7 @@ export const nominees: Record<number, YearNominees> = {
         author: 'Isuna Hasekura',
       },
       {
-        id: '4',
+        id: '3',
         name: 'Yu-Gi-Oh! 5D’s',
         image: '/2008/ANIME/Cover/YuGiOh5Ds.jpg',
         season: 'Saison 1 - Arc de la Fortune Cup',
@@ -1131,7 +1163,7 @@ export const nominees: Record<number, YearNominees> = {
         author: 'Kazuki Takahashi',
       },
       {
-        id: '5',
+        id: '4',
         name: 'Code Geass: Lelouch of the Rebellion R2',
         image: '/2008/ANIME/Cover/CodeGeassR2.jpg',
         season: 'Saison 2 - Arc du Zero Requiem', // thematique
@@ -1139,7 +1171,7 @@ export const nominees: Record<number, YearNominees> = {
         author: 'Gorō Taniguchi',
       },
       {
-        id: '6',
+        id: '5',
         name: 'Soul Eater',
         image: '/2008/ANIME/Cover/SoulEater.jpg',
         season: 'Saison unique - Arc de la Résurrection du Kishin', // thematique
@@ -1147,7 +1179,7 @@ export const nominees: Record<number, YearNominees> = {
         author: 'Atsushi Ōkubo',
       },
       {
-        id: '7',
+        id: '6',
         name: 'Toradora!',
         image: '/2008/ANIME/Cover/Toradora.jpg',
         season: 'Saison unique - Arc de l’Alliance Taiga-Ryūji', // thematique
@@ -1155,7 +1187,7 @@ export const nominees: Record<number, YearNominees> = {
         author: 'Yuyuko Takemiya',
       },
       {
-        id: '8',
+        id: '7',
         name: 'Black Butler',
         image: '/2008/ANIME/Cover/BlackButler.jpg',
         season: 'Saison 1 - Arc de Jack l’Éventreur',
@@ -1163,7 +1195,7 @@ export const nominees: Record<number, YearNominees> = {
         author: 'Yana Toboso',
       },
       {
-        id: '9',
+        id: '8',
         name: 'One Piece',
         image: '/2008/ANIME/Cover/OnePiece.jpg',
         season: 'Arc de Thriller Bark',
@@ -1171,9 +1203,9 @@ export const nominees: Record<number, YearNominees> = {
         author: 'Eiichiro Oda',
       },
       {
-        id: '10',
+        id: '9',
         name: 'Bleach',
-        image: '/2008/ANIME/Cover/Bleach.jpg',
+        image: '/2008/ANIME/Cover/Bleach.webp',
         season: 'Arc de Hueco Mundo',
         studio: 'Studio Pierrot',
         author: 'Tite Kubo',
@@ -1253,7 +1285,7 @@ export const nominees: Record<number, YearNominees> = {
       {
         id: '9',
         name: 'Bleach',
-        image: '/2007/ANIME/Cover/Bleach.jpg',
+        image: '/2007/ANIME/Cover/Bleach.png',
         season: 'Arc des Arrancar',
         studio: 'Studio Pierrot',
         author: 'Tite Kubo',
@@ -1309,7 +1341,7 @@ export const nominees: Record<number, YearNominees> = {
       {
         id: '5',
         name: 'Nana',
-        image: '/2006/ANIME/Cover/Nana.jpg',
+        image: '/2006/ANIME/Cover/Nana.webp',
         season: 'Saison unique - Arc de Tokyo', // thematique
         studio: 'Madhouse',
         author: 'Ai Yazawa',
@@ -1361,6 +1393,14 @@ export const nominees: Record<number, YearNominees> = {
         season: 'Arc d’Enies Lobby',
         studio: 'Toei Animation',
         author: 'Eiichiro Oda',
+      },
+      {
+        id: '12',
+        name: 'Kilari',
+        image: '/2006/ANIME/Cover/Kilari.jpg',
+        season: 'Saison 1 - Arc des Débuts de Kilari', // thematique
+        studio: 'SynergySP',
+        author: 'An Nakahara',
       },
     ],
   },
@@ -1429,7 +1469,7 @@ export const nominees: Record<number, YearNominees> = {
       {
         id: '8',
         name: 'Naruto',
-        image: '/2005/ANIME/Cover/Naruto.jpg',
+        image: '/2005/ANIME/Cover/Naruto.png',
         season: 'Arc de la Récupération de Sasuke',
         studio: 'Studio Pierrot',
         author: 'Masashi Kishimoto',
@@ -1437,7 +1477,7 @@ export const nominees: Record<number, YearNominees> = {
       {
         id: '9',
         name: 'Bleach',
-        image: '/2005/ANIME/Cover/Bleach.jpg',
+        image: '/2005/ANIME/Cover/Bleach.webp',
         season: 'Arc de la Soul Society',
         studio: 'Studio Pierrot',
         author: 'Tite Kubo',
@@ -1445,7 +1485,7 @@ export const nominees: Record<number, YearNominees> = {
       {
         id: '10',
         name: 'One Piece',
-        image: '/2005/ANIME/Cover/OnePiece.jpg',
+        image: '/2005/ANIME/Cover/OnePiece.webp',
         season: 'Arc de Skypiea',
         studio: 'Toei Animation',
         author: 'Eiichiro Oda',
@@ -1462,14 +1502,14 @@ export const nominees: Record<number, YearNominees> = {
         id: '12',
         name: 'Détective Conan',
         image: '/2005/ANIME/Cover/DetectiveConan.jpg',
-        season: 'Saison 14 - Enquêtes de Conan Edogawa', // thematique (serie episodique, sans arc)
+        season: 'Saison 14',
         studio: 'TMS Entertainment',
         author: 'Gosho Aoyama',
       },
       {
         id: '13',
         name: 'Pokémon Advanced Generation',
-        image: '/2005/ANIME/Cover/PokemonAdvancedGeneration.jpg',
+        image: '/2005/ANIME/Cover/PokemonAdvancedGeneration.webp',
         season: 'Fin de la Ligue Hoenn + début du Battle Frontier',
         studio: 'OLM',
         author: 'Satoshi Tajiri',
@@ -1489,6 +1529,22 @@ export const nominees: Record<number, YearNominees> = {
         season: 'Anime original - Arc de la Seconde Guerre de la Bloody Valentine', // thematique
         studio: 'Sunrise',
         author: 'Mitsuo Fukuda',
+      },
+      {
+        id: '16',
+        name: 'Tsubasa: RESERVoir CHRoNiCLE',
+        image: '/2005/ANIME/Cover/TsubasaReservoirChronicle.jpg',
+        season: 'Saison 1 - Arc de la Quête des Plumes', // thematique
+        studio: 'Bee Train',
+        author: 'CLAMP',
+      },
+      {
+        id: '17',
+        name: 'Paradise Kiss',
+        image: '/2005/ANIME/Cover/ParadiseKiss.jpg',
+        season: 'Saison unique - Arc du Studio Paradise Kiss', // thematique
+        studio: 'Madhouse',
+        author: 'Ai Yazawa',
       },
     ],
   },

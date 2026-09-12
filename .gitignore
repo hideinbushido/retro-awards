@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# gros medias locaux (3.8 Go) - jamais dans git
+/public/nominé/
