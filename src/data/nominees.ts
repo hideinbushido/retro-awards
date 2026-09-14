@@ -1407,7 +1407,21 @@ export const nominees: Record<number, YearNominees> = {
 
   2005: {
     openings: [
-      { id: '1', animeName: 'Eureka Seven', openingTitle: 'DAYS', artist: 'FLOW', image: '/2005/OPENING/Cover/EUREKA.png', audio: '/2005/OPENING/Audio/EUREKA.MP3' },
+      { id: '1', animeName: 'Bleach',                         openingTitle: 'D-tecnoLife',                       artist: 'UVERworld',              op: 2, image: '/2005/OPENING/Cover/BLEACH2.jpg',      audio: '/2005/OPENING/Audio/BLEACH2.MP3'      },
+      { id: '2', animeName: 'Eureka Seven',                    openingTitle: 'DAYS',                              artist: 'FLOW',                          image: '/2005/OPENING/Cover/EUREKA1.jpg',      audio: '/2005/OPENING/Audio/EUREKA1.MP3'      },
+      { id: '3', animeName: 'Yu-Gi-Oh! GX',                    openingTitle: 'En garde',                          artist: 'Jean-Marc Anthony Kabeya',      image: '/2005/OPENING/Cover/YUGIOHGX.jpg',     audio: '/2005/OPENING/Audio/YUGIOHGX.MP3'     },
+      { id: '4', animeName: 'Naruto',                         openingTitle: 'Seishun Kyōsōkyoku',                artist: 'Sambomaster',            op: 5, image: '/2005/OPENING/Cover/NARUTO5.jpg',      audio: '/2005/OPENING/Audio/NARUTO5.MP3'      },
+      { id: '5', animeName: 'Diebuster',                      openingTitle: 'Groovin’ Magic',                    artist: 'Round Table feat. Nino',        image: '/2005/OPENING/Cover/DIEBUSTER.jpg',    audio: '/2005/OPENING/Audio/DIEBUSTER.MP3'    },
+      { id: '6', animeName: 'Fullmetal Alchemist',            openingTitle: 'Rewrite',                           artist: 'Asian Kung-Fu Generation', op: 4, image: '/2005/OPENING/Cover/FMA4.jpg',         audio: '/2005/OPENING/Audio/FMA4.MP3'         },
+      { id: '7', animeName: 'Blood+',                          openingTitle: 'Aozora no Namida',                  artist: 'Hitomi Takahashi',              image: '/2005/OPENING/Cover/BLOOD.jpg',        audio: '/2005/OPENING/Audio/BLOOD.MP3'        },
+      { id: '8', animeName: 'Pokémon: Advanced Battle',       openingTitle: 'Invincible',                        artist: 'Jean-Marc Anthony Kabeya',      image: '/2005/OPENING/Cover/POKEMON.jpg',      audio: '/2005/OPENING/Audio/POKEMON.MP3'      },
+      { id: '9', animeName: 'Mobile Suit Gundam SEED Destiny', openingTitle: 'PRIDE',                             artist: 'HIGH and MIGHTY COLOR',  op: 2, image: '/2005/OPENING/Cover/SEED2.jpg',        audio: '/2005/OPENING/Audio/SEED2.MP3'        },
+      { id: '10', animeName: 'Eureka Seven',                    openingTitle: 'Shōnen Heart',                      artist: 'HOME MADE Kazoku',       op: 2, image: '/2005/OPENING/Cover/EUREKA2.jpg',      audio: '/2005/OPENING/Audio/EUREKA2.MP3'      },
+      { id: '11', animeName: 'Transformers: Galaxy Force',      openingTitle: 'CALL YOU... Kimi to Boku no Mirai', artist: 'Shinji Kakijima',               image: '/2005/OPENING/Cover/TRANSFORMERS.jpg', audio: '/2005/OPENING/Audio/TRANSFORMERS.MP3' },
+      { id: '12', animeName: 'Naruto',                          openingTitle: 'Namikaze Satellite',                artist: 'Snowkel',                op: 7, image: '/2005/OPENING/Cover/NARUTO7.jpg',      audio: '/2005/OPENING/Audio/NARUTO7.MP3'      },
+      { id: '13', animeName: 'Beet the Vandel Buster: Excellion', openingTitle: 'Sora wo Mite Omō',                artist: 'OUTLAW',                        image: '/2005/OPENING/Cover/BEET.jpg',         audio: '/2005/OPENING/Audio/BEET.MP3'         },
+      { id: '14', animeName: 'Black Cat',                      openingTitle: 'Daia no Hana',                      artist: 'Yorico',                        image: '/2005/OPENING/Cover/BLACKCAT.jpg',     audio: '/2005/OPENING/Audio/BLACKCAT.MP3'     },
+      { id: '15', animeName: 'BECK: Mongolian Chop Squad',     openingTitle: 'Hit in the USA',                    artist: 'Beat Crusaders',                image: '/2005/OPENING/Cover/BECK.jpg',         audio: '/2005/OPENING/Audio/BECK.MP3'         },
     ],
     animes: [
       {
