@@ -1685,7 +1685,19 @@ export const nominees: Record<number, YearNominees> = {
 
   2007: {
     openings: [
-      // { id: '1', animeName: 'Gurren Lagann', openingTitle: 'Sorairo Days', image: '/nominees/2007/openings/1/cover.jpg', audio: '/nominees/2007/openings/1/audio.mp3' },
+      { id: '1',  animeName: 'Tengen Toppa Gurren Lagann',          openingTitle: 'Sorairo Days',                              artist: 'Shoko Nakagawa',                                       image: '/2007/OPENING/Cover/GURRENLAGANN.jpg',     audio: '/2007/OPENING/Audio/GURRENLAGANN.MP3'     },
+      { id: '2',  animeName: 'Naruto Shippuden',                    openingTitle: 'Hero’s Come Back!!',                        artist: 'nobodyknows+',                                         image: '/2007/OPENING/Cover/NARUTOSHIPPUDEN1.jpg', audio: '/2007/OPENING/Audio/NARUTOSHIPPUDEN1.MP3' },
+      { id: '3',  animeName: 'Darker than Black',                   openingTitle: 'Kakusei Heroism ~The Hero Without A "Name"~', artist: 'An Cafe',                                      op: 2, image: '/2007/OPENING/Cover/DARKER2.jpg',          audio: '/2007/OPENING/Audio/DARKER2.MP3'          },
+      { id: '4',  animeName: 'Lucky Star',                          openingTitle: 'Motteke! Sailor Fuku',                      artist: 'Aya Hirano, Emiri Katō, Kaori Fukuhara & Aya Endō',   image: '/2007/OPENING/Cover/LUCKYSTAR.jpg',        audio: '/2007/OPENING/Audio/LUCKYSTAR.MP3'        },
+      { id: '5',  animeName: 'Death Note',                          openingTitle: 'What’s up, people?!',                       artist: 'Maximum the Hormone',                           op: 2, image: '/2007/OPENING/Cover/DEATHNOTE2.jpg',       audio: '/2007/OPENING/Audio/DEATHNOTE2.MP3'       },
+      { id: '6',  animeName: 'Dennō Coil',                          openingTitle: 'Prism',                                     artist: 'Ayako Ikeda',                                          image: '/2007/OPENING/Cover/DENNOCOIL.jpg',        audio: '/2007/OPENING/Audio/DENNOCOIL.MP3'        },
+      { id: '7',  animeName: 'Bleach',                              openingTitle: 'After Dark',                                artist: 'Asian Kung-Fu Generation',                      op: 7, image: '/2007/OPENING/Cover/BLEACH7.jpg',          audio: '/2007/OPENING/Audio/BLEACH7.MP3'          },
+      { id: '8',  animeName: 'Nana',                                openingTitle: 'Lucy',                                      artist: 'ANNA inspi’ NANA (BLACK STONES)',               op: 3, image: '/2007/OPENING/Cover/NANA3.jpg',            audio: '/2007/OPENING/Audio/NANA3.MP3'            },
+      { id: '9',  animeName: 'Toward the Terra',                    openingTitle: 'endscape',                                  artist: 'UVERworld',                                            image: '/2007/OPENING/Cover/TERRA.jpg',            audio: '/2007/OPENING/Audio/TERRA.MP3'            },
+      { id: '10', animeName: 'Magical Girl Lyrical Nanoha StrikerS', openingTitle: 'Massive Wonders',                          artist: 'Nana Mizuki',                                   op: 2, image: '/2007/OPENING/Cover/NANOHA2.jpg',          audio: '/2007/OPENING/Audio/NANOHA2.MP3'          },
+      { id: '11', animeName: 'Naruto Shippuden',                    openingTitle: 'Distance',                                  artist: 'Long Shot Party',                               op: 2, image: '/2007/OPENING/Cover/NARUTOSHIPPUDEN2.jpg', audio: '/2007/OPENING/Audio/NARUTOSHIPPUDEN2.MP3' },
+      { id: '12', animeName: 'Mobile Suit Gundam 00',               openingTitle: 'Daybreak’s Bell',                           artist: 'L’Arc~en~Ciel',                                        image: '/2007/OPENING/Cover/GUNDAM00.jpg',         audio: '/2007/OPENING/Audio/GUNDAM00.MP3'         },
+      { id: '13', animeName: 'D.Gray-man',                          openingTitle: 'Brightdown',                                artist: 'Nami Tamaki',                                   op: 2, image: '/2007/OPENING/Cover/DGRAYMAN2.jpg',        audio: '/2007/OPENING/Audio/DGRAYMAN2.MP3'        },
     ],
     animes: [
       {
