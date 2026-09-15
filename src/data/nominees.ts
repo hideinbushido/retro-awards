@@ -1788,6 +1788,7 @@ export const nominees: Record<number, YearNominees> = {
       { id: '13', animeName: 'Tenpō Ibun Ayakashi Ayashi',     openingTitle: 'LONE STAR',                         artist: 'Captain Straydum',       op: 2, image: '/2006/OPENING/Cover/AYASHI2.jpg',      audio: '/2006/OPENING/Audio/AYASHI2.MP3'      },
       { id: '14', animeName: 'Blood+',                         openingTitle: 'Colors of the Heart',               artist: 'UVERworld',              op: 3, image: '/2006/OPENING/Cover/BLOOD3.jpg',       audio: '/2006/OPENING/Audio/BLOOD3.MP3'       },
       { id: '15', animeName: 'Busō Renkin',                    openingTitle: 'Makka na Chikai',                   artist: 'Yoshiki Fukuyama',              image: '/2006/OPENING/Cover/BUSORENKIN.jpg',   audio: '/2006/OPENING/Audio/BUSORENKIN.MP3'   },
+      { id: '16', animeName: 'Kilari',                         openingTitle: 'Koi☆Kana',                          artist: 'Kirari Tsukishima starring Koharu Kusumi (Morning Musume)', image: '/2006/OPENING/Cover/KILARI.jpg', audio: '/2006/OPENING/Audio/KILARI.MP3' },
     ],
     animes: [
       {
