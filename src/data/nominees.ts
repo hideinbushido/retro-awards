@@ -1004,7 +1004,7 @@ export const nominees: Record<number, YearNominees> = {
       {
         id: '8',
         name: 'Ace of Diamond',
-        image: '/2013/ANIME/Cover/AceOfDiamond.jpg',
+        image: '/2013/ANIME/Cover/AceOfDiamond.webp',
         season: 'Saison 1 - Arc de l’Entrée à Seidō', // thematique
         studio: 'Madhouse & Production I.G',
         author: 'Yūji Terajima',
@@ -1488,7 +1488,7 @@ export const nominees: Record<number, YearNominees> = {
       { id: '4',  animeName: 'One Piece',                             openingTitle: 'Share The World',                artist: 'TVXQ',                                op: 11, image: '/2009/OPENING/Cover/ONE.jpg',       audio: '/2009/OPENING/Audio/ONE11.MP3'       },
       { id: '5',  animeName: 'Reborn!',                               openingTitle: 'EASY GO',                        artist: 'Kazuki Kato',                         op: 6,  image: '/2009/OPENING/Cover/REBORN.jpg',     audio: '/2009/OPENING/Audio/REBORN6.MP3'     },
       { id: '6',  animeName: 'Inuyasha: The Final Act',               openingTitle: 'Kimi ga Inai Mirai',             artist: 'Do As Infinity',                              image: '/2009/OPENING/Cover/INUYASHA.jpg',    audio: '/2009/OPENING/Audio/INUYASHA.MP3'    },
-      { id: '7',  animeName: 'Darker than Black',                     openingTitle: 'Tsukiakari no Michishirube',     artist: 'Stereopony',                          op: 2,  image: '/2009/OPENING/Cover/DARKER.jpg',        audio: '/2009/OPENING/Audio/DTB2.MP3'        },
+      { id: '7',  animeName: 'Darker than Black: Gemini of the Meteor',                     openingTitle: 'Tsukiakari no Michishirube',     artist: 'Stereopony',                          image: '/2009/OPENING/Cover/DARKER.jpg',        audio: '/2009/OPENING/Audio/DTB2.MP3'        },
       { id: '8',  animeName: 'Hajime no Ippo: New Challenger',        openingTitle: 'HEKIREKI',                       artist: 'LAST ALLIANCE',                               image: '/2009/OPENING/Cover/IPPO.jpg',        audio: '/2009/OPENING/Audio/IPPO.MP3'        },
       { id: '9',  animeName: 'K-On!',                                 openingTitle: 'Cagayake! GIRLS',                artist: 'Ho-kago Tea Time',                            image: '/2009/OPENING/Cover/KON.jpg',         audio: '/2009/OPENING/Audio/KON.MP3'         },
       { id: '10', animeName: 'Saint Seiya: The Lost Canvas',          openingTitle: 'The Realm of Athena',            artist: 'EUROX',                                       image: '/2009/OPENING/Cover/CANVAS.jpg',       audio: '/2009/OPENING/Audio/SEIYA.MP3'       },
