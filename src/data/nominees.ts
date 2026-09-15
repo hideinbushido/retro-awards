@@ -754,6 +754,14 @@ export const nominees: Record<number, YearNominees> = {
         studio: 'Madhouse',
         author: 'ONE & Yusuke Murata',
       },
+      {
+        id: '15',
+        name: 'Fairy Tail',
+        image: '/2015/ANIME/Cover/FairyTail.jpg',
+        season: 'Arc de Tartaros',
+        studio: 'A-1 Pictures & Bridge',
+        author: 'Hiro Mashima',
+      },
     ],
   },
 
@@ -831,7 +839,7 @@ export const nominees: Record<number, YearNominees> = {
         id: '7',
         name: 'Fairy Tail',
         image: '/2014/ANIME/Cover/FairyTail.jpg',
-        season: 'Arc des Grands Jeux Magiques',
+        season: 'Arc du Festival du Roi Dragon',
         studio: 'A-1 Pictures & Bridge',
         author: 'Hiro Mashima',
       },
@@ -1033,6 +1041,14 @@ export const nominees: Record<number, YearNominees> = {
         studio: 'Production I.G',
         author: 'Tadatoshi Fujimaki',
       },
+      {
+        id: '13',
+        name: 'Fairy Tail',
+        image: '/2013/ANIME/Cover/FairyTail.jpg',
+        season: 'Arc des Grands Jeux Inter-Magiques',
+        studio: 'A-1 Pictures & Satelight',
+        author: 'Hiro Mashima',
+      },
     ],
   },
 
@@ -1129,14 +1145,6 @@ export const nominees: Record<number, YearNominees> = {
       },
       {
         id: '10',
-        name: 'Bleach',
-        image: '/2012/ANIME/Cover/Bleach.jpg',
-        season: 'Fin de série - Arc de l’Agent Perdu',
-        studio: 'Studio Pierrot',
-        author: 'Tite Kubo',
-      },
-      {
-        id: '11',
         name: 'One Piece',
         image: '/2012/ANIME/Cover/OnePiece.jpg',
         season: 'Arc de l’Île des Hommes-Poissons',
@@ -1144,7 +1152,7 @@ export const nominees: Record<number, YearNominees> = {
         author: 'Eiichiro Oda',
       },
       {
-        id: '12',
+        id: '11',
         name: 'Btooom!',
         image: '/2012/ANIME/Cover/Btooom.jpg',
         season: 'Saison unique - Arc de l’Île du Btooom!', // thematique
@@ -1152,7 +1160,7 @@ export const nominees: Record<number, YearNominees> = {
         author: 'Junya Inoue',
       },
       {
-        id: '13',
+        id: '12',
         name: 'Code:Breaker',
         image: '/2012/ANIME/Cover/CodeBreaker.jpg',
         season: 'Saison unique - Arc des Code:Breakers', // thematique
@@ -1160,7 +1168,7 @@ export const nominees: Record<number, YearNominees> = {
         author: 'Akimine Kamijyo',
       },
       {
-        id: '14',
+        id: '13',
         name: 'Magi: The Labyrinth of Magic',
         image: '/2012/ANIME/Cover/Magi.jpg',
         season: 'Saison 1 - Arc de Balbadd',
@@ -1168,7 +1176,7 @@ export const nominees: Record<number, YearNominees> = {
         author: 'Shinobu Ohtaka',
       },
       {
-        id: '15',
+        id: '14',
         name: 'Psycho-Pass',
         image: '/2012/ANIME/Cover/PsychoPass.jpg',
         season: 'Anime original - Arc de l’Affaire Makishima', // thematique
@@ -1176,7 +1184,7 @@ export const nominees: Record<number, YearNominees> = {
         author: 'Gen Urobuchi',
       },
       {
-        id: '16',
+        id: '15',
         name: 'Le Garçon d’à côté',
         image: '/2012/ANIME/Cover/LeGarconDaCote.jpg',
         season: 'Saison unique - Arc de Shizuku et Haru', // thematique
@@ -1218,7 +1226,7 @@ export const nominees: Record<number, YearNominees> = {
         id: '2',
         name: 'Beelzebub',
         image: '/2011/ANIME/Cover/Beelzebub.jpg',
-        season: 'Saison 1 - Arc de la Crise Scolaire', // thematique
+        season: 'Saison unique - Arc de la Crise Scolaire', // thematique
         studio: 'Studio Pierrot',
         author: 'Ryūhei Tamura',
       },
@@ -1322,7 +1330,7 @@ export const nominees: Record<number, YearNominees> = {
         id: '15',
         name: 'Bleach',
         image: '/2011/ANIME/Cover/Bleach.webp',
-        season: 'Fin de l’Arc des Arrancars + Arc de l’Armée d’Invasion + début de l’Arc Fullbring',
+        season: 'Arc Fullbring',
         studio: 'Studio Pierrot',
         author: 'Tite Kubo',
       },
@@ -1461,6 +1469,14 @@ export const nominees: Record<number, YearNominees> = {
         studio: 'Daume',
         author: 'Fuyumi Ono',
       },
+      {
+        id: '14',
+        name: 'Fairy Tail',
+        image: '/2010/ANIME/Cover/FairyTail.jpg',
+        season: 'Arc de la Tour du Paradis',
+        studio: 'A-1 Pictures & Satelight',
+        author: 'Hiro Mashima',
+      },
     ],
   },
 
@@ -1531,7 +1547,7 @@ export const nominees: Record<number, YearNominees> = {
       {
         id: '7',
         name: 'Reborn!',
-        image: '/2009/ANIME/Cover/Reborn.jpg',
+        image: '/2009/ANIME/Cover/Reborn.webp',
         season: 'Arc du Futur',
         studio: 'Artland',
         author: 'Akira Amano',
@@ -1539,7 +1555,7 @@ export const nominees: Record<number, YearNominees> = {
       {
         id: '8',
         name: 'Naruto Shippuden',
-        image: '/2009/ANIME/Cover/NarutoShippuden.jpg',
+        image: '/2009/ANIME/Cover/NarutoShippuden.png',
         season: 'Arc du Combat Fatidique entre Frères',
         studio: 'Studio Pierrot',
         author: 'Masashi Kishimoto',
@@ -1757,7 +1773,21 @@ export const nominees: Record<number, YearNominees> = {
 
   2006: {
     openings: [
-      // { id: '1', animeName: 'Code Geass', openingTitle: 'Colors', image: '/nominees/2006/openings/1/cover.jpg', audio: '/nominees/2006/openings/1/audio.mp3' },
+      { id: '1',  animeName: 'Death Note',                     openingTitle: 'the WORLD',                         artist: 'Nightmare',                     image: '/2006/OPENING/Cover/DEATHNOTE.jpg',    audio: '/2006/OPENING/Audio/DEATHNOTE.MP3'    },
+      { id: '2',  animeName: 'Naruto',                         openingTitle: 'Re:member',                         artist: 'FLOW',                   op: 8, image: '/2006/OPENING/Cover/NARUTO8.jpg',      audio: '/2006/OPENING/Audio/NARUTO8.MP3'      },
+      { id: '3',  animeName: 'Black Lagoon',                   openingTitle: 'Red Fraction',                      artist: 'MELL',                          image: '/2006/OPENING/Cover/BLACKLAGOON.jpg',  audio: '/2006/OPENING/Audio/BLACKLAGOON.MP3'  },
+      { id: '4',  animeName: 'Bleach',                         openingTitle: 'Tonight, Tonight, Tonight',         artist: 'Beat Crusaders',         op: 4, image: '/2006/OPENING/Cover/BLEACH4.jpg',      audio: '/2006/OPENING/Audio/BLEACH4.MP3'      },
+      { id: '5',  animeName: 'Tenpō Ibun Ayakashi Ayashi',     openingTitle: 'Ryūsei Miracle',                    artist: 'Ikimono-gakari',                image: '/2006/OPENING/Cover/AYASHI1.jpg',      audio: '/2006/OPENING/Audio/AYASHI1.MP3'      },
+      { id: '6',  animeName: 'Air Gear',                       openingTitle: 'Chain',                             artist: 'BACK-ON',                       image: '/2006/OPENING/Cover/AIRGEAR.jpg',      audio: '/2006/OPENING/Audio/AIRGEAR.MP3'      },
+      { id: '7',  animeName: 'Freedom',                        openingTitle: 'This Is Love',                      artist: 'Utada Hikaru',                  image: '/2006/OPENING/Cover/FREEDOM.jpg',      audio: '/2006/OPENING/Audio/FREEDOM.MP3'      },
+      { id: '8',  animeName: 'One Piece',                      openingTitle: 'Brand New World',                   artist: 'D-51',                   op: 6, image: '/2006/OPENING/Cover/ONEPIECE6.jpg',    audio: '/2006/OPENING/Audio/ONEPIECE6.MP3'    },
+      { id: '9',  animeName: 'Naruto',                         openingTitle: 'Yura Yura',                         artist: 'Hearts Grow',            op: 9, image: '/2006/OPENING/Cover/NARUTO9.jpg',      audio: '/2006/OPENING/Audio/NARUTO9.MP3'      },
+      { id: '10', animeName: 'xxxHOLiC',                       openingTitle: '19sai',                             artist: 'Shikao Suga',                   image: '/2006/OPENING/Cover/XXXHOLIC.jpg',     audio: '/2006/OPENING/Audio/XXXHOLIC.MP3'     },
+      { id: '11', animeName: 'Bleach',                         openingTitle: 'Rolling Star',                      artist: 'YUI',                    op: 5, image: '/2006/OPENING/Cover/BLEACH5.jpg',      audio: '/2006/OPENING/Audio/BLEACH5.MP3'      },
+      { id: '12', animeName: 'Ergo Proxy',                     openingTitle: 'Kiri',                              artist: 'MONORAL',                       image: '/2006/OPENING/Cover/ERGOPROXY.jpg',    audio: '/2006/OPENING/Audio/ERGOPROXY.MP3'    },
+      { id: '13', animeName: 'Tenpō Ibun Ayakashi Ayashi',     openingTitle: 'LONE STAR',                         artist: 'Captain Straydum',       op: 2, image: '/2006/OPENING/Cover/AYASHI2.jpg',      audio: '/2006/OPENING/Audio/AYASHI2.MP3'      },
+      { id: '14', animeName: 'Blood+',                         openingTitle: 'Colors of the Heart',               artist: 'UVERworld',              op: 3, image: '/2006/OPENING/Cover/BLOOD3.jpg',       audio: '/2006/OPENING/Audio/BLOOD3.MP3'       },
+      { id: '15', animeName: 'Busō Renkin',                    openingTitle: 'Makka na Chikai',                   artist: 'Yoshiki Fukuyama',              image: '/2006/OPENING/Cover/BUSORENKIN.jpg',   audio: '/2006/OPENING/Audio/BUSORENKIN.MP3'   },
     ],
     animes: [
       {
