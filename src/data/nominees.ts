@@ -1782,13 +1782,14 @@ export const nominees: Record<number, YearNominees> = {
       { id: '7',  animeName: 'Freedom',                        openingTitle: 'This Is Love',                      artist: 'Utada Hikaru',                  image: '/2006/OPENING/Cover/FREEDOM.jpg',      audio: '/2006/OPENING/Audio/FREEDOM.MP3'      },
       { id: '8',  animeName: 'One Piece',                      openingTitle: 'Brand New World',                   artist: 'D-51',                   op: 6, image: '/2006/OPENING/Cover/ONEPIECE6.jpg',    audio: '/2006/OPENING/Audio/ONEPIECE6.MP3'    },
       { id: '9',  animeName: 'Naruto',                         openingTitle: 'Yura Yura',                         artist: 'Hearts Grow',            op: 9, image: '/2006/OPENING/Cover/NARUTO9.jpg',      audio: '/2006/OPENING/Audio/NARUTO9.MP3'      },
-      { id: '10', animeName: 'xxxHOLiC',                       openingTitle: '19sai',                             artist: 'Shikao Suga',                   image: '/2006/OPENING/Cover/XXXHOLIC.jpg',     audio: '/2006/OPENING/Audio/XXXHOLIC.MP3'     },
       { id: '11', animeName: 'Bleach',                         openingTitle: 'Rolling Star',                      artist: 'YUI',                    op: 5, image: '/2006/OPENING/Cover/BLEACH5.jpg',      audio: '/2006/OPENING/Audio/BLEACH5.MP3'      },
       { id: '12', animeName: 'Ergo Proxy',                     openingTitle: 'Kiri',                              artist: 'MONORAL',                       image: '/2006/OPENING/Cover/ERGOPROXY.jpg',    audio: '/2006/OPENING/Audio/ERGOPROXY.MP3'    },
       { id: '13', animeName: 'Tenpō Ibun Ayakashi Ayashi',     openingTitle: 'LONE STAR',                         artist: 'Captain Straydum',       op: 2, image: '/2006/OPENING/Cover/AYASHI2.jpg',      audio: '/2006/OPENING/Audio/AYASHI2.MP3'      },
       { id: '14', animeName: 'Blood+',                         openingTitle: 'Colors of the Heart',               artist: 'UVERworld',              op: 3, image: '/2006/OPENING/Cover/BLOOD3.jpg',       audio: '/2006/OPENING/Audio/BLOOD3.MP3'       },
       { id: '15', animeName: 'Busō Renkin',                    openingTitle: 'Makka na Chikai',                   artist: 'Yoshiki Fukuyama',              image: '/2006/OPENING/Cover/BUSORENKIN.jpg',   audio: '/2006/OPENING/Audio/BUSORENKIN.MP3'   },
       { id: '16', animeName: 'Kilari',                         openingTitle: 'Koi☆Kana',                          artist: 'Kirari Tsukishima starring Koharu Kusumi (Morning Musume)', image: '/2006/OPENING/Cover/KILARI.jpg', audio: '/2006/OPENING/Audio/KILARI.MP3' },
+      { id: '17', animeName: 'Nana',                           openingTitle: 'Rose',                              artist: 'ANNA inspi’ NANA (BLACK STONES)', image: '/2006/OPENING/Cover/NANA.jpg',         audio: '/2006/OPENING/Audio/NANA.MP3'         },
+      { id: '18', animeName: 'Code Geass: Lelouch of the Rebellion', openingTitle: 'COLORS',                      artist: 'FLOW',                          image: '/2006/OPENING/Cover/CODEGEASS.jpg',    audio: '/2006/OPENING/Audio/CODEGEASS.MP3'    },
     ],
     animes: [
       {
