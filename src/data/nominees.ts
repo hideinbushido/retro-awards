@@ -1698,6 +1698,7 @@ export const nominees: Record<number, YearNominees> = {
       { id: '11', animeName: 'Naruto Shippuden',                    openingTitle: 'Distance',                                  artist: 'Long Shot Party',                               op: 2, image: '/2007/OPENING/Cover/NARUTOSHIPPUDEN2.jpg', audio: '/2007/OPENING/Audio/NARUTOSHIPPUDEN2.MP3' },
       { id: '12', animeName: 'Mobile Suit Gundam 00',               openingTitle: 'Daybreak’s Bell',                           artist: 'L’Arc~en~Ciel',                                        image: '/2007/OPENING/Cover/GUNDAM00.jpg',         audio: '/2007/OPENING/Audio/GUNDAM00.MP3'         },
       { id: '13', animeName: 'D.Gray-man',                          openingTitle: 'Brightdown',                                artist: 'Nami Tamaki',                                   op: 2, image: '/2007/OPENING/Cover/DGRAYMAN2.jpg',        audio: '/2007/OPENING/Audio/DGRAYMAN2.MP3'        },
+      { id: '14', animeName: 'One Piece',                           openingTitle: 'Crazy Rainbow',                             artist: 'Tackey & Tsubasa',                              op: 8, image: '/2007/OPENING/Cover/ONEPIECE8.jpg',        audio: '/2007/OPENING/Audio/ONEPIECE8.MP3'        },
     ],
     animes: [
       {
