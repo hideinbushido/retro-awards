@@ -1604,7 +1604,20 @@ export const nominees: Record<number, YearNominees> = {
 
   2008: {
     openings: [
-      // { id: '1', animeName: 'Code Geass R2', openingTitle: 'Colors', image: '/nominees/2008/openings/1/cover.jpg', audio: '/nominees/2008/openings/1/audio.mp3' },
+      { id: '1',  animeName: 'Soul Eater',                             openingTitle: 'Resonance',                          artist: 'T.M.Revolution',                 image: '/2008/OPENING/Cover/SOULEATER1.jpg',       audio: '/2008/OPENING/Audio/SOULEATER1.MP3'       },
+      { id: '2',  animeName: 'Naruto Shippuden',                       openingTitle: 'Blue Bird',                          artist: 'Ikimono-gakari',          op: 3, image: '/2008/OPENING/Cover/NARUTOSHIPPUDEN3.jpg', audio: '/2008/OPENING/Audio/NARUTOSHIPPUDEN3.MP3' },
+      { id: '3',  animeName: 'Code Geass: Lelouch of the Rebellion R2', openingTitle: 'WORLD END',                          artist: 'FLOW',                    op: 5, image: '/2008/OPENING/Cover/CODEGEASS5.jpg',       audio: '/2008/OPENING/Audio/CODEGEASS5.MP3'       },
+      { id: '4',  animeName: 'Reborn!',                                openingTitle: '88',                                 artist: 'LM.C',                    op: 4, image: '/2008/OPENING/Cover/REBORN4.jpg',          audio: '/2008/OPENING/Audio/REBORN4.MP3'          },
+      { id: '5',  animeName: 'Persona -trinity soul-',                 openingTitle: 'Word of the Voice',                  artist: 'FLOW',                    op: 2, image: '/2008/OPENING/Cover/PERSONA2.jpg',         audio: '/2008/OPENING/Audio/PERSONA2.MP3'         },
+      { id: '6',  animeName: 'Bleach',                                 openingTitle: 'Velonica',                           artist: 'Aqua Timez',              op: 9, image: '/2008/OPENING/Cover/BLEACH9.jpg',          audio: '/2008/OPENING/Audio/BLEACH9.MP3'          },
+      { id: '7',  animeName: 'Deltora Quest',                          openingTitle: 'In This Life',                       artist: 'Delta Goodrem',           op: 3, image: '/2008/OPENING/Cover/DELTORA3.jpg',         audio: '/2008/OPENING/Audio/DELTORA3.MP3'         },
+      { id: '8',  animeName: 'Soul Eater',                             openingTitle: 'Papermoon',                          artist: 'Tommy heavenly6',         op: 2, image: '/2008/OPENING/Cover/SOULEATER2.jpg',       audio: '/2008/OPENING/Audio/SOULEATER2.MP3'       },
+      { id: '9',  animeName: 'Tales of the Abyss',                     openingTitle: 'Karma',                              artist: 'Bump of Chicken',                image: '/2008/OPENING/Cover/TALESABYSS.jpg',       audio: '/2008/OPENING/Audio/TALESABYSS.MP3'       },
+      { id: '10', animeName: 'Naruto Shippuden',                       openingTitle: 'Closer',                             artist: 'Joe Inoue',               op: 4, image: '/2008/OPENING/Cover/NARUTOSHIPPUDEN4.jpg', audio: '/2008/OPENING/Audio/NARUTOSHIPPUDEN4.MP3' },
+      { id: '11', animeName: 'Ultraviolet: Code 044',                  openingTitle: 'TURN TO STONE',                      artist: 'BECCA',                          image: '/2008/OPENING/Cover/ULTRAVIOLET.jpg',      audio: '/2008/OPENING/Audio/ULTRAVIOLET.MP3'      },
+      { id: '12', animeName: 'Reborn!',                                openingTitle: 'last cross',                         artist: 'Masami Mitsuoka',         op: 5, image: '/2008/OPENING/Cover/REBORN5.jpg',          audio: '/2008/OPENING/Audio/REBORN5.MP3'          },
+      { id: '13', animeName: 'Black Butler',                           openingTitle: 'Monochrome no Kiss',                 artist: 'SID',                            image: '/2008/OPENING/Cover/BLACKBUTLER.jpg',      audio: '/2008/OPENING/Audio/BLACKBUTLER.MP3'      },
+      { id: '14', animeName: 'Nabari no Ou',                           openingTitle: 'CRAWL',                              artist: 'Veltpunch',                      image: '/2008/OPENING/Cover/NABARI.jpg',           audio: '/2008/OPENING/Audio/NABARI.MP3'           },
     ],
     animes: [
       {
