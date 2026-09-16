@@ -788,14 +788,6 @@ export const nominees: Record<number, YearNominees> = {
     ],
     animes: [
       {
-        id: '1',
-        name: 'Naruto Shippuden',
-        image: '/2014/ANIME/Cover/NarutoShippuden.jpg',
-        season: 'Arc de la 4e Grande Guerre Ninja',
-        studio: 'Studio Pierrot',
-        author: 'Masashi Kishimoto',
-      },
-      {
         id: '2',
         name: 'Re: Hamatora',
         image: '/2014/ANIME/Cover/ReHamatora.jpg',
