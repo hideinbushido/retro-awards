@@ -1364,7 +1364,7 @@ export const nominees: Record<number, YearNominees> = {
       { id: '14', animeName: 'Bakuman.',                              openingTitle: 'Blue Bird',                      artist: 'Kobukuro',                                    image: '/2010/OPENING/Cover/BAKUMAN.jpg',   audio: '/2010/OPENING/Audio/BAKUMAN1.MP3'   },
       { id: '16', animeName: 'Inazuma Eleven',                       openingTitle: 'Katte Nakou ze!',                artist: 'T-Pistonz+KMC',                       op: 4,  image: '/2010/OPENING/Cover/INAZUMA.jpg',   audio: '/2010/OPENING/Audio/INAZUMA4.MP3'   },
       { id: '15', animeName: 'Angel Beats!',                         openingTitle: 'My Soul, Your Beats!',           artist: 'Lia',                                         image: '/2010/OPENING/Cover/ANGEL.jpg',      audio: '/2010/OPENING/Audio/ANGEL.MP3'      },
-      { id: '17', animeName: 'One Piece',                             openingTitle: 'Kaze wo Sagashite',              artist: 'Mari Yaguchi with Straw Hat',        op: 12, image: '/2010/OPENING/Cover/ONE12.jpg',     audio: '/2010/OPENING/Audio/ONE12.MP3'      },
+      { id: '17', animeName: 'One Piece',                             openingTitle: 'One day',                        artist: 'The ROOTLESS',                        op: 13, image: '/2010/OPENING/Cover/ONE13.jpg',     audio: '/2010/OPENING/Audio/ONE13.MP3'      },
     ],
     animes: [
       {
