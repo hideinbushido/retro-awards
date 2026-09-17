@@ -785,6 +785,7 @@ export const nominees: Record<number, YearNominees> = {
       { id: '16', animeName: 'Noragami',                               openingTitle: 'Goya no Machiawase',       artist: 'Hello Sleepwalkers',                          image: '/2014/OPENING/Cover/NORAGAMI.jpg',    audio: '/2014/OPENING/Audio/NORAGAMI.MP3'    },
       { id: '17', animeName: 'Magi: The Kingdom of Magic',             openingTitle: 'ANNIVERSARY',              artist: 'SID',                                 op: 3,  image: '/2014/OPENING/Cover/MAGI.jpg',        audio: '/2014/OPENING/Audio/MAGI.MP3'        },
       { id: '18', animeName: 'Fairy Tail',                             openingTitle: 'Strike Back',              artist: 'BACK-ON',                             op: 16, image: '/2014/OPENING/Cover/FAIRY16.jpg',     audio: '/2014/OPENING/Audio/FAIRY16.MP3'     },
+      { id: '19', animeName: 'Naruto: Shippuden',                     openingTitle: 'Guren',                    artist: 'DOES',                                op: 15, image: '/2014/OPENING/Cover/NARUTO15.jpg',    audio: '/2014/OPENING/Audio/NARUTO15.MP3'    },
     ],
     animes: [
       {
