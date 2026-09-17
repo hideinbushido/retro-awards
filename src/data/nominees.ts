@@ -1495,7 +1495,7 @@ export const nominees: Record<number, YearNominees> = {
       { id: '11', animeName: 'Inazuma Eleven',                        openingTitle: 'Maji de Kansha!',                artist: 'T-Pistonz+KMC',                       op: 2,  image: '/2009/OPENING/Cover/INAZUMA.jpg',    audio: '/2009/OPENING/Audio/INAZUMA2.MP3'    },
       { id: '12', animeName: 'Bakemonogatari',                        openingTitle: 'Renai Circulation',              artist: 'Kana Hanazawa',                       op: 4,  image: '/2009/OPENING/Cover/BAKEMONO.jpg',       audio: '/2009/OPENING/Audio/BAKE4.MP3'       },
       { id: '13', animeName: 'Fullmetal Alchemist: Brotherhood',      openingTitle: 'Hologram',                       artist: 'NICO Touches the Walls',             op: 2,  image: '/2009/OPENING/Cover/FMAB2.jpg',    audio: '/2009/OPENING/Audio/FMA2.MP3'       },
-      { id: '14', animeName: 'One Piece',                             openingTitle: 'Kaze wo Sagashite',              artist: 'Mari Yaguchi with Straw Hat',        op: 12, image: '/2009/OPENING/Cover/ONE12.jpg',    audio: '/2009/OPENING/Audio/ONE12.MP3'      },
+      { id: '14', animeName: 'One Piece',                             openingTitle: 'One day',                        artist: 'The ROOTLESS',                        op: 13, image: '/2009/OPENING/Cover/ONE13.jpg',    audio: '/2009/OPENING/Audio/ONE13.MP3'      },
     ],
     animes: [
       {
