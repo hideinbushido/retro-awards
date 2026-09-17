@@ -1363,6 +1363,7 @@ export const nominees: Record<number, YearNominees> = {
       { id: '13', animeName: 'Fullmetal Alchemist: Brotherhood',      openingTitle: 'Rain',                           artist: 'SID',                                 op: 5,  image: '/2010/OPENING/Cover/FMAB.jpg',       audio: '/2010/OPENING/Audio/FMA5.MP3'       },
       { id: '16', animeName: 'Inazuma Eleven',                       openingTitle: 'Katte Nakou ze!',                artist: 'T-Pistonz+KMC',                       op: 4,  image: '/2010/OPENING/Cover/INAZUMA.jpg',   audio: '/2010/OPENING/Audio/INAZUMA4.MP3'   },
       { id: '15', animeName: 'Angel Beats!',                         openingTitle: 'My Soul, Your Beats!',           artist: 'Lia',                                         image: '/2010/OPENING/Cover/ANGEL.jpg',      audio: '/2010/OPENING/Audio/ANGEL.MP3'      },
+      { id: '17', animeName: 'Fullmetal Alchemist: Brotherhood',      openingTitle: 'Period',                         artist: 'CHEMISTRY',                          op: 4,  image: '/2010/OPENING/Cover/FMAB4.jpg',    audio: '/2010/OPENING/Audio/FMA4.MP3'       },
     ],
     animes: [
       {
