@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Check, Trophy } from 'lucide-react';
 import { Opening } from '@/data/nominees';
 import { PODIUM_POINTS } from '@/lib/votes';
+import { YEARS } from '@/lib/firestore';
 
 /**
  * Podium final, en triangle : 1er en haut au milieu, 2e en bas à gauche,
@@ -16,6 +17,9 @@ const BADGE = ['2.6rem', '2.2rem', '1.9rem'];
 
 export function PodiumTriangle({ year, podium }: { year: number; podium: (Opening | undefined)[] }) {
   const [first, second, third] = podium;
+  // Enchaîner sur l’année suivante plutôt que renvoyer vers un menu : c’est
+  // ce qu’on a envie de faire juste après avoir validé un podium.
+  const suivante = YEARS[YEARS.indexOf(year) + 1];
   return (
     <div className="flex flex-col items-center gap-8 py-6">
       <div className="text-center">
@@ -34,8 +38,24 @@ export function PodiumTriangle({ year, podium }: { year: number; podium: (Openin
       </div>
 
       <div className="flex flex-wrap gap-3 justify-center">
+        {suivante ? (
+          <Link
+            href={`/opening/${suivante}`}
+            className="btn-neon px-5 py-3 rounded text-sm"
+            style={{ background: 'var(--neon)', color: 'var(--bg)' }}
+          >
+            Openings {suivante} →
+          </Link>
+        ) : (
+          <Link
+            href={`/anime/${year}`}
+            className="btn-neon px-5 py-3 rounded text-sm"
+            style={{ background: 'var(--neon)', color: 'var(--bg)' }}
+          >
+            Voter l’anime {year}
+          </Link>
+        )}
         <Link href="/mes-votes" className="btn-neon px-5 py-3 rounded text-sm">Le récap de mes votes</Link>
-        <Link href={`/anime/${year}`} className="btn-neon px-5 py-3 rounded text-sm">Voter l’anime {year}</Link>
       </div>
     </div>
   );
