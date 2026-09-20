@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState } from 'react';
 import { Menu, X, ChevronDown, Music, Tv } from 'lucide-react';
 
@@ -18,10 +19,7 @@ export default function Navbar() {
       }}
     >
       <Link href="/" className="flex items-center gap-2">
-        <span className="text-xs font-bold tracking-widest uppercase" style={{ color: 'var(--sepia-dim)' }}>
-          ZENKAI
-        </span>
-        <span style={{ color: 'var(--border)' }}>|</span>
+        <Image src="/logo-mark.png" alt="" width={36} height={32} priority style={{ height: '2rem', width: 'auto' }} />
         <span className="font-black tracking-wider neon-text text-sm">RETRO AWARDS</span>
       </Link>
 

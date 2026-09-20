@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { ChevronDown, ChevronRight, Music, Tv, Rewind } from 'lucide-react';
 
 export default function Hero() {
@@ -9,6 +10,17 @@ export default function Hero() {
       <div className="crt-vignette" />
 
       <div className="relative z-10 text-center px-4 md:px-6 max-w-4xl mx-auto w-full py-16 animate-fade-up">
+
+        {/* Logo */}
+        <Image
+          src="/logo-mark.png"
+          alt="Retro Awards"
+          width={132}
+          height={120}
+          priority
+          className="mx-auto mb-4 md:mb-6"
+          style={{ height: 'clamp(4rem, 12vw, 7rem)', width: 'auto', filter: 'drop-shadow(0 0 24px rgba(0,255,204,0.35))' }}
+        />
 
         {/* Badge */}
         <div

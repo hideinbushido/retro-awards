@@ -3,8 +3,26 @@ import './globals.css';
 import { MusicProvider } from '@/contexts/MusicContext';
 import EntryTracker from '@/components/EntryTracker';
 
+/** L'adresse publique sert aux liens absolus des aperçus de partage. */
+const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://retro-awards.vercel.app';
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE),
   title: 'RETRO Awards — Zenkai Hors-Série',
+  // L'icône et la vignette viennent de src/app/icon.png et opengraph-image.png
+  openGraph: {
+    title: 'RETRO Awards — Zenkai Hors-Série',
+    description: 'Vote pour le meilleur anime et le meilleur opening de chaque année, de 2005 à 2019.',
+    url: SITE,
+    siteName: 'Retro Awards',
+    locale: 'fr_FR',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'RETRO Awards — Zenkai Hors-Série',
+    description: 'Vote pour le meilleur anime et le meilleur opening de chaque année, de 2005 à 2019.',
+  },
   description: 'Les awards rétro de la communauté Zenkai — Opening & Anime de l\'Année (2005-2019)',
 };
 
