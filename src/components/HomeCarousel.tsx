@@ -110,17 +110,30 @@ function YearSlide({
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [audioPlaying, setAudioPlaying] = useState(false);
+  const { pauseForOpening, resumeFromOpening } = useMusicContext();
 
-  // Auto-play audio dès qu'un opening est impliqué (seul ou dans un slide fusionné)
+  /*
+   * Auto-play de l'extrait dès qu'un opening est à l'écran, seul ou dans un
+   * slide fusionné. Deux musiques ne doivent jamais se superposer : celle du
+   * site se tait le temps de l'extrait, et revient quand il s'arrête.
+   */
   useEffect(() => {
     if (!pairOpening) return;
     const audio = new Audio(pairOpening.audio);
     audio.volume = 0.5;
     audioRef.current = audio;
-    audio.play().then(() => setAudioPlaying(true)).catch(() => setAudioPlaying(false));
-    audio.onended = () => setAudioPlaying(false);
-    return () => { audio.pause(); audio.src = ''; audioRef.current = null; setAudioPlaying(false); };
-  }, [pairOpening]);
+    audio.play()
+      .then(() => { setAudioPlaying(true); pauseForOpening(); })
+      .catch(() => setAudioPlaying(false));
+    audio.onended = () => { setAudioPlaying(false); resumeFromOpening(); };
+    return () => {
+      audio.pause();
+      audio.src = '';
+      audioRef.current = null;
+      setAudioPlaying(false);
+      resumeFromOpening();
+    };
+  }, [pairOpening, pauseForOpening, resumeFromOpening]);
 
   function toggleAudio() {
     const audio = audioRef.current;
@@ -128,8 +141,9 @@ function YearSlide({
     if (audioPlaying) {
       audio.pause();
       setAudioPlaying(false);
+      resumeFromOpening();
     } else {
-      audio.play().then(() => setAudioPlaying(true)).catch(() => {});
+      audio.play().then(() => { setAudioPlaying(true); pauseForOpening(); }).catch(() => {});
     }
   }
 
@@ -201,8 +215,8 @@ function YearSlide({
 
       {isCombined && pairOpening && pairAnime ? (
         <div className="year-layout-combined animate-fade-in">
-          <div className="flex items-center gap-3">
-            <div className="h-px w-8" style={{ background: 'var(--neon)', opacity: 0.5 }} />
+          <div className="combined-header flex items-center gap-3">
+            <div className="header-rule h-px w-8" style={{ background: 'var(--neon)', opacity: 0.5 }} />
             <span className="text-xs font-bold tracking-widest uppercase" style={{ color: 'var(--neon)' }}>RETRO AWARDS</span>
             <span className="font-black neon-text" style={{ fontSize: 'clamp(1.5rem, 4vw, 2.5rem)' }}>{year}</span>
           </div>
@@ -403,17 +417,6 @@ export default function HomeCarousel() {
   const [phase, setPhase] = useState<Phase>('timetravel');
   const [nominee, setNominee] = useState<DisplayNominee>(null);
   const nextIdxRef = useRef<number>(0);
-  const { pauseForOpening, resumeFromOpening } = useMusicContext();
-
-  // Pause musique quand un opening est affiché, reprend sinon
-  useEffect(() => {
-    if (nominee?.type === 'opening') {
-      pauseForOpening();
-    } else {
-      resumeFromOpening();
-    }
-  }, [nominee, pauseForOpening, resumeFromOpening]);
-
   const currentYear = YEARS[yearIndex];
 
   const goToYear = useCallback((idx: number) => {

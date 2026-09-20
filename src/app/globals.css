@@ -407,6 +407,38 @@ body::after {
   gap: 8px;
   min-width: 0;
 }
+
+/* TÉLÉPHONE : l'en-tête passe à la verticale le long du bord gauche.
+   À l'horizontale, les covers empilées finissaient par le recouvrir. */
+@media (max-width: 767px) {
+  .year-layout-combined {
+    padding: 10px 14px 84px 44px;
+    gap: 10px;
+    justify-content: center;
+  }
+  .combined-header {
+    position: absolute;
+    left: 6px;
+    top: 50%;
+    transform: translateY(-50%) rotate(180deg);
+    writing-mode: vertical-rl;
+    gap: 10px;
+    z-index: 4;
+  }
+  .combined-header .header-rule {
+    display: none;
+  }
+  .combined-row {
+    gap: 10px;
+  }
+  /* Deux covers l'une au-dessus de l'autre : chacune doit tenir dans sa moitié */
+  .combined-side .year-cover {
+    height: min(24vh, 34vw);
+  }
+  .year-cover {
+    height: min(36vh, 48vw);
+  }
+}
 @media (min-width: 768px) {
   .combined-side {
     align-items: flex-start;
