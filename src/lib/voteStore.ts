@@ -245,6 +245,60 @@ export async function saveVoterIdentity(
   return { voter, returning: false };
 }
 
+export type VoterSummary = {
+  pseudo: string;
+  email: string;
+  createdAt: string | null;
+  animes: number;
+  openings: number;
+};
+
+/** Qui s’est inscrit, et combien de bulletins chacun a déposés. */
+export async function listVoters(): Promise<VoterSummary[]> {
+  if (isMemoryMode()) {
+    return [...memVoters.entries()].map(([id, identity]) => {
+      let animes = 0;
+      let openings = 0;
+      for (const [ballotKey, ballot] of memBallots) {
+        if (!ballotKey.startsWith(`${id}_`)) continue;
+        if (ballot.podium) openings += 1;
+        if (ballot.anime) animes += 1;
+      }
+      return { ...identity, createdAt: null, animes, openings };
+    });
+  }
+
+  const db = getAdminDb();
+  const [voters, ballots] = await Promise.all([
+    db.collection('voters').get(),
+    db.collection('ballots').get(),
+  ]);
+
+  const counts = new Map<string, { animes: number; openings: number }>();
+  ballots.forEach((doc) => {
+    const data = doc.data();
+    if (typeof data.voter !== 'string') return;
+    const found = counts.get(data.voter) ?? { animes: 0, openings: 0 };
+    if (Array.isArray(data.podium)) found.openings += 1;
+    else found.animes += 1;
+    counts.set(data.voter, found);
+  });
+
+  return voters.docs
+    .map((doc) => {
+      const data = doc.data();
+      const found = counts.get(doc.id) ?? { animes: 0, openings: 0 };
+      return {
+        pseudo: typeof data.pseudo === 'string' ? data.pseudo : '(sans pseudo)',
+        email: typeof data.email === 'string' ? data.email : '',
+        createdAt: data.createdAt?.toDate?.().toISOString() ?? null,
+        animes: found.animes,
+        openings: found.openings,
+      };
+    })
+    .sort((a, b) => (b.createdAt ?? '').localeCompare(a.createdAt ?? ''));
+}
+
 /** Tous les bulletins d’un votant, pour le récapitulatif. */
 export async function getVoterBallots(
   voter: string,

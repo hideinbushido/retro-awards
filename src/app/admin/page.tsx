@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { BarChart3, Trophy, Music, Tv, RefreshCw, Upload, Copy, Check } from 'lucide-react';
+import { BarChart3, Trophy, Music, Tv, RefreshCw, Upload, Copy, Check, Users } from 'lucide-react';
 import { YEARS } from '@/lib/firestore';
 import { PODIUM_POINTS } from '@/lib/votes';
 import { uploadFile } from '@/lib/storage';
@@ -21,14 +21,23 @@ type YearResult = {
   animes: { id: string; label: string; votes: number }[];
 };
 
+type Voter = {
+  pseudo: string;
+  email: string;
+  createdAt: string | null;
+  animes: number;
+  openings: number;
+};
+
 export default function AdminPage() {
   const [auth, setAuth] = useState(false);
   const [pwd, setPwd] = useState('');
   const [data, setData] = useState<YearResult[]>([]);
+  const [voters, setVoters] = useState<Voter[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
-  const [tab, setTab] = useState<'votes' | 'upload'>('votes');
+  const [tab, setTab] = useState<'votes' | 'votants' | 'upload'>('votes');
 
   async function fetchResults(password: string) {
     setLoading(true);
@@ -45,6 +54,7 @@ export default function AdminPage() {
         return false;
       }
       setData(json.years as YearResult[]);
+      setVoters((json.voters ?? []) as Voter[]);
       return true;
     } catch {
       setError('Connexion impossible.');
@@ -106,7 +116,7 @@ export default function AdminPage() {
         </div>
 
         <div className="flex gap-2 mb-8">
-          {(['votes', 'upload'] as const).map((t) => (
+          {(['votes', 'votants', 'upload'] as const).map((t) => (
             <button
               key={t}
               onClick={() => setTab(t)}
@@ -117,7 +127,7 @@ export default function AdminPage() {
                 border: '1px solid var(--neon)',
               }}
             >
-              {t === 'votes' ? 'Votes' : 'Upload'}
+              {t === 'votes' ? 'Votes' : t === 'votants' ? 'Votants' : 'Upload'}
             </button>
           ))}
         </div>
@@ -125,6 +135,8 @@ export default function AdminPage() {
         {error && <p className="text-xs mb-4" style={{ color: '#ff5555' }}>{error}</p>}
 
         {tab === 'upload' && <UploadPanel />}
+
+        {tab === 'votants' && <VotersPanel voters={voters} />}
 
         {tab === 'votes' && !selectedYear && (
           <>
@@ -389,5 +401,73 @@ function VoteBar({ items, unit }: { items: { label: string; value: number }[]; u
         </div>
       ))}
     </div>
+  );
+}
+
+/** Qui a voté, quand, et combien d’années chacun a couvert. */
+function VotersPanel({ voters }: { voters: Voter[] }) {
+  const [copied, setCopied] = useState(false);
+  const actifs = voters.filter((v) => v.animes + v.openings > 0);
+
+  function copyEmails() {
+    navigator.clipboard.writeText(voters.map((v) => v.email).join(', ')).then(
+      () => { setCopied(true); setTimeout(() => setCopied(false), 1500); },
+      () => {},
+    );
+  }
+
+  if (!voters.length) {
+    return (
+      <div className="retro-card rounded-lg p-8 text-center">
+        <Users size={24} className="mx-auto mb-3" style={{ color: 'var(--neon)' }} />
+        <p className="text-sm" style={{ color: 'var(--sepia-dim)' }}>Personne ne s’est encore inscrit.</p>
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <StatCard label="Inscrits" value={voters.length} />
+        <StatCard label="Ont voté" value={actifs.length} />
+        <StatCard label="Podiums" value={voters.reduce((n, v) => n + v.openings, 0)} />
+        <StatCard label="Votes animés" value={voters.reduce((n, v) => n + v.animes, 0)} />
+      </div>
+
+      <div className="flex justify-end mb-3">
+        <button onClick={copyEmails} className="btn-neon px-3 py-2 rounded text-xs flex items-center gap-2">
+          {copied ? <Check size={12} /> : <Copy size={12} />} Copier les adresses
+        </button>
+      </div>
+
+      <div className="retro-card rounded-lg overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-xs" style={{ color: 'var(--sepia)' }}>
+            <thead>
+              <tr style={{ background: 'var(--bg2)', color: 'var(--neon)' }}>
+                <th className="text-left font-black tracking-widest uppercase px-4 py-3">Pseudo</th>
+                <th className="text-left font-black tracking-widest uppercase px-4 py-3">Adresse mail</th>
+                <th className="text-right font-black tracking-widest uppercase px-4 py-3">Animés</th>
+                <th className="text-right font-black tracking-widest uppercase px-4 py-3">Podiums</th>
+                <th className="text-right font-black tracking-widest uppercase px-4 py-3">Inscrit le</th>
+              </tr>
+            </thead>
+            <tbody>
+              {voters.map((v) => (
+                <tr key={v.email} style={{ borderTop: '1px solid var(--border)' }}>
+                  <td className="px-4 py-3 font-black">{v.pseudo}</td>
+                  <td className="px-4 py-3" style={{ color: 'var(--sepia-dim)' }}>{v.email}</td>
+                  <td className="px-4 py-3 text-right">{v.animes}</td>
+                  <td className="px-4 py-3 text-right">{v.openings}</td>
+                  <td className="px-4 py-3 text-right" style={{ color: 'var(--sepia-dim)' }}>
+                    {v.createdAt ? new Date(v.createdAt).toLocaleDateString('fr-FR') : '—'}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </>
   );
 }

@@ -8,7 +8,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { timingSafeEqual } from 'crypto';
 import { nominees } from '@/data/nominees';
 import { YEARS } from '@/lib/firestore';
-import { getTallies, isMemoryMode } from '@/lib/voteStore';
+import { getTallies, isMemoryMode, listVoters } from '@/lib/voteStore';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -39,8 +39,9 @@ export async function POST(request: NextRequest) {
   }
 
   let tallies;
+  let voters;
   try {
-    tallies = await getTallies(YEARS);
+    [tallies, voters] = await Promise.all([getTallies(YEARS), listVoters()]);
   } catch (e) {
     console.error('[results] stockage indisponible', e);
     return NextResponse.json({ error: 'Résultats indisponibles.' }, { status: 503 });
@@ -66,5 +67,5 @@ export async function POST(request: NextRequest) {
     };
   });
 
-  return NextResponse.json({ years, memory: isMemoryMode() });
+  return NextResponse.json({ years, voters, memory: isMemoryMode() });
 }
