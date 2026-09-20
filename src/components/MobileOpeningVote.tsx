@@ -16,9 +16,7 @@ type Props = {
 };
 
 const MEDALS = ['🥇', '🥈', '🥉'];
-const HINT_KEY = 'retro_hint_appui_long';
-/** Distance au-delà de laquelle un appui long devient un scroll. */
-const MOVE_TOLERANCE = 12;
+const HINT_KEY = 'retro_hint_toucher';
 /** Part de la largeur à franchir pour qu’un swipe compte. */
 const SWIPE_RATIO = 0.25;
 
@@ -42,7 +40,6 @@ export default function MobileOpeningVote({ year, openings, onVoted }: Props) {
     () => loadDraft(year, openings) ?? [null, null, null],
   );
   const [selected, setSelected] = useState<string | null>(null);
-  const [bubble, setBubble] = useState<{ id: string; x: number; y: number } | null>(null);
   const [playingId, setPlayingId] = useState<string | null>(null);
   const [confirming, setConfirming] = useState(false);
   const [sending, setSending] = useState(false);
@@ -64,8 +61,6 @@ export default function MobileOpeningVote({ year, openings, onVoted }: Props) {
   const [finalPool, setFinalPool] = useState<string[] | null>(null);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const pressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const pressStart = useRef<{ x: number; y: number } | null>(null);
   const swipeStart = useRef<number | null>(null);
   const { pauseForOpening, resumeFromOpening } = useMusicContext();
   const { guard, gate, ask } = useVoterGate();
@@ -109,16 +104,14 @@ export default function MobileOpeningVote({ year, openings, onVoted }: Props) {
 
   /* ── Sélection et rangs ── */
 
-  function select(id: string, at?: { x: number; y: number }) {
+  function select(id: string) {
     setError(null);
     setSelected(id);
-    if (at) setBubble({ id, x: at.x, y: at.y });
     buzz();
   }
 
   function deselect() {
     setSelected(null);
-    setBubble(null);
   }
 
   /** Place la cover au rang demandé. Si la case est prise, on échange. */
@@ -144,41 +137,19 @@ export default function MobileOpeningVote({ year, openings, onVoted }: Props) {
     setSlots((prev) => prev.map((x, i) => (i === rank ? null : x)));
   }
 
-  /* ── Appui long sur la grille ── */
+  /* ── Toucher une cover ── */
 
-  function onCardTouchStart(op: Opening, e: React.TouchEvent) {
-    const t = e.touches[0];
-    pressStart.current = { x: t.clientX, y: t.clientY };
-    pressTimer.current = setTimeout(() => {
-      pressTimer.current = null;
-      dismissHint();
-      select(op.id, { x: t.clientX, y: t.clientY });
-    }, 450);
-  }
-
-  function onCardTouchMove(e: React.TouchEvent) {
-    if (!pressTimer.current || !pressStart.current) return;
-    const t = e.touches[0];
-    const moved = Math.hypot(t.clientX - pressStart.current.x, t.clientY - pressStart.current.y);
-    // L’utilisateur fait défiler la grille : on annule l’appui long.
-    if (moved > MOVE_TOLERANCE) {
-      clearTimeout(pressTimer.current);
-      pressTimer.current = null;
-    }
-  }
-
-  function onCardTouchEnd(op: Opening) {
-    if (pressTimer.current) {
-      clearTimeout(pressTimer.current);
-      pressTimer.current = null;
-      // Appui court : pendant le choix d’un rang, il re-cible la cover ;
-      // sinon il écoute l’extrait, ou reprend une cover déjà classée.
-      if (selected === op.id) deselect();
-      else if (selected) select(op.id);
-      else if (slots.includes(op.id)) select(op.id);
-      else if (playingId === op.id) stopAudio();
-      else playAudio(op);
-    }
+  /**
+   * Un simple toucher choisit la cover, un deuxième l’abandonne.
+   *
+   * L’appui long a été retiré : il déclenchait la loupe et le menu du
+   * téléphone, et il fallait revenir en arrière à chaque fois. L’extrait reste
+   * accessible par le bouton d’écoute posé sur chaque cover.
+   */
+  function toggleSelect(op: Opening) {
+    dismissHint();
+    if (selected === op.id) deselect();
+    else select(op.id);
   }
 
   /* ── Mode swipe ── */
@@ -448,7 +419,7 @@ export default function MobileOpeningVote({ year, openings, onVoted }: Props) {
         <div className="retro-card rounded-lg p-4 mb-4 text-center">
           <p className="font-black text-sm" style={{ color: 'var(--sepia)' }}>Plus que {visible.length} !</p>
           <p className="text-xs mt-1" style={{ color: 'var(--sepia-dim)' }}>
-            Appuie longuement sur une cover pour lui donner son rang.
+            Touche une cover, puis sa place en bas.
           </p>
         </div>
       )}
@@ -457,9 +428,9 @@ export default function MobileOpeningVote({ year, openings, onVoted }: Props) {
         <div className="retro-card rounded-lg p-4 mb-4 flex items-start gap-3">
           <span style={{ fontSize: '1.4rem' }}>👆</span>
           <div className="flex-1">
-            <p className="text-xs font-black" style={{ color: 'var(--sepia)' }}>Appui long pour classer</p>
+            <p className="text-xs font-black" style={{ color: 'var(--sepia)' }}>Touche, puis choisis sa place</p>
             <p className="text-xs mt-1 leading-relaxed" style={{ color: 'var(--sepia-dim)' }}>
-              Un tap écoute l’extrait. Reste appuyé sur une cover pour choisir son rang, ou utilise les cases du bas.
+              Touche la cover que tu veux, puis 🥇, 🥈 ou 🥉 en bas. Le bouton ▶ sur la cover écoute l’extrait.
             </p>
           </div>
           <button onClick={dismissHint} className="p-1" style={{ color: 'var(--sepia-dim)' }} aria-label="Compris"><X size={14} /></button>
@@ -480,11 +451,10 @@ export default function MobileOpeningVote({ year, openings, onVoted }: Props) {
                 boxShadow: isSelected ? '0 0 0 2px var(--neon), 0 0 22px rgba(0,255,204,0.3)' : undefined,
                 opacity: selected && !isSelected ? 0.55 : 1,
                 transition: 'opacity .2s, box-shadow .2s',
+                WebkitTouchCallout: 'none',
+                WebkitUserSelect: 'none',
               }}
-              onTouchStart={(e) => onCardTouchStart(op, e)}
-              onTouchMove={onCardTouchMove}
-              onTouchEnd={(e) => { e.stopPropagation(); onCardTouchEnd(op); }}
-              onClick={(e) => e.stopPropagation()}
+              onClick={(e) => { e.stopPropagation(); toggleSelect(op); }}
               onContextMenu={(e) => e.preventDefault()}
             >
               <div className="relative aspect-[3/4]">
@@ -500,9 +470,11 @@ export default function MobileOpeningVote({ year, openings, onVoted }: Props) {
                   </div>
                 )}
                 <button
-                  onTouchStart={(e) => e.stopPropagation()}
-                  onTouchEnd={(e) => { e.stopPropagation(); if (playingId === op.id) stopAudio(); else playAudio(op); }}
-                  onClick={(e) => e.stopPropagation()}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (playingId === op.id) stopAudio();
+                    else playAudio(op);
+                  }}
                   className="absolute bottom-1.5 right-1.5 rounded-full flex items-center justify-center"
                   style={{ width: '2.1rem', height: '2.1rem', background: 'rgba(13,10,6,0.85)', border: '1px solid var(--neon)', color: 'var(--neon)' }}
                   aria-label={playingId === op.id ? 'Arrêter' : 'Écouter'}
@@ -521,55 +493,26 @@ export default function MobileOpeningVote({ year, openings, onVoted }: Props) {
         })}
       </div>
 
-      {/* Bulle de rang, sous le doigt */}
-      {bubble && (
-        <div
-          className="fixed z-50 flex gap-2 px-2 py-2 rounded-xl"
-          style={{
-            left: Math.min(Math.max(bubble.x - 90, 8), (typeof window !== 'undefined' ? window.innerWidth : 360) - 188),
-            top: Math.max(bubble.y - 90, 8),
-            background: 'rgba(13,10,6,0.97)',
-            border: '1px solid var(--neon)',
-            boxShadow: '0 0 24px rgba(0,255,204,0.3)',
-          }}
-        >
-          {Array.from({ length: ranks }, (_, i) => {
-            const taken = slots[i];
-            return (
-              <button
-                key={i}
-                onClick={() => assignRank(bubble.id, i)}
-                className="rounded-lg px-3 py-2 text-center"
-                style={{
-                  border: `1px solid ${taken ? 'var(--border)' : 'var(--neon)'}`,
-                  background: taken ? 'transparent' : 'rgba(0,255,204,0.12)',
-                  minWidth: '3.2rem',
-                }}
-              >
-                <span style={{ fontSize: '1.1rem' }}>{MEDALS[i]}</span>
-                <span className="block text-xs" style={{ color: taken ? 'var(--sepia-dim)' : 'var(--neon)' }}>
-                  {taken ? 'échanger' : `${PODIUM_POINTS[i]} pts`}
-                </span>
-              </button>
-            );
-          })}
-          {slots.includes(bubble.id) && (
-            <button onClick={() => removeFromPodium(bubble.id)} className="rounded-lg px-3 py-2 text-xs" style={{ border: '1px solid var(--border)', color: 'var(--sepia-dim)' }}>
-              Retirer
-            </button>
-          )}
-        </div>
-      )}
-
       {/* Cases de rang, zone du pouce */}
       <div
         className="fixed bottom-0 left-0 right-0 z-40 px-3 pt-3 pb-4"
         style={{ background: 'rgba(13,10,6,0.97)', borderTop: '1px solid var(--border)', backdropFilter: 'blur(8px)' }}
       >
         {selected && (
-          <p className="text-center text-xs font-black mb-2" style={{ color: 'var(--neon)' }}>
-            Quel rang pour cette cover ?
-          </p>
+          <div className="flex items-center justify-center gap-3 mb-2">
+            <p className="text-xs font-black" style={{ color: 'var(--neon)' }}>
+              Quel rang pour cette cover ?
+            </p>
+            {slots.includes(selected) && (
+              <button
+                onClick={() => removeFromPodium(selected)}
+                className="text-xs px-2 py-1 rounded"
+                style={{ border: '1px solid var(--border)', color: 'var(--sepia-dim)' }}
+              >
+                ✕ Retirer
+              </button>
+            )}
+          </div>
         )}
         <div className="flex items-stretch gap-2 mb-3">
           {Array.from({ length: ranks }, (_, i) => {
