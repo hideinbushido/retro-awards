@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { X, Check } from 'lucide-react';
 import { Anime } from '@/data/nominees';
+import { useVoterGate } from '@/components/VoterGate';
 
 type Props = { year: number; animes: Anime[] };
 
@@ -13,6 +14,7 @@ export default function AnimeNominees({ year, animes }: Props) {
   const [zoomed, setZoomed] = useState<Anime | null>(null);
   const [loading, setLoading] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const { guard, gate } = useVoterGate();
 
   /* Le vote fait foi côté serveur : on le relit au chargement. */
   useEffect(() => {
@@ -24,8 +26,13 @@ export default function AnimeNominees({ year, animes }: Props) {
     return () => { alive = false; };
   }, [year]);
 
-  async function handleVote(id: string) {
+  /** Le pseudo et le mail sont demandés d’abord, puis le vote repart tout seul. */
+  function handleVote(id: string) {
     if (votedId || loading) return;
+    guard(() => { void sendVote(id); });
+  }
+
+  async function sendVote(id: string) {
     setLoading(id);
     setError(null);
     try {
@@ -46,7 +53,16 @@ export default function AnimeNominees({ year, animes }: Props) {
 
   return (
     <>
+      {gate}
       {error && (<p className="text-xs mb-3" style={{ color: "#ff5555" }}>{error}</p>)}
+      {votedId && (
+        <div className="retro-card rounded-lg p-3 mb-4 flex items-center justify-between gap-3">
+          <p className="text-xs" style={{ color: 'var(--sepia-dim)' }}>
+            Vote enregistré pour {year}. Merci !
+          </p>
+          <a href="/mes-votes" className="btn-neon text-xs px-3 py-2 rounded shrink-0">Mes votes</a>
+        </div>
+      )}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
         {animes.map((anime) => {
           const isMyVote = votedId === anime.id;

@@ -10,6 +10,7 @@
 import { FieldValue } from 'firebase-admin/firestore';
 import { getAdminDb, hasAdminCredentials } from './firebaseAdmin';
 import { PODIUM_POINTS } from './votes';
+import type { VoterIdentity } from './voters';
 
 export class AlreadyVotedError extends Error {
   constructor() {
@@ -56,7 +57,12 @@ export async function getBallot(voter: string, year: number) {
 }
 
 /** Enregistre un podium d’openings. Lève AlreadyVotedError si déjà voté. */
-export async function saveOpeningBallot(voter: string, year: number, podium: string[]) {
+export async function saveOpeningBallot(
+  voter: string,
+  year: number,
+  podium: string[],
+  identity: VoterIdentity,
+) {
   if (isMemoryMode()) {
     const existing = memBallots.get(key(voter, year)) ?? {};
     if (existing.podium) throw new AlreadyVotedError();
@@ -79,13 +85,25 @@ export async function saveOpeningBallot(voter: string, year: number, podium: str
     podium.forEach((id, rank) => {
       points[id] = FieldValue.increment(PODIUM_POINTS[rank]);
     });
-    tx.set(ballotRef, { voter, year, podium, createdAt: FieldValue.serverTimestamp() });
+    tx.set(ballotRef, {
+      voter,
+      year,
+      podium,
+      pseudo: identity.pseudo,
+      email: identity.email,
+      createdAt: FieldValue.serverTimestamp(),
+    });
     tx.set(tallyRef, { openings: points, openingBallots: FieldValue.increment(1) }, { merge: true });
   });
 }
 
 /** Enregistre le vote anime. Lève AlreadyVotedError si déjà voté. */
-export async function saveAnimeBallot(voter: string, year: number, id: string) {
+export async function saveAnimeBallot(
+  voter: string,
+  year: number,
+  id: string,
+  identity: VoterIdentity,
+) {
   if (isMemoryMode()) {
     const existing = memBallots.get(key(voter, year)) ?? {};
     if (existing.anime) throw new AlreadyVotedError();
@@ -102,7 +120,14 @@ export async function saveAnimeBallot(voter: string, year: number, id: string) {
   const tallyRef = db.collection('tallies').doc(String(year));
   await db.runTransaction(async (tx) => {
     if ((await tx.get(ballotRef)).exists) throw new AlreadyVotedError();
-    tx.set(ballotRef, { voter, year, id, createdAt: FieldValue.serverTimestamp() });
+    tx.set(ballotRef, {
+      voter,
+      year,
+      id,
+      pseudo: identity.pseudo,
+      email: identity.email,
+      createdAt: FieldValue.serverTimestamp(),
+    });
     tx.set(
       tallyRef,
       { animes: { [id]: FieldValue.increment(1) }, animeBallots: FieldValue.increment(1) },
@@ -127,4 +152,90 @@ export async function getTallies(years: number[]): Promise<Tally[]> {
       animeBallots: (data.animeBallots as number) ?? 0,
     };
   });
+}
+
+/* ── Identité du votant ── */
+
+const memVoters = new Map<string, VoterIdentity>();
+
+export async function getVoterIdentity(voter: string): Promise<VoterIdentity | null> {
+  if (isMemoryMode()) return memVoters.get(voter) ?? null;
+  const snap = await getAdminDb().collection('voters').doc(voter).get();
+  if (!snap.exists) return null;
+  const data = snap.data() ?? {};
+  if (typeof data.pseudo !== 'string' || typeof data.email !== 'string') return null;
+  return { pseudo: data.pseudo, email: data.email };
+}
+
+/**
+ * Enregistre le pseudo et le mail.
+ *
+ * Si l’adresse a déjà servi, on renvoie l’identifiant existant : la personne
+ * retrouve ses votes depuis un autre appareil, et ne peut pas voter deux fois
+ * en changeant de navigateur.
+ */
+export async function saveVoterIdentity(
+  voter: string,
+  identity: VoterIdentity,
+): Promise<{ voter: string; returning: boolean }> {
+  if (isMemoryMode()) {
+    for (const [id, found] of memVoters) {
+      if (found.email === identity.email) {
+        memVoters.set(id, { ...found, pseudo: identity.pseudo });
+        return { voter: id, returning: true };
+      }
+    }
+    memVoters.set(voter, identity);
+    return { voter, returning: false };
+  }
+
+  const db = getAdminDb();
+  const existing = await db.collection('voters').where('email', '==', identity.email).limit(1).get();
+  if (!existing.empty) {
+    const doc = existing.docs[0];
+    await doc.ref.set(
+      { pseudo: identity.pseudo, updatedAt: FieldValue.serverTimestamp() },
+      { merge: true },
+    );
+    return { voter: doc.id, returning: true };
+  }
+
+  await db.collection('voters').doc(voter).set({
+    ...identity,
+    createdAt: FieldValue.serverTimestamp(),
+  });
+  return { voter, returning: false };
+}
+
+/** Tous les bulletins d’un votant, pour le récapitulatif. */
+export async function getVoterBallots(
+  voter: string,
+): Promise<{ year: number; podium: string[] | null; anime: string | null }[]> {
+  const found = new Map<number, { podium: string[] | null; anime: string | null }>();
+  const touch = (year: number) =>
+    found.get(year) ?? found.set(year, { podium: null, anime: null }).get(year)!;
+
+  if (isMemoryMode()) {
+    for (const [id, ballot] of memBallots) {
+      if (!id.startsWith(`${voter}_`)) continue;
+      const year = Number(id.slice(voter.length + 1));
+      const entry = touch(year);
+      entry.podium = ballot.podium ?? null;
+      entry.anime = ballot.anime ?? null;
+    }
+  } else {
+    const snap = await getAdminDb().collection('ballots').where('voter', '==', voter).get();
+    snap.forEach((doc) => {
+      const data = doc.data();
+      const year = Number(data.year);
+      if (!Number.isFinite(year)) return;
+      const entry = touch(year);
+      if (Array.isArray(data.podium)) entry.podium = data.podium as string[];
+      if (typeof data.id === 'string') entry.anime = data.id;
+    });
+  }
+
+  return [...found.entries()]
+    .map(([year, entry]) => ({ year, ...entry }))
+    .sort((a, b) => b.year - a.year);
 }

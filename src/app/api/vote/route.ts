@@ -2,8 +2,9 @@
  * Vote : enregistrement et relecture du bulletin du visiteur.
  *
  * Le navigateur n’écrit jamais dans Firestore : tout passe par ici. Chaque
- * visiteur reçoit un cookie httpOnly qui l’identifie, et le stockage garantit
- * un seul bulletin par personne, par année et par catégorie.
+ * visiteur reçoit un cookie httpOnly lors de son inscription (/api/voter), et
+ * le stockage garantit un seul bulletin par personne, par année et par
+ * catégorie.
  */
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
@@ -11,6 +12,7 @@ import { PODIUM_SIZE, isKnownYear, validateAnime, validatePodium } from '@/lib/v
 import {
   AlreadyVotedError,
   getBallot,
+  getVoterIdentity,
   isMemoryMode,
   saveAnimeBallot,
   saveOpeningBallot,
@@ -20,7 +22,6 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 const COOKIE = 'retro_voter';
-const ONE_YEAR = 60 * 60 * 24 * 365;
 
 /** GET /api/vote?year=2019 — ce que ce visiteur a déjà voté cette année-là. */
 export async function GET(request: NextRequest) {
@@ -68,16 +69,29 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Anime invalide.' }, { status: 400 });
   }
 
-  const jar = await cookies();
-  let voter = jar.get(COOKIE)?.value;
-  const isNewVoter = !voter;
-  if (!voter) voter = crypto.randomUUID();
+  /* Pseudo et mail d’abord : c’est eux qui rattachent le bulletin à quelqu’un. */
+  const voter = (await cookies()).get(COOKIE)?.value;
+  let identity = null;
+  if (voter) {
+    try {
+      identity = await getVoterIdentity(voter);
+    } catch (e) {
+      console.error('[vote] lecture identité impossible', e);
+      return NextResponse.json({ error: 'Le vote n’a pas pu être enregistré.' }, { status: 503 });
+    }
+  }
+  if (!voter || !identity) {
+    return NextResponse.json(
+      { error: 'Indique ton pseudo et ton adresse mail avant de voter.', needIdentity: true },
+      { status: 401 },
+    );
+  }
 
   try {
     if (category === 'opening') {
-      await saveOpeningBallot(voter, year, body.podium as string[]);
+      await saveOpeningBallot(voter, year, body.podium as string[], identity);
     } else {
-      await saveAnimeBallot(voter, year, body.id as string);
+      await saveAnimeBallot(voter, year, body.id as string, identity);
     }
   } catch (e) {
     if (e instanceof AlreadyVotedError) {
@@ -87,15 +101,5 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Le vote n’a pas pu être enregistré.' }, { status: 503 });
   }
 
-  const response = NextResponse.json({ ok: true, memory: isMemoryMode() });
-  if (isNewVoter) {
-    response.cookies.set(COOKIE, voter, {
-      httpOnly: true,
-      sameSite: 'lax',
-      secure: process.env.NODE_ENV === 'production',
-      path: '/',
-      maxAge: ONE_YEAR,
-    });
-  }
-  return response;
+  return NextResponse.json({ ok: true, memory: isMemoryMode() });
 }

@@ -9,6 +9,7 @@ import { useMusicContext } from '@/contexts/MusicContext';
 import { useIsTouch } from '@/hooks/useIsTouch';
 import { PodiumTriangle } from '@/components/PodiumTriangle';
 import MobileOpeningVote from '@/components/MobileOpeningVote';
+import { useVoterGate } from '@/components/VoterGate';
 
 type Props = { year: number; openings: Opening[]; teaser?: boolean };
 
@@ -39,6 +40,7 @@ export default function OpeningNominees({ year, openings, teaser = false }: Prop
   const audioMapRef = useRef<Map<string, HTMLAudioElement>>(new Map());
   const { pauseForOpening, resumeFromOpening } = useMusicContext();
   const isTouch = useIsTouch();
+  const { guard, gate } = useVoterGate();
 
   /* Le bulletin déjà enregistré fait autorité : il vient du serveur. */
   useEffect(() => {
@@ -130,9 +132,14 @@ export default function OpeningNominees({ year, openings, teaser = false }: Prop
     setSlots((prev) => prev.map((x, i) => (i === slot ? null : x)));
   }
 
-  async function submitPodium() {
+  /** Le pseudo et le mail sont demandés d’abord, puis le vote repart tout seul. */
+  function submitPodium() {
+    if (locked || slots.filter(Boolean).length !== PODIUM_SIZE || sending) return;
+    guard(() => { void sendPodium(); });
+  }
+
+  async function sendPodium() {
     const podium = slots.filter(Boolean) as string[];
-    if (locked || podium.length !== PODIUM_SIZE || sending) return;
     setSending(true);
     setError(null);
     try {
@@ -171,6 +178,7 @@ export default function OpeningNominees({ year, openings, teaser = false }: Prop
 
   return (
     <>
+    {gate}
     {teaser && revealed.size > 0 && (
       <div className="flex justify-end mb-4">
         <button onClick={handleResetAll} className="btn-neon text-xs px-4 py-2 rounded flex items-center gap-2">

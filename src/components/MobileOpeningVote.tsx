@@ -6,6 +6,7 @@ import { Check, Music, Play, Square, Undo2, X } from 'lucide-react';
 import { Opening } from '@/data/nominees';
 import { PODIUM_POINTS, PODIUM_SIZE } from '@/lib/votes';
 import { useMusicContext } from '@/contexts/MusicContext';
+import { useVoterGate } from '@/components/VoterGate';
 
 type Props = {
   year: number;
@@ -64,6 +65,7 @@ export default function MobileOpeningVote({ year, openings, onVoted }: Props) {
   const pressStart = useRef<{ x: number; y: number } | null>(null);
   const swipeStart = useRef<number | null>(null);
   const { pauseForOpening, resumeFromOpening } = useMusicContext();
+  const { guard, gate } = useVoterGate();
 
   const byId = useCallback((id: string | null) => openings.find((o) => o.id === id), [openings]);
   /** Nombre de rangs réellement attribuables : 3, ou moins s’il y a peu de nominés. */
@@ -257,9 +259,14 @@ export default function MobileOpeningVote({ year, openings, onVoted }: Props) {
 
   /* ── Envoi ── */
 
-  async function submit() {
+  /** Le pseudo et le mail sont demandés d’abord, puis le vote repart tout seul. */
+  function submit() {
+    if (slots.filter(Boolean).length !== ranks || sending) return;
+    guard(() => { void sendPodium(); });
+  }
+
+  async function sendPodium() {
     const podium = slots.filter(Boolean) as string[];
-    if (podium.length !== ranks || sending) return;
     setSending(true);
     setError(null);
     try {
@@ -425,6 +432,7 @@ export default function MobileOpeningVote({ year, openings, onVoted }: Props) {
   /* ── Grille et écran final ── */
   return (
     <>
+      {gate}
       {mode === 'final' && (
         <div className="retro-card rounded-lg p-4 mb-4 text-center">
           <p className="font-black text-sm" style={{ color: 'var(--sepia)' }}>Plus que {visible.length} !</p>
