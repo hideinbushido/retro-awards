@@ -14,13 +14,39 @@ import { useVoterGate } from '@/components/VoterGate';
 type Props = { year: number; openings: Opening[]; teaser?: boolean };
 
 const REVEALED_KEY = (year: number) => `retro_teaser_revealed_${year}`;
+/** Podium en cours de composition, pour ne rien perdre en rechargeant la page. */
+const DRAFT_KEY = (year: number) => `retro_draft_${year}`;
+
+/** Relit un brouillon, en écartant les openings qui n’existent plus. */
+export function loadDraft(year: number, openings: Opening[]): (string | null)[] | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    const stored = localStorage.getItem(DRAFT_KEY(year));
+    if (!stored) return null;
+    const parsed = JSON.parse(stored);
+    if (!Array.isArray(parsed)) return null;
+    const known = new Set(openings.map((o) => o.id));
+    const slots = [0, 1, 2].map((i) => (typeof parsed[i] === 'string' && known.has(parsed[i]) ? parsed[i] : null));
+    return slots.some(Boolean) ? slots : null;
+  } catch {
+    return null;
+  }
+}
+
+export function saveDraft(year: number, slots: (string | null)[]) {
+  try { localStorage.setItem(DRAFT_KEY(year), JSON.stringify(slots)); } catch {}
+}
+
+export function clearDraft(year: number) {
+  try { localStorage.removeItem(DRAFT_KEY(year)); } catch {}
+}
 const RANK_LABEL = ['1er', '2e', '3e'];
 /** Une place par panier : index 0 = 1re place. */
 const EMPTY_SLOTS: (string | null)[] = [null, null, null];
 
 export default function OpeningNominees({ year, openings, teaser = false }: Props) {
   /** Paniers en cours de remplissage : un opening par place, ou null. */
-  const [slots, setSlots] = useState<(string | null)[]>(EMPTY_SLOTS);
+  const [slots, setSlots] = useState<(string | null)[]>(() => loadDraft(year, openings) ?? EMPTY_SLOTS);
   /** Podium déjà enregistré côté serveur, ou null tant que rien n’a été voté. */
   const [locked, setLocked] = useState<string[] | null>(null);
   const [sending, setSending] = useState(false);
@@ -40,7 +66,12 @@ export default function OpeningNominees({ year, openings, teaser = false }: Prop
   const audioMapRef = useRef<Map<string, HTMLAudioElement>>(new Map());
   const { pauseForOpening, resumeFromOpening } = useMusicContext();
   const isTouch = useIsTouch();
-  const { guard, gate } = useVoterGate();
+  const { guard, gate, ask } = useVoterGate();
+
+  /* Le podium en cours survit à un rechargement, tant qu’il n’est pas envoyé. */
+  useEffect(() => {
+    if (!locked) saveDraft(year, slots);
+  }, [slots, year, locked]);
 
   /* Le bulletin déjà enregistré fait autorité : il vient du serveur. */
   useEffect(() => {
@@ -150,7 +181,11 @@ export default function OpeningNominees({ year, openings, teaser = false }: Prop
       });
       const data = await res.json().catch(() => ({}));
       if (res.ok || res.status === 409) {
+        clearDraft(year);
         setLocked(podium);
+      } else if (res.status === 401 && data.needIdentity) {
+        // Le serveur ne nous reconnaît plus : on redemande, puis on renvoie le vote.
+        ask(() => { void sendPodium(); });
       } else {
         setError(data.error ?? 'Le vote n’a pas pu être enregistré.');
       }

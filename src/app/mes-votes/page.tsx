@@ -7,6 +7,7 @@ import { ChevronLeft, Mail, ListChecks } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import { PODIUM_POINTS } from '@/lib/votes';
 import { YEARS } from '@/lib/firestore';
+import { useVoterGate } from '@/components/VoterGate';
 import type { RecapEntry } from '@/app/api/voter/recap/route';
 
 type Recap = {
@@ -25,6 +26,7 @@ export default function MesVotesPage() {
   const [recap, setRecap] = useState<Recap | null>(null);
   const [mailState, setMailState] = useState<'idle' | 'sending' | 'sent'>('idle');
   const [mailError, setMailError] = useState<string | null>(null);
+  const { gate, ask } = useVoterGate();
 
   useEffect(() => {
     let alive = true;
@@ -61,6 +63,7 @@ export default function MesVotesPage() {
   return (
     <>
       <Navbar />
+      {gate}
       <main className="pt-20 pb-16 min-h-screen px-4 md:px-8" style={{ background: 'var(--bg)' }}>
         <div className="max-w-3xl mx-auto">
 
@@ -89,6 +92,16 @@ export default function MesVotesPage() {
                 <Link href="/anime" className="btn-neon px-5 py-3 rounded text-sm">Voter pour les animés</Link>
                 <Link href="/opening" className="btn-neon px-5 py-3 rounded text-sm">Voter pour les openings</Link>
               </div>
+              <div className="h-px w-full my-2" style={{ background: 'var(--border)' }} />
+              <p className="text-xs" style={{ color: 'var(--sepia-dim)' }}>
+                Tu as déjà voté sur un autre appareil ? Remets la même adresse mail et tu retrouves tout.
+              </p>
+              <button
+                onClick={() => ask(() => window.location.reload())}
+                className="btn-neon px-5 py-3 rounded text-sm"
+              >
+                Retrouver mes votes
+              </button>
             </div>
           )}
 

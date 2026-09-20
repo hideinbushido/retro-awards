@@ -14,7 +14,7 @@ export default function AnimeNominees({ year, animes }: Props) {
   const [zoomed, setZoomed] = useState<Anime | null>(null);
   const [loading, setLoading] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const { guard, gate } = useVoterGate();
+  const { guard, gate, ask } = useVoterGate();
 
   /* Le vote fait foi côté serveur : on le relit au chargement. */
   useEffect(() => {
@@ -65,6 +65,7 @@ export default function AnimeNominees({ year, animes }: Props) {
       });
       const data = await res.json().catch(() => ({}));
       if (res.ok || res.status === 409) setVotedId(id);
+      else if (res.status === 401 && data.needIdentity) ask(() => { void sendVote(id); });
       else setError(data.error ?? 'Le vote a échoué.');
     } catch {
       setError('Connexion impossible.');

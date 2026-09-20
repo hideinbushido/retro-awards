@@ -7,6 +7,7 @@ import { Opening } from '@/data/nominees';
 import { PODIUM_POINTS, PODIUM_SIZE } from '@/lib/votes';
 import { useMusicContext } from '@/contexts/MusicContext';
 import { useVoterGate } from '@/components/VoterGate';
+import { clearDraft, loadDraft, saveDraft } from '@/components/OpeningNominees';
 
 type Props = {
   year: number;
@@ -37,7 +38,9 @@ type RoundEnd =
  */
 export default function MobileOpeningVote({ year, openings, onVoted }: Props) {
   const [mode, setMode] = useState<'grid' | 'swipe' | 'final'>('grid');
-  const [slots, setSlots] = useState<(string | null)[]>([null, null, null]);
+  const [slots, setSlots] = useState<(string | null)[]>(
+    () => loadDraft(year, openings) ?? [null, null, null],
+  );
   const [selected, setSelected] = useState<string | null>(null);
   const [bubble, setBubble] = useState<{ id: string; x: number; y: number } | null>(null);
   const [playingId, setPlayingId] = useState<string | null>(null);
@@ -65,7 +68,10 @@ export default function MobileOpeningVote({ year, openings, onVoted }: Props) {
   const pressStart = useRef<{ x: number; y: number } | null>(null);
   const swipeStart = useRef<number | null>(null);
   const { pauseForOpening, resumeFromOpening } = useMusicContext();
-  const { guard, gate } = useVoterGate();
+  const { guard, gate, ask } = useVoterGate();
+
+  /* Le podium en cours survit à un rechargement, tant qu’il n’est pas envoyé. */
+  useEffect(() => { saveDraft(year, slots); }, [slots, year]);
 
   const byId = useCallback((id: string | null) => openings.find((o) => o.id === id), [openings]);
   /** Nombre de rangs réellement attribuables : 3, ou moins s’il y a peu de nominés. */
@@ -277,8 +283,13 @@ export default function MobileOpeningVote({ year, openings, onVoted }: Props) {
       });
       const data = await res.json().catch(() => ({}));
       if (res.ok || res.status === 409) {
+        clearDraft(year);
         stopAudio();
         onVoted(podium);
+      } else if (res.status === 401 && data.needIdentity) {
+        // Le serveur ne nous reconnaît plus : on redemande, puis on renvoie le vote.
+        setConfirming(false);
+        ask(() => { void sendPodium(); });
       } else {
         setError(data.error ?? 'Le vote n’a pas pu être enregistré.');
         setConfirming(false);

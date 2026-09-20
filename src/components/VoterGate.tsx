@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Mail } from 'lucide-react';
 import type { VoterIdentity } from '@/lib/voters';
+import { readEntry } from '@/components/EntryTracker';
 
 /**
  * Pseudo et adresse mail, demandés une seule fois, juste avant le premier vote.
@@ -44,8 +45,20 @@ export function useVoterGate() {
     action?.();
   }, []);
 
+  /**
+   * Ouvre la fenêtre sans condition, et reprend l’action ensuite.
+   *
+   * Sert quand le serveur répond « je ne te connais pas » alors que le
+   * navigateur se croyait identifié : sans ça, la personne resterait bloquée
+   * devant un message d’erreur, son vote perdu.
+   */
+  const ask = useCallback((action?: () => void) => {
+    pending.current = action ?? null;
+    setAsking(true);
+  }, []);
+
   const gate = asking ? <VoterModal onDone={done} onClose={close} /> : null;
-  return { voter, guard, gate };
+  return { voter, guard, gate, ask };
 }
 
 const FIELD: React.CSSProperties = {
@@ -79,7 +92,7 @@ function VoterModal({
       const res = await fetch('/api/voter', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ pseudo, email }),
+        body: JSON.stringify({ pseudo, email, ...readEntry() }),
       });
       const data = await res.json().catch(() => ({}));
       if (res.ok) onDone(data.voter as VoterIdentity);
@@ -154,6 +167,7 @@ function VoterModal({
         </button>
         <p className="text-xs text-center" style={{ color: 'var(--sepia-dim)', opacity: 0.7 }}>
           Ton adresse sert uniquement aux Retro Awards. Elle n’apparaît nulle part sur le site.
+          On note aussi le pays et l’appareil, pour les statistiques de participation.
         </p>
       </form>
     </div>
