@@ -32,6 +32,28 @@ export default function AnimeNominees({ year, animes }: Props) {
     guard(() => { void sendVote(id); });
   }
 
+  async function cancelVote() {
+    if (!votedId || loading) return;
+    setLoading(votedId);
+    setError(null);
+    try {
+      const res = await fetch('/api/vote', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ year, category: 'anime' }),
+      });
+      if (res.ok) setVotedId(null);
+      else {
+        const data = await res.json().catch(() => ({}));
+        setError(data.error ?? 'L’annulation a échoué.');
+      }
+    } catch {
+      setError('Connexion impossible.');
+    } finally {
+      setLoading(null);
+    }
+  }
+
   async function sendVote(id: string) {
     setLoading(id);
     setError(null);
@@ -58,9 +80,14 @@ export default function AnimeNominees({ year, animes }: Props) {
       {votedId && (
         <div className="retro-card rounded-lg p-3 mb-4 flex items-center justify-between gap-3">
           <p className="text-xs" style={{ color: 'var(--sepia-dim)' }}>
-            Vote enregistré pour {year}. Merci !
+            Vote enregistré pour {year}. Ce n’est pas le bon ? Tu peux l’annuler.
           </p>
-          <a href="/mes-votes" className="btn-neon text-xs px-3 py-2 rounded shrink-0">Mes votes</a>
+          <div className="flex gap-2 shrink-0">
+            <button onClick={cancelVote} disabled={!!loading} className="btn-neon text-xs px-3 py-2 rounded">
+              {loading ? '...' : 'Annuler'}
+            </button>
+            <a href="/mes-votes" className="btn-neon text-xs px-3 py-2 rounded">Mes votes</a>
+          </div>
         </div>
       )}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
@@ -102,12 +129,12 @@ export default function AnimeNominees({ year, animes }: Props) {
                   )}
                 </div>
                 <button
-                  onClick={() => handleVote(anime.id)}
-                  disabled={hasVoted || loading === anime.id}
+                  onClick={() => (isMyVote ? cancelVote() : handleVote(anime.id))}
+                  disabled={(hasVoted && !isMyVote) || loading === anime.id}
                   className="btn-neon text-xs py-1.5 px-3 rounded w-full mt-auto"
                   style={isMyVote ? { background: 'var(--neon)', color: 'var(--bg)' } : {}}
                 >
-                  {isMyVote ? '✓ Voté' : hasVoted ? 'Voté' : loading === anime.id ? '...' : 'Voter'}
+                  {loading === anime.id ? '...' : isMyVote ? '✓ Voté — annuler' : hasVoted ? 'Voté' : 'Voter'}
                 </button>
               </div>
             </div>
@@ -143,12 +170,16 @@ export default function AnimeNominees({ year, animes }: Props) {
                 <p className="text-xs opacity-80" style={{ color: 'var(--sepia)' }}>Auteur : {zoomed.author}</p>
               )}
               <button
-                onClick={() => { handleVote(zoomed.id); setZoomed(null); }}
-                disabled={!!votedId}
+                onClick={() => {
+                  if (votedId === zoomed.id) cancelVote();
+                  else handleVote(zoomed.id);
+                  setZoomed(null);
+                }}
+                disabled={!!votedId && votedId !== zoomed.id}
                 className="btn-neon px-6 py-2 rounded text-sm mt-3"
                 style={votedId === zoomed.id ? { background: 'var(--neon)', color: 'var(--bg)' } : {}}
               >
-                {votedId === zoomed.id ? '✓ Voté' : votedId ? 'Déjà voté' : 'Voter pour cet anime'}
+                {votedId === zoomed.id ? '✓ Voté — annuler' : votedId ? 'Déjà voté' : 'Voter pour cet anime'}
               </button>
             </div>
           </div>

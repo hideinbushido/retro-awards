@@ -136,6 +136,44 @@ export async function saveAnimeBallot(
   });
 }
 
+/**
+ * Retire le vote anime de l’année : un seul clic suffit à voter, il faut donc
+ * pouvoir revenir en arrière. Le podium des openings, lui, reste définitif.
+ * Renvoie false s’il n’y avait rien à annuler.
+ */
+export async function removeAnimeBallot(voter: string, year: number): Promise<boolean> {
+  if (isMemoryMode()) {
+    const existing = memBallots.get(key(voter, year));
+    const id = existing?.anime;
+    if (!id) return false;
+    memBallots.set(key(voter, year), { ...existing, anime: undefined });
+    const tally = memTallies.get(year);
+    if (tally) {
+      tally.animes[id] = Math.max(0, (tally.animes[id] ?? 0) - 1);
+      tally.animeBallots = Math.max(0, tally.animeBallots - 1);
+    }
+    return true;
+  }
+
+  const db = getAdminDb();
+  const ballotRef = db.collection('ballots').doc(`${voter}_${year}_anime`);
+  const tallyRef = db.collection('tallies').doc(String(year));
+  return db.runTransaction(async (tx) => {
+    const snap = await tx.get(ballotRef);
+    if (!snap.exists) return false;
+    const id = snap.data()?.id;
+    tx.delete(ballotRef);
+    if (typeof id === 'string') {
+      tx.set(
+        tallyRef,
+        { animes: { [id]: FieldValue.increment(-1) }, animeBallots: FieldValue.increment(-1) },
+        { merge: true },
+      );
+    }
+    return true;
+  });
+}
+
 /** Totaux par année, dans l’ordre demandé. */
 export async function getTallies(years: number[]): Promise<Tally[]> {
   if (isMemoryMode()) {

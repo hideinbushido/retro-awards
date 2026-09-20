@@ -14,6 +14,7 @@ import {
   getBallot,
   getVoterIdentity,
   isMemoryMode,
+  removeAnimeBallot,
   saveAnimeBallot,
   saveOpeningBallot,
 } from '@/lib/voteStore';
@@ -102,4 +103,40 @@ export async function POST(request: NextRequest) {
   }
 
   return NextResponse.json({ ok: true, memory: isMemoryMode() });
+}
+
+/**
+ * DELETE /api/vote { year, category: 'anime' }
+ *
+ * Voter pour un anime tient en un clic : on doit pouvoir se raviser. Le podium
+ * des openings, lui, est annoncé comme définitif et le reste.
+ */
+export async function DELETE(request: NextRequest) {
+  let body: { year?: unknown; category?: unknown };
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: 'Requête illisible.' }, { status: 400 });
+  }
+
+  const year = Number(body.year);
+  if (!isKnownYear(year)) {
+    return NextResponse.json({ error: 'Année inconnue.' }, { status: 400 });
+  }
+  if (body.category !== 'anime') {
+    return NextResponse.json({ error: 'Seul le vote anime peut être annulé.' }, { status: 400 });
+  }
+
+  const voter = (await cookies()).get(COOKIE)?.value;
+  if (!voter) {
+    return NextResponse.json({ error: 'Aucun vote à annuler.' }, { status: 401 });
+  }
+
+  try {
+    const removed = await removeAnimeBallot(voter, year);
+    return NextResponse.json({ ok: true, removed });
+  } catch (e) {
+    console.error('[vote] échec annulation', e);
+    return NextResponse.json({ error: 'L’annulation a échoué.' }, { status: 503 });
+  }
 }
