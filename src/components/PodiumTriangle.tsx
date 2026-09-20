@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { Check, Trophy } from 'lucide-react';
 import { Opening } from '@/data/nominees';
 import { PODIUM_POINTS } from '@/lib/votes';
@@ -30,6 +31,11 @@ export function PodiumTriangle({ year, podium }: { year: number; podium: (Openin
       <div className="flex items-start justify-center gap-6 sm:gap-12">
         <PodiumStep op={second} rank={1} />
         <PodiumStep op={third} rank={2} />
+      </div>
+
+      <div className="flex flex-wrap gap-3 justify-center">
+        <Link href="/mes-votes" className="btn-neon px-5 py-3 rounded text-sm">Le récap de mes votes</Link>
+        <Link href={`/anime/${year}`} className="btn-neon px-5 py-3 rounded text-sm">Voter l’anime {year}</Link>
       </div>
     </div>
   );

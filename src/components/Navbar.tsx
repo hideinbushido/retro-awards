@@ -67,6 +67,9 @@ export default function Navbar() {
           )}
         </div>
 
+        <Link href="/mes-votes" className="hover:neon-text transition-colors" style={{ color: 'var(--sepia-dim)' }}>
+          Mes votes
+        </Link>
         <Link href="/resultats" className="hover:neon-text transition-colors" style={{ color: 'var(--sepia-dim)' }}>
           Résultats
         </Link>
@@ -109,6 +112,11 @@ export default function Navbar() {
             </Link>
           </div>
 
+          <Link href="/mes-votes" onClick={() => setOpen(false)}
+            className="px-6 py-4 hover:neon-text transition-colors"
+            style={{ color: 'var(--sepia-dim)', borderBottom: '1px solid var(--border)' }}>
+            Mes votes
+          </Link>
           <Link href="/resultats" onClick={() => setOpen(false)}
             className="px-6 py-4 hover:neon-text transition-colors"
             style={{ color: 'var(--sepia-dim)', borderBottom: '1px solid var(--border)' }}>
