@@ -840,7 +840,7 @@ export const nominees: Record<number, YearNominees> = {
         id: '7',
         name: 'Fairy Tail',
         image: '/2014/ANIME/Cover/FairyTail.jpg',
-        season: 'Arc du Festival du Roi Dragon',
+        season: 'Arc de la Porte de l’Éclipse',
         studio: 'A-1 Pictures & Bridge',
         author: 'Hiro Mashima',
       },
