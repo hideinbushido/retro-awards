@@ -215,6 +215,7 @@ export async function getVoterIdentity(voter: string): Promise<VoterIdentity | n
 export async function saveVoterIdentity(
   voter: string,
   identity: VoterIdentity,
+  context: Record<string, unknown> = {},
 ): Promise<{ voter: string; returning: boolean }> {
   if (isMemoryMode()) {
     for (const [id, found] of memVoters) {
@@ -230,9 +231,10 @@ export async function saveVoterIdentity(
   const db = getAdminDb();
   const existing = await db.collection('voters').where('email', '==', identity.email).limit(1).get();
   if (!existing.empty) {
+    // Retour d’une connaissance : on note le passage sans écraser sa fiche d’origine.
     const doc = existing.docs[0];
     await doc.ref.set(
-      { pseudo: identity.pseudo, updatedAt: FieldValue.serverTimestamp() },
+      { pseudo: identity.pseudo, updatedAt: FieldValue.serverTimestamp(), lastDevice: context.device ?? null },
       { merge: true },
     );
     return { voter: doc.id, returning: true };
@@ -240,6 +242,7 @@ export async function saveVoterIdentity(
 
   await db.collection('voters').doc(voter).set({
     ...identity,
+    ...context,
     createdAt: FieldValue.serverTimestamp(),
   });
   return { voter, returning: false };
@@ -251,6 +254,13 @@ export type VoterSummary = {
   createdAt: string | null;
   animes: number;
   openings: number;
+  country: string | null;
+  city: string | null;
+  device: string | null;
+  os: string | null;
+  browser: string | null;
+  source: string | null;
+  landing: string | null;
 };
 
 /** Qui s’est inscrit, et combien de bulletins chacun a déposés. */
@@ -264,7 +274,19 @@ export async function listVoters(): Promise<VoterSummary[]> {
         if (ballot.podium) openings += 1;
         if (ballot.anime) animes += 1;
       }
-      return { ...identity, createdAt: null, animes, openings };
+      return {
+        ...identity,
+        createdAt: null,
+        animes,
+        openings,
+        country: null,
+        city: null,
+        device: null,
+        os: null,
+        browser: null,
+        source: null,
+        landing: null,
+      };
     });
   }
 
@@ -288,12 +310,20 @@ export async function listVoters(): Promise<VoterSummary[]> {
     .map((doc) => {
       const data = doc.data();
       const found = counts.get(doc.id) ?? { animes: 0, openings: 0 };
+      const text = (value: unknown) => (typeof value === 'string' && value ? value : null);
       return {
         pseudo: typeof data.pseudo === 'string' ? data.pseudo : '(sans pseudo)',
         email: typeof data.email === 'string' ? data.email : '',
         createdAt: data.createdAt?.toDate?.().toISOString() ?? null,
         animes: found.animes,
         openings: found.openings,
+        country: text(data.country),
+        city: text(data.city),
+        device: text(data.lastDevice) ?? text(data.device),
+        os: text(data.os),
+        browser: text(data.browser),
+        source: text(data.source),
+        landing: text(data.landing),
       };
     })
     .sort((a, b) => (b.createdAt ?? '').localeCompare(a.createdAt ?? ''));

@@ -27,6 +27,13 @@ type Voter = {
   createdAt: string | null;
   animes: number;
   openings: number;
+  country: string | null;
+  city: string | null;
+  device: string | null;
+  os: string | null;
+  browser: string | null;
+  source: string | null;
+  landing: string | null;
 };
 
 export default function AdminPage() {
@@ -434,6 +441,12 @@ function VotersPanel({ voters }: { voters: Voter[] }) {
         <StatCard label="Votes animés" value={voters.reduce((n, v) => n + v.animes, 0)} />
       </div>
 
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <Repartition title="Pays" items={compte(voters.map((v) => v.country))} />
+        <Repartition title="Appareils" items={compte(voters.map((v) => v.device))} />
+        <Repartition title="Arrivés par" items={compte(voters.map((v) => v.source))} />
+      </div>
+
       <div className="flex justify-end mb-3">
         <button onClick={copyEmails} className="btn-neon px-3 py-2 rounded text-xs flex items-center gap-2">
           {copied ? <Check size={12} /> : <Copy size={12} />} Copier les adresses
@@ -447,6 +460,9 @@ function VotersPanel({ voters }: { voters: Voter[] }) {
               <tr style={{ background: 'var(--bg2)', color: 'var(--neon)' }}>
                 <th className="text-left font-black tracking-widest uppercase px-4 py-3">Pseudo</th>
                 <th className="text-left font-black tracking-widest uppercase px-4 py-3">Adresse mail</th>
+                <th className="text-left font-black tracking-widest uppercase px-4 py-3">Pays</th>
+                <th className="text-left font-black tracking-widest uppercase px-4 py-3">Appareil</th>
+                <th className="text-left font-black tracking-widest uppercase px-4 py-3">Arrivé par</th>
                 <th className="text-right font-black tracking-widest uppercase px-4 py-3">Animés</th>
                 <th className="text-right font-black tracking-widest uppercase px-4 py-3">Podiums</th>
                 <th className="text-right font-black tracking-widest uppercase px-4 py-3">Inscrit le</th>
@@ -457,6 +473,15 @@ function VotersPanel({ voters }: { voters: Voter[] }) {
                 <tr key={v.email} style={{ borderTop: '1px solid var(--border)' }}>
                   <td className="px-4 py-3 font-black">{v.pseudo}</td>
                   <td className="px-4 py-3" style={{ color: 'var(--sepia-dim)' }}>{v.email}</td>
+                  <td className="px-4 py-3" style={{ color: 'var(--sepia-dim)' }}>
+                    {v.country ?? '—'}{v.city ? ' · ' + v.city : ''}
+                  </td>
+                  <td className="px-4 py-3" style={{ color: 'var(--sepia-dim)' }}>
+                    {v.device ?? '—'}{v.os ? ' · ' + v.os : ''}{v.browser ? ' · ' + v.browser : ''}
+                  </td>
+                  <td className="px-4 py-3" style={{ color: 'var(--sepia-dim)' }}>
+                    {v.source ?? '—'}{v.landing && v.landing !== '/' ? ' → ' + v.landing : ''}
+                  </td>
                   <td className="px-4 py-3 text-right">{v.animes}</td>
                   <td className="px-4 py-3 text-right">{v.openings}</td>
                   <td className="px-4 py-3 text-right" style={{ color: 'var(--sepia-dim)' }}>
@@ -469,5 +494,40 @@ function VotersPanel({ voters }: { voters: Voter[] }) {
         </div>
       </div>
     </>
+  );
+}
+
+/** Compte les valeurs identiques, les plus fréquentes d’abord. */
+function compte(values: (string | null)[]): { label: string; value: number }[] {
+  const counts = new Map<string, number>();
+  for (const value of values) {
+    const label = value ?? 'inconnu';
+    counts.set(label, (counts.get(label) ?? 0) + 1);
+  }
+  return [...counts.entries()]
+    .map(([label, value]) => ({ label, value }))
+    .sort((a, b) => b.value - a.value)
+    .slice(0, 6);
+}
+
+function Repartition({ title, items }: { title: string; items: { label: string; value: number }[] }) {
+  const total = items.reduce((n, i) => n + i.value, 0) || 1;
+  return (
+    <div className="retro-card rounded-lg p-4">
+      <p className="text-xs font-black tracking-widest uppercase mb-3" style={{ color: 'var(--neon)' }}>{title}</p>
+      <div className="flex flex-col gap-2">
+        {items.map((item) => (
+          <div key={item.label}>
+            <div className="flex justify-between text-xs mb-1" style={{ color: 'var(--sepia)' }}>
+              <span className="truncate pr-2">{item.label}</span>
+              <span style={{ color: 'var(--sepia-dim)' }}>{item.value}</span>
+            </div>
+            <div className="h-1 rounded" style={{ background: 'var(--bg2)' }}>
+              <div className="h-1 rounded" style={{ width: `${(item.value / total) * 100}%`, background: 'var(--neon)' }} />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }

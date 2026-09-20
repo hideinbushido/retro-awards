@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { MusicProvider } from '@/contexts/MusicContext';
+import EntryTracker from '@/components/EntryTracker';
 
 export const metadata: Metadata = {
   title: 'RETRO Awards — Zenkai Hors-Série',
@@ -15,6 +16,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preload" href="/Fondaccueil2.mp4" as="video" type="video/mp4" />
       </head>
       <body className="min-h-full flex flex-col">
+        <EntryTracker />
         <MusicProvider src="/CRYSTAL.mp3">
           {children}
         </MusicProvider>

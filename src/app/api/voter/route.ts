@@ -7,6 +7,7 @@ import { cookies } from 'next/headers';
 import { normalizeEmail, normalizePseudo } from '@/lib/voters';
 import { getVoterIdentity, saveVoterIdentity } from '@/lib/voteStore';
 import { sendWelcome } from '@/lib/mailer';
+import { readSource, readVisitor } from '@/lib/visitor';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -27,7 +28,7 @@ export async function GET() {
 
 /** POST /api/voter { pseudo, email } */
 export async function POST(request: NextRequest) {
-  let body: { pseudo?: unknown; email?: unknown };
+  let body: { pseudo?: unknown; email?: unknown; referrer?: unknown; landing?: unknown };
   try {
     body = await request.json();
   } catch {
@@ -46,9 +47,15 @@ export async function POST(request: NextRequest) {
   const jar = await cookies();
   const current = jar.get(COOKIE)?.value ?? crypto.randomUUID();
 
+  const context = {
+    ...readVisitor(request),
+    source: readSource(body.referrer),
+    landing: typeof body.landing === 'string' ? body.landing.slice(0, 120) : null,
+  };
+
   let saved: { voter: string; returning: boolean };
   try {
-    saved = await saveVoterIdentity(current, { pseudo, email });
+    saved = await saveVoterIdentity(current, { pseudo, email }, context);
   } catch (e) {
     console.error('[voter] échec enregistrement', e);
     return NextResponse.json({ error: 'Impossible de t’inscrire pour le moment.' }, { status: 503 });
