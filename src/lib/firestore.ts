@@ -1,33 +1,7 @@
-import { doc, updateDoc, increment, getDoc, setDoc } from 'firebase/firestore';
-import { getDb } from './firebase';
-
+/**
+ * Années couvertes par les Retro Awards, de la plus récente à la plus ancienne.
+ *
+ * Les votes ne passent plus par le SDK Firebase côté navigateur : tout se fait
+ * via /api/vote et /api/admin/results, avec le SDK admin (voir firestore.rules).
+ */
 export const YEARS = Array.from({ length: 15 }, (_, i) => 2019 - i);
-
-export async function voteOpening(year: number, openingId: string) {
-  const db = getDb();
-  const ref = doc(db, `votes/${year}_opening_${openingId}`);
-  const snap = await getDoc(ref);
-  if (!snap.exists()) {
-    await setDoc(ref, { votes: 1 });
-  } else {
-    await updateDoc(ref, { votes: increment(1) });
-  }
-}
-
-export async function voteAnime(year: number, animeId: string) {
-  const db = getDb();
-  const ref = doc(db, `votes/${year}_anime_${animeId}`);
-  const snap = await getDoc(ref);
-  if (!snap.exists()) {
-    await setDoc(ref, { votes: 1 });
-  } else {
-    await updateDoc(ref, { votes: increment(1) });
-  }
-}
-
-export async function getVotes(year: number, category: 'opening' | 'anime', id: string): Promise<number> {
-  const db = getDb();
-  const ref = doc(db, `votes/${year}_${category}_${id}`);
-  const snap = await getDoc(ref);
-  return snap.exists() ? (snap.data().votes as number) : 0;
-}

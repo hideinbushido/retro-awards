@@ -1,30 +1,44 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { X, Check } from 'lucide-react';
-import { voteAnime } from '@/lib/firestore';
 import { Anime } from '@/data/nominees';
 
 type Props = { year: number; animes: Anime[] };
 
-const VOTED_KEY = (year: number) => `retro_voted_anime_${year}`;
-
 export default function AnimeNominees({ year, animes }: Props) {
-  const [votedId, setVotedId] = useState<string | null>(() => {
-    if (typeof window === 'undefined') return null;
-    return localStorage.getItem(VOTED_KEY(year));
-  });
+  /** Vote enregistré côté serveur pour cette année, ou null. */
+  const [votedId, setVotedId] = useState<string | null>(null);
   const [zoomed, setZoomed] = useState<Anime | null>(null);
   const [loading, setLoading] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  /* Le vote fait foi côté serveur : on le relit au chargement. */
+  useEffect(() => {
+    let alive = true;
+    fetch(`/api/vote?year=${year}`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => { if (alive && data?.anime) setVotedId(data.anime as string); })
+      .catch(() => {});
+    return () => { alive = false; };
+  }, [year]);
 
   async function handleVote(id: string) {
     if (votedId || loading) return;
     setLoading(id);
+    setError(null);
     try {
-      await voteAnime(year, id);
-      localStorage.setItem(VOTED_KEY(year), id);
-      setVotedId(id);
+      const res = await fetch('/api/vote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ year, category: 'anime', id }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok || res.status === 409) setVotedId(id);
+      else setError(data.error ?? 'Le vote a échoué.');
+    } catch {
+      setError('Connexion impossible.');
     } finally {
       setLoading(null);
     }
@@ -32,6 +46,7 @@ export default function AnimeNominees({ year, animes }: Props) {
 
   return (
     <>
+      {error && (<p className="text-xs mb-3" style={{ color: "#ff5555" }}>{error}</p>)}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
         {animes.map((anime) => {
           const isMyVote = votedId === anime.id;

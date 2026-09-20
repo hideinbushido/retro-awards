@@ -1,73 +1,62 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { BarChart3, Trophy, Music, Tv, RefreshCw, Upload, Copy, Check } from 'lucide-react';
-import { YEARS, getVotes } from '@/lib/firestore';
-import { nominees } from '@/data/nominees';
+import { YEARS } from '@/lib/firestore';
+import { PODIUM_POINTS } from '@/lib/votes';
 import { uploadFile } from '@/lib/storage';
 import type { UploadCategory, UploadType } from '@/lib/storage';
 
-const ADMIN_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || 'retro2025';
-
-type YearVotes = {
+/**
+ * Admin — seule porte d entrée vers les résultats.
+ *
+ * Le mot de passe n est jamais dans le bundle : il est vérifié côté serveur par
+ * /api/admin/results, qui est aussi le seul endroit capable de lire les totaux.
+ */
+type YearResult = {
   year: number;
-  openings: { id: string; animeName: string; openingTitle: string; votes: number }[];
-  animes: { id: string; name: string; votes: number }[];
+  openingBallots: number;
+  animeBallots: number;
+  openings: { id: string; label: string; points: number }[];
+  animes: { id: string; label: string; votes: number }[];
 };
 
 export default function AdminPage() {
   const [auth, setAuth] = useState(false);
   const [pwd, setPwd] = useState('');
-  const [data, setData] = useState<YearVotes[]>([]);
+  const [data, setData] = useState<YearResult[]>([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
-
-  function login() {
-    if (pwd === ADMIN_PASSWORD) setAuth(true);
-    else alert('Mauvais mot de passe');
-  }
-
-  async function loadVotes(year: number) {
-    setLoading(true);
-    const yearData = nominees[year] ?? { openings: [], animes: [] };
-
-    const [openingVotes, animeVotes] = await Promise.all([
-      Promise.all(
-        yearData.openings.map(async (op) => ({
-          id: op.id,
-          animeName: op.animeName,
-          openingTitle: op.openingTitle,
-          votes: await getVotes(year, 'opening', op.id),
-        }))
-      ),
-      Promise.all(
-        yearData.animes.map(async (an) => ({
-          id: an.id,
-          name: an.name,
-          votes: await getVotes(year, 'anime', an.id),
-        }))
-      ),
-    ]);
-
-    setData((prev) => {
-      const existing = prev.filter((d) => d.year !== year);
-      return [...existing, { year, openings: openingVotes, animes: animeVotes }].sort((a, b) => b.year - a.year);
-    });
-    setLoading(false);
-  }
-
-  async function loadAll() {
-    setLoading(true);
-    await Promise.all(YEARS.map(loadVotes));
-    setLoading(false);
-  }
-
-  useEffect(() => {
-    if (auth) loadAll();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [auth]);
-
   const [tab, setTab] = useState<'votes' | 'upload'>('votes');
+
+  async function fetchResults(password: string) {
+    setLoading(true);
+    setError('');
+    try {
+      const res = await fetch('/api/admin/results', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password }),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setError(json.error ?? 'Lecture impossible.');
+        return false;
+      }
+      setData(json.years as YearResult[]);
+      return true;
+    } catch {
+      setError('Connexion impossible.');
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function login() {
+    if (await fetchResults(pwd)) setAuth(true);
+  }
 
   if (!auth) {
     return (
@@ -86,33 +75,36 @@ export default function AdminPage() {
             className="w-full px-4 py-3 rounded mb-4 text-sm font-mono"
             style={{ background: 'var(--bg3)', border: '1px solid var(--border)', color: 'var(--sepia)', outline: 'none' }}
           />
-          <button onClick={login} className="btn-neon w-full py-3 rounded text-sm">Entrer</button>
+          <button onClick={login} disabled={loading} className="btn-neon w-full py-3 rounded text-sm">
+            {loading ? '...' : 'Entrer'}
+          </button>
+          {error && <p className="text-xs mt-3" style={{ color: '#ff5555' }}>{error}</p>}
         </div>
       </div>
     );
   }
 
   const yearData = selectedYear ? data.find((d) => d.year === selectedYear) : null;
+  const totalOpeningBallots = data.reduce((s, d) => s + d.openingBallots, 0);
+  const totalAnimeBallots = data.reduce((s, d) => s + d.animeBallots, 0);
 
   return (
     <div className="min-h-screen p-6" style={{ background: 'var(--bg)' }}>
       <div className="max-w-5xl mx-auto">
 
-        {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
             <BarChart3 size={24} style={{ color: 'var(--neon)' }} />
             <h1 className="font-black text-xl neon-text tracking-widest">RETRO AWARDS — ADMIN</h1>
           </div>
           {tab === 'votes' && (
-            <button onClick={loadAll} disabled={loading} className="btn-neon px-3 py-2 rounded text-xs flex items-center gap-2">
+            <button onClick={() => fetchResults(pwd)} disabled={loading} className="btn-neon px-3 py-2 rounded text-xs flex items-center gap-2">
               <RefreshCw size={12} className={loading ? 'animate-spin' : ''} />
               Rafraîchir
             </button>
           )}
         </div>
 
-        {/* Tabs */}
         <div className="flex gap-2 mb-8">
           {(['votes', 'upload'] as const).map((t) => (
             <button
@@ -125,31 +117,22 @@ export default function AdminPage() {
                 border: '1px solid var(--neon)',
               }}
             >
-              {t === 'votes' ? '📊 Votes' : '⬆️ Upload'}
+              {t === 'votes' ? 'Votes' : 'Upload'}
             </button>
           ))}
         </div>
 
-        {tab === 'upload' && <UploadPanel />}
+        {error && <p className="text-xs mb-4" style={{ color: '#ff5555' }}>{error}</p>}
 
-        {tab === 'votes' && loading && !data.length && (
-          <p className="text-center py-20 neon-text text-sm tracking-widest">Chargement des votes...</p>
-        )}
+        {tab === 'upload' && <UploadPanel />}
 
         {tab === 'votes' && !selectedYear && (
           <>
-            {/* Global summary */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
               <StatCard label="Années" value={YEARS.length} />
-              <StatCard label="Catégories" value={2} />
-              <StatCard
-                label="Total votes opening"
-                value={data.reduce((s, d) => s + d.openings.reduce((ss, o) => ss + o.votes, 0), 0)}
-              />
-              <StatCard
-                label="Total votes anime"
-                value={data.reduce((s, d) => s + d.animes.reduce((ss, a) => ss + a.votes, 0), 0)}
-              />
+              <StatCard label="Podiums openings" value={totalOpeningBallots} />
+              <StatCard label="Votes animés" value={totalAnimeBallots} />
+              <StatCard label="Barème" value={PODIUM_POINTS.join(' / ')} />
             </div>
 
             <p className="text-xs font-bold tracking-widest uppercase mb-4" style={{ color: 'var(--sepia-dim)' }}>
@@ -157,28 +140,24 @@ export default function AdminPage() {
             </p>
 
             <div className="grid grid-cols-3 sm:grid-cols-5 gap-3">
-              {YEARS.map((year) => {
-                const yd = data.find((d) => d.year === year);
-                const opVotes = yd?.openings.reduce((s, o) => s + o.votes, 0) ?? 0;
-                const anVotes = yd?.animes.reduce((s, a) => s + a.votes, 0) ?? 0;
-                return (
-                  <button
-                    key={year}
-                    onClick={() => setSelectedYear(year)}
-                    className="retro-card rounded-lg p-4 flex flex-col items-center gap-1 group"
-                  >
-                    <span className="font-black text-xl group-hover:neon-text transition-all" style={{ color: 'var(--sepia)' }}>
-                      {year}
-                    </span>
-                    <span className="text-xs" style={{ color: 'var(--neon)' }}>{opVotes + anVotes} votes</span>
-                  </button>
-                );
-              })}
+              {data.map((d) => (
+                <button
+                  key={d.year}
+                  onClick={() => setSelectedYear(d.year)}
+                  className="retro-card rounded-lg p-4 flex flex-col items-center gap-1 group"
+                >
+                  <span className="font-black text-xl group-hover:neon-text transition-all" style={{ color: 'var(--sepia)' }}>
+                    {d.year}
+                  </span>
+                  <span className="text-xs" style={{ color: 'var(--neon)' }}>
+                    {d.openingBallots + d.animeBallots} bulletins
+                  </span>
+                </button>
+              ))}
             </div>
           </>
         )}
 
-        {/* Year detail */}
         {tab === 'votes' && selectedYear && yearData && (
           <div>
             <div className="flex items-center gap-4 mb-8">
@@ -186,38 +165,43 @@ export default function AdminPage() {
                 ← Toutes les années
               </button>
               <h2 className="font-black text-3xl neon-text">{selectedYear}</h2>
-              <button onClick={() => loadVotes(selectedYear)} disabled={loading} className="btn-neon px-2 py-1.5 rounded text-xs ml-auto flex items-center gap-1">
-                <RefreshCw size={10} /> Update
+              <button onClick={() => fetchResults(pwd)} disabled={loading} className="btn-neon px-2 py-1.5 rounded text-xs ml-auto flex items-center gap-1">
+                <RefreshCw size={10} className={loading ? 'animate-spin' : ''} /> Update
               </button>
             </div>
 
-            {/* Opening results */}
             <section className="mb-10">
-              <div className="flex items-center gap-2 mb-4">
+              <div className="flex items-center gap-2 mb-1">
                 <Music size={14} style={{ color: 'var(--neon)' }} />
                 <h3 className="font-black text-sm tracking-widest uppercase" style={{ color: 'var(--sepia)' }}>
                   Meilleur Opening
                 </h3>
               </div>
+              <p className="text-xs mb-4" style={{ color: 'var(--sepia-dim)' }}>
+                {yearData.openingBallots} podium{yearData.openingBallots !== 1 ? 's' : ''} ·
+                {' '}1er = {PODIUM_POINTS[0]} pts, 2e = {PODIUM_POINTS[1]}, 3e = {PODIUM_POINTS[2]}
+              </p>
               {yearData.openings.length === 0 ? (
                 <p className="text-xs" style={{ color: 'var(--sepia-dim)' }}>Aucun nominé.</p>
               ) : (
-                <VoteBar items={yearData.openings.map((o) => ({ label: `${o.animeName} — ${o.openingTitle}`, votes: o.votes }))} />
+                <VoteBar items={yearData.openings.map((o) => ({ label: o.label, value: o.points }))} unit="pts" />
               )}
             </section>
 
-            {/* Anime results */}
             <section>
-              <div className="flex items-center gap-2 mb-4">
+              <div className="flex items-center gap-2 mb-1">
                 <Tv size={14} style={{ color: 'var(--neon)' }} />
                 <h3 className="font-black text-sm tracking-widest uppercase" style={{ color: 'var(--sepia)' }}>
-                  Anime de l'Année
+                  Anime de l’Année
                 </h3>
               </div>
+              <p className="text-xs mb-4" style={{ color: 'var(--sepia-dim)' }}>
+                {yearData.animeBallots} vote{yearData.animeBallots !== 1 ? 's' : ''}
+              </p>
               {yearData.animes.length === 0 ? (
                 <p className="text-xs" style={{ color: 'var(--sepia-dim)' }}>Aucun nominé.</p>
               ) : (
-                <VoteBar items={yearData.animes.map((a) => ({ label: a.name, votes: a.votes }))} />
+                <VoteBar items={yearData.animes.map((a) => ({ label: a.label, value: a.votes }))} unit="voix" />
               )}
             </section>
           </div>
@@ -247,7 +231,7 @@ function UploadPanel() {
     try {
       const downloadUrl = await uploadFile(year, category, type, file, setProgress);
       setUrl(downloadUrl);
-    } catch (e) {
+    } catch {
       setError('Erreur upload. Vérifie les règles Firebase Storage.');
       setProgress(null);
     }
@@ -268,7 +252,6 @@ function UploadPanel() {
       </h2>
 
       <div className="flex flex-col gap-4">
-        {/* Année */}
         <div>
           <label className="text-xs font-bold tracking-widest uppercase mb-2 block" style={{ color: 'var(--sepia-dim)' }}>Année</label>
           <select
@@ -281,7 +264,6 @@ function UploadPanel() {
           </select>
         </div>
 
-        {/* Catégorie */}
         <div>
           <label className="text-xs font-bold tracking-widest uppercase mb-2 block" style={{ color: 'var(--sepia-dim)' }}>Catégorie</label>
           <div className="flex gap-2">
@@ -300,7 +282,6 @@ function UploadPanel() {
           </div>
         </div>
 
-        {/* Type */}
         <div>
           <label className="text-xs font-bold tracking-widest uppercase mb-2 block" style={{ color: 'var(--sepia-dim)' }}>Type de fichier</label>
           <div className="flex gap-2">
@@ -319,7 +300,6 @@ function UploadPanel() {
           </div>
         </div>
 
-        {/* Fichier */}
         <div>
           <label className="text-xs font-bold tracking-widest uppercase mb-2 block" style={{ color: 'var(--sepia-dim)' }}>
             Fichier ({type === 'Cover' ? 'image' : 'audio'})
@@ -339,7 +319,6 @@ function UploadPanel() {
           )}
         </div>
 
-        {/* Upload button */}
         <button
           onClick={handleUpload}
           disabled={!file || progress !== null}
@@ -349,26 +328,18 @@ function UploadPanel() {
           {progress !== null && progress < 100 ? `Upload... ${progress}%` : 'Uploader'}
         </button>
 
-        {/* Progress bar */}
         {progress !== null && (
           <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'var(--bg3)' }}>
-            <div
-              className="h-full rounded-full transition-all"
-              style={{ width: `${progress}%`, background: 'var(--neon)' }}
-            />
+            <div className="h-full rounded-full transition-all" style={{ width: `${progress}%`, background: 'var(--neon)' }} />
           </div>
         )}
 
-        {/* Error */}
-        {error && (
-          <p className="text-xs font-bold" style={{ color: 'var(--red)' }}>{error}</p>
-        )}
+        {error && <p className="text-xs font-bold" style={{ color: '#ff5555' }}>{error}</p>}
 
-        {/* Result URL */}
         {url && (
           <div className="retro-card rounded-lg p-4">
             <p className="text-xs font-bold tracking-widest uppercase mb-2" style={{ color: 'var(--neon)' }}>
-              ✓ Upload réussi — URL Firebase Storage
+              Upload réussi — URL Firebase Storage
             </p>
             <div className="flex items-center gap-2">
               <p className="text-xs font-mono break-all flex-1" style={{ color: 'var(--sepia-dim)' }}>{url}</p>
@@ -376,9 +347,6 @@ function UploadPanel() {
                 {copied ? <Check size={14} /> : <Copy size={14} />}
               </button>
             </div>
-            <p className="text-xs mt-3" style={{ color: 'var(--sepia-dim)', opacity: 0.7 }}>
-              Copie cette URL dans le champ <code style={{ color: 'var(--neon)' }}>{type === 'Cover' ? 'image' : 'audio'}</code> du nominé dans nominees.ts
-            </p>
           </div>
         )}
       </div>
@@ -386,7 +354,7 @@ function UploadPanel() {
   );
 }
 
-function StatCard({ label, value }: { label: string; value: number }) {
+function StatCard({ label, value }: { label: string; value: number | string }) {
   return (
     <div className="retro-card rounded-lg p-4 text-center">
       <p className="font-black text-2xl neon-text">{value}</p>
@@ -395,31 +363,27 @@ function StatCard({ label, value }: { label: string; value: number }) {
   );
 }
 
-function VoteBar({ items }: { items: { label: string; votes: number }[] }) {
-  const sorted = [...items].sort((a, b) => b.votes - a.votes);
-  const max = sorted[0]?.votes || 1;
+function VoteBar({ items, unit }: { items: { label: string; value: number }[]; unit: string }) {
+  const max = items[0]?.value || 1;
   return (
     <div className="flex flex-col gap-3">
-      {sorted.map((item, i) => (
+      {items.map((item, i) => (
         <div key={i}>
           <div className="flex justify-between items-center mb-1">
             <div className="flex items-center gap-2">
-              {i === 0 && <Trophy size={12} style={{ color: 'var(--neon)' }} />}
+              {i === 0 && item.value > 0 && <Trophy size={12} style={{ color: 'var(--neon)' }} />}
               <span className="text-sm font-bold" style={{ color: i === 0 ? 'var(--sepia)' : 'var(--sepia-dim)' }}>
                 {item.label}
               </span>
             </div>
             <span className="text-xs font-black" style={{ color: 'var(--neon)' }}>
-              {item.votes} vote{item.votes !== 1 ? 's' : ''}
+              {item.value} {unit}
             </span>
           </div>
           <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'var(--bg3)' }}>
             <div
               className="h-full rounded-full transition-all duration-700"
-              style={{
-                width: `${(item.votes / max) * 100}%`,
-                background: i === 0 ? 'var(--neon)' : 'var(--sepia-dim)',
-              }}
+              style={{ width: `${(item.value / max) * 100}%`, background: i === 0 ? 'var(--neon)' : 'var(--sepia-dim)' }}
             />
           </div>
         </div>

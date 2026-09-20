@@ -1,124 +1,63 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Trophy, ChevronLeft, Music, Tv, Loader2 } from 'lucide-react';
+import { Trophy, ChevronLeft, Lock } from 'lucide-react';
 import Navbar from '@/components/Navbar';
-import { YEARS, getVotes } from '@/lib/firestore';
-import { nominees } from '@/data/nominees';
+import { PODIUM_POINTS } from '@/lib/votes';
 
-type Result = {
-  year: number;
-  topOpening: { animeName: string; openingTitle: string; votes: number } | null;
-  topAnime: { name: string; votes: number } | null;
-};
-
+/**
+ * Page résultats — publique.
+ *
+ * Les totaux ne sont jamais envoyés au navigateur tant que le vote est ouvert :
+ * ils ne sortent que par /api/admin/results, protégée par mot de passe.
+ */
 export default function ResultatsPage() {
-  const [results, setResults] = useState<Result[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function load() {
-      const data = await Promise.all(
-        YEARS.map(async (year) => {
-          const yearData = nominees[year] ?? { openings: [], animes: [] };
-          const [opVotes, anVotes] = await Promise.all([
-            Promise.all(
-              yearData.openings.map(async (op) => ({
-                ...op,
-                votes: await getVotes(year, 'opening', op.id).catch(() => 0),
-              }))
-            ),
-            Promise.all(
-              yearData.animes.map(async (an) => ({
-                ...an,
-                votes: await getVotes(year, 'anime', an.id).catch(() => 0),
-              }))
-            ),
-          ]);
-          const topOpening = opVotes.sort((a, b) => b.votes - a.votes)[0] ?? null;
-          const topAnime = anVotes.sort((a, b) => b.votes - a.votes)[0] ?? null;
-          return { year, topOpening, topAnime };
-        })
-      );
-      setResults(data);
-      setLoading(false);
-    }
-    load();
-  }, []);
-
   return (
     <>
       <Navbar />
       <main className="pt-20 pb-16 min-h-screen px-4 md:px-8" style={{ background: 'var(--bg)' }}>
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-3xl mx-auto">
 
           <div className="text-center py-12 mb-8">
             <Trophy size={32} className="mx-auto mb-4" style={{ color: 'var(--neon)' }} />
             <h1 className="text-3xl md:text-5xl font-black mb-3" style={{ color: 'var(--sepia)' }}>Résultats</h1>
             <p className="text-xs tracking-widest uppercase" style={{ color: 'var(--sepia-dim)' }}>
-              Les gagnants de chaque année — 2019 à 2005
+              2019 à 2005
             </p>
             <div className="h-px w-24 mx-auto mt-4" style={{ background: 'linear-gradient(to right, transparent, var(--neon), transparent)' }} />
           </div>
 
-          {loading ? (
-            <div className="flex items-center justify-center py-20 gap-3" style={{ color: 'var(--neon)' }}>
-              <Loader2 size={20} className="animate-spin" />
-              <span className="text-sm tracking-widest">Chargement des votes...</span>
+          <div className="retro-card rounded-xl p-8 text-center flex flex-col items-center gap-4">
+            <Lock size={28} style={{ color: 'var(--neon)' }} />
+            <h2 className="font-black text-xl" style={{ color: 'var(--sepia)' }}>Le vote est en cours</h2>
+            <p className="text-sm leading-relaxed" style={{ color: 'var(--sepia-dim)', maxWidth: '38rem' }}>
+              Les résultats restent scellés jusqu’à la clôture, pour que personne ne soit influencé
+              en votant. Reviens à l’annonce des gagnants.
+            </p>
+            <div className="h-px w-full my-2" style={{ background: 'var(--border)' }} />
+            <div className="text-xs leading-relaxed" style={{ color: 'var(--sepia-dim)' }}>
+              <p className="font-bold tracking-widest uppercase mb-2" style={{ color: 'var(--neon)' }}>
+                Comment on compte les points
+              </p>
+              <p>
+                Openings : chacun classe 3 openings par année —
+                1er = <strong style={{ color: 'var(--sepia)' }}>{PODIUM_POINTS[0]} pts</strong>,
+                2e = <strong style={{ color: 'var(--sepia)' }}>{PODIUM_POINTS[1]} pts</strong>,
+                3e = <strong style={{ color: 'var(--sepia)' }}>{PODIUM_POINTS[2]} pts</strong>.
+              </p>
+              <p className="mt-1">Anime de l’année : une voix par personne et par année.</p>
             </div>
-          ) : (
-            <div className="flex flex-col gap-4">
-              {results.map(({ year, topOpening, topAnime }) => (
-                <Link
-                  key={year}
-                  href={`/annee/${year}`}
-                  className="retro-card rounded-lg p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4 group"
-                >
-                  <span className="font-black text-3xl shrink-0 group-hover:neon-text transition-all"
-                    style={{ color: 'var(--sepia)', minWidth: '5rem' }}
-                  >
-                    {year}
-                  </span>
-                  <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div className="flex items-start gap-2">
-                      <Music size={14} className="mt-0.5 shrink-0" style={{ color: 'var(--neon)' }} />
-                      <div>
-                        <p className="text-xs font-bold tracking-widest uppercase mb-0.5" style={{ color: 'var(--sepia-dim)' }}>
-                          Meilleur Opening
-                        </p>
-                        {topOpening && topOpening.votes > 0 ? (
-                          <>
-                            <p className="text-sm font-bold" style={{ color: 'var(--sepia)' }}>{topOpening.animeName}</p>
-                            <p className="text-xs" style={{ color: 'var(--neon)' }}>{topOpening.openingTitle}</p>
-                          </>
-                        ) : (
-                          <p className="text-xs" style={{ color: 'var(--sepia-dim)' }}>Pas encore de votes</p>
-                        )}
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-2">
-                      <Tv size={14} className="mt-0.5 shrink-0" style={{ color: 'var(--neon)' }} />
-                      <div>
-                        <p className="text-xs font-bold tracking-widest uppercase mb-0.5" style={{ color: 'var(--sepia-dim)' }}>
-                          Anime de l'Année
-                        </p>
-                        {topAnime && topAnime.votes > 0 ? (
-                          <p className="text-sm font-bold" style={{ color: 'var(--sepia)' }}>{topAnime.name}</p>
-                        ) : (
-                          <p className="text-xs" style={{ color: 'var(--sepia-dim)' }}>Pas encore de votes</p>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          )}
+          </div>
 
-          <div className="text-center mt-12">
+          <div className="text-center mt-12 flex flex-wrap gap-3 justify-center">
+            <Link href="/opening" className="btn-neon px-6 py-3 rounded text-sm inline-flex items-center gap-2">
+              Voter pour les openings
+            </Link>
+            <Link href="/anime" className="btn-neon px-6 py-3 rounded text-sm inline-flex items-center gap-2">
+              Voter pour les animés
+            </Link>
             <Link href="/" className="btn-neon px-6 py-3 rounded text-sm inline-flex items-center gap-2">
-              <ChevronLeft size={16} /> Retour à l'accueil
+              <ChevronLeft size={16} /> Accueil
             </Link>
           </div>
         </div>

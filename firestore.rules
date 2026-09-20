@@ -1,0 +1,33 @@
+// ATTENTION : ce projet Firebase (animeaward-e584b) est PARTAGÉ avec le site
+// Zenkai, qui possède ses propres collections (votes, comments, stats,
+// voteAccess) et les lit depuis le navigateur.
+//
+// Ne remplace donc PAS les règles existantes par ce fichier : ajoute seulement
+// les deux blocs `ballots` et `tallies` ci-dessous à tes règles actuelles,
+// sinon Zenkai n'aura plus accès à rien.
+//
+// Pourquoi fermer ces deux collections : les votes des Retro Awards ne passent
+// que par les routes /api du serveur, qui utilisent la clé d'administration et
+// ignorent ces règles. Aucun navigateur n'a besoin d'y toucher — ni pour voter,
+// ni pour lire les résultats avant la clôture.
+
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── Retro Awards : bulletins et totaux, serveur uniquement ──
+    match /ballots/{ballot} {
+      allow read, write: if false;
+    }
+    match /tallies/{year} {
+      allow read, write: if false;
+    }
+
+    // ── Zenkai : garde ici tes règles existantes ──
+    // match /votes/{vote}       { ... }
+    // match /comments/{comment} { ... }
+    // match /stats/{stat}       { ... }
+    // match /voteAccess/{doc}   { ... }
+  }
+}
