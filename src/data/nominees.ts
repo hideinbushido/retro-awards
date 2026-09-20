@@ -527,7 +527,7 @@ export const nominees: Record<number, YearNominees> = {
       {
         id: '4',
         name: 'JoJo’s Bizarre Adventure: Diamond is Unbreakable',
-        image: '/2016/ANIME/Cover/JoJoDiamondIsUnbreakable.jpg',
+        image: '/2016/ANIME/Cover/JoJoDiamondIsUnbreakable.webp',
         season: 'Saison 3 / Partie 4 - Diamond is Unbreakable',
         studio: 'David Production',
         author: 'Hirohiko Araki',
@@ -543,7 +543,7 @@ export const nominees: Record<number, YearNominees> = {
       {
         id: '6',
         name: 'Re:Zero',
-        image: '/2016/ANIME/Cover/ReZero.jpg',
+        image: '/2016/ANIME/Cover/ReZero.webp',
         season: 'Saison 1 - Arc de la Baleine Blanche', // thematique
         studio: 'White Fox',
         author: 'Tappei Nagatsuki',
@@ -757,7 +757,7 @@ export const nominees: Record<number, YearNominees> = {
       {
         id: '15',
         name: 'Fairy Tail',
-        image: '/2015/ANIME/Cover/FairyTail.jpg',
+        image: '/2015/ANIME/Cover/FairyTail.png',
         season: 'Arc de Tartaros',
         studio: 'A-1 Pictures & Bridge',
         author: 'Hiro Mashima',
@@ -911,7 +911,7 @@ export const nominees: Record<number, YearNominees> = {
       {
         id: '16',
         name: 'Psycho-Pass 2',
-        image: '/2014/ANIME/Cover/PsychoPass2.jpg',
+        image: '/2014/ANIME/Cover/PsychoPass2.webp',
         season: 'Saison 2 - Arc de l’Affaire Kamui', // thematique
         studio: 'Tatsunoko Production',
         author: 'Gen Urobuchi & Tow Ubukata',
@@ -1037,7 +1037,7 @@ export const nominees: Record<number, YearNominees> = {
       {
         id: '12',
         name: 'Kuroko’s Basketball',
-        image: '/2013/ANIME/Cover/KurokosBasketball.jpg',
+        image: '/2013/ANIME/Cover/KurokosBasketball.webp',
         season: 'Saison 2 - Arc des Qualifications de la Winter Cup', // thematique
         studio: 'Production I.G',
         author: 'Tadatoshi Fujimaki',
@@ -1045,7 +1045,7 @@ export const nominees: Record<number, YearNominees> = {
       {
         id: '13',
         name: 'Fairy Tail',
-        image: '/2013/ANIME/Cover/FairyTail.jpg',
+        image: '/2013/ANIME/Cover/FairyTail.png',
         season: 'Arc des Grands Jeux Inter-Magiques',
         studio: 'A-1 Pictures & Satelight',
         author: 'Hiro Mashima',
@@ -1473,7 +1473,7 @@ export const nominees: Record<number, YearNominees> = {
       {
         id: '14',
         name: 'Fairy Tail',
-        image: '/2010/ANIME/Cover/FairyTail.jpg',
+        image: '/2010/ANIME/Cover/FairyTail.png',
         season: 'Arc de la Tour du Paradis',
         studio: 'A-1 Pictures & Satelight',
         author: 'Hiro Mashima',
