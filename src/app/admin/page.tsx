@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { BarChart3, Trophy, Music, Tv, RefreshCw, Upload, Copy, Check, Users } from 'lucide-react';
+import { BarChart3, Trophy, Music, Tv, RefreshCw, Upload, Copy, Check, Users, MessageCircle, Trash2 } from 'lucide-react';
 import { YEARS } from '@/lib/firestore';
 import { PODIUM_POINTS } from '@/lib/votes';
 import { uploadFile } from '@/lib/storage';
@@ -36,15 +36,25 @@ type Voter = {
   landing: string | null;
 };
 
+type AdminComment = {
+  id: string;
+  scope: string;
+  author: string;
+  text: string;
+  isReply: boolean;
+  createdAt: string | null;
+};
+
 export default function AdminPage() {
   const [auth, setAuth] = useState(false);
   const [pwd, setPwd] = useState('');
   const [data, setData] = useState<YearResult[]>([]);
   const [voters, setVoters] = useState<Voter[]>([]);
+  const [comments, setComments] = useState<AdminComment[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
-  const [tab, setTab] = useState<'votes' | 'votants' | 'upload'>('votes');
+  const [tab, setTab] = useState<'votes' | 'votants' | 'commentaires' | 'upload'>('votes');
 
   async function fetchResults(password: string) {
     setLoading(true);
@@ -62,6 +72,7 @@ export default function AdminPage() {
       }
       setData(json.years as YearResult[]);
       setVoters((json.voters ?? []) as Voter[]);
+      setComments((json.comments ?? []) as AdminComment[]);
       return true;
     } catch {
       setError('Connexion impossible.');
@@ -123,7 +134,7 @@ export default function AdminPage() {
         </div>
 
         <div className="flex gap-2 mb-8">
-          {(['votes', 'votants', 'upload'] as const).map((t) => (
+          {(['votes', 'votants', 'commentaires', 'upload'] as const).map((t) => (
             <button
               key={t}
               onClick={() => setTab(t)}
@@ -134,7 +145,7 @@ export default function AdminPage() {
                 border: '1px solid var(--neon)',
               }}
             >
-              {t === 'votes' ? 'Votes' : t === 'votants' ? 'Votants' : 'Upload'}
+              {t === 'votes' ? 'Votes' : t === 'votants' ? 'Votants' : t === 'commentaires' ? 'Commentaires' : 'Upload'}
             </button>
           ))}
         </div>
@@ -144,6 +155,14 @@ export default function AdminPage() {
         {tab === 'upload' && <UploadPanel />}
 
         {tab === 'votants' && <VotersPanel voters={voters} />}
+
+        {tab === 'commentaires' && (
+          <CommentsPanel
+            comments={comments}
+            password={pwd}
+            onDeleted={(id) => setComments((prev) => prev.filter((c) => c.id !== id))}
+          />
+        )}
 
         {tab === 'votes' && !selectedYear && (
           <>
@@ -528,6 +547,69 @@ function Repartition({ title, items }: { title: string; items: { label: string; 
           </div>
         ))}
       </div>
+    </div>
+  );
+}
+
+/** Modération : tout le mur, du plus récent au plus ancien. */
+function CommentsPanel({
+  comments,
+  password,
+  onDeleted,
+}: {
+  comments: AdminComment[];
+  password: string;
+  onDeleted: (id: string) => void;
+}) {
+  async function supprimer(id: string) {
+    onDeleted(id);
+    try {
+      await fetch('/api/comments', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, password }),
+      });
+    } catch {
+      // L'écran repartira du serveur au prochain rafraîchissement
+    }
+  }
+
+  if (!comments.length) {
+    return (
+      <div className="retro-card rounded-lg p-8 text-center">
+        <MessageCircle size={24} className="mx-auto mb-3" style={{ color: 'var(--neon)' }} />
+        <p className="text-sm" style={{ color: 'var(--sepia-dim)' }}>Aucun commentaire pour l’instant.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-3">
+      {comments.map((c) => (
+        <div key={c.id} className="retro-card rounded-lg p-3 flex gap-3 items-start">
+          <div className="min-w-0 flex-1">
+            <div className="flex items-baseline gap-2 flex-wrap">
+              <span className="font-black text-sm" style={{ color: 'var(--sepia)' }}>{c.author}</span>
+              <span className="text-xs px-2 py-0.5 rounded" style={{ background: 'var(--bg2)', color: 'var(--neon)' }}>
+                {c.scope}
+              </span>
+              {c.isReply && <span className="text-xs" style={{ color: 'var(--sepia-dim)' }}>réponse</span>}
+              <span className="text-xs" style={{ color: 'var(--sepia-dim)', opacity: 0.7 }}>
+                {c.createdAt ? new Date(c.createdAt).toLocaleString('fr-FR') : ''}
+              </span>
+            </div>
+            <p className="text-sm mt-1" style={{ color: 'var(--sepia)', opacity: 0.9, whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' }}>
+              {c.text}
+            </p>
+          </div>
+          <button
+            onClick={() => supprimer(c.id)}
+            className="btn-neon text-xs px-3 py-2 rounded shrink-0 inline-flex items-center gap-1"
+          >
+            <Trash2 size={11} /> Supprimer
+          </button>
+        </div>
+      ))}
     </div>
   );
 }

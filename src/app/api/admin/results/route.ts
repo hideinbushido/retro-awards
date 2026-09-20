@@ -9,6 +9,7 @@ import { timingSafeEqual } from 'crypto';
 import { nominees } from '@/data/nominees';
 import { YEARS } from '@/lib/firestore';
 import { getTallies, isMemoryMode, listVoters } from '@/lib/voteStore';
+import { listAllComments } from '@/lib/commentStore';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -40,8 +41,9 @@ export async function POST(request: NextRequest) {
 
   let tallies;
   let voters;
+  let comments;
   try {
-    [tallies, voters] = await Promise.all([getTallies(YEARS), listVoters()]);
+    [tallies, voters, comments] = await Promise.all([getTallies(YEARS), listVoters(), listAllComments()]);
   } catch (e) {
     console.error('[results] stockage indisponible', e);
     return NextResponse.json({ error: 'Résultats indisponibles.' }, { status: 503 });
@@ -67,5 +69,17 @@ export async function POST(request: NextRequest) {
     };
   });
 
-  return NextResponse.json({ years, voters, memory: isMemoryMode() });
+  return NextResponse.json({
+    years,
+    voters,
+    comments: comments.map((c) => ({
+      id: c.id,
+      scope: c.scope,
+      author: c.author,
+      text: c.text,
+      isReply: Boolean(c.parentId),
+      createdAt: c.createdAt,
+    })),
+    memory: isMemoryMode(),
+  });
 }

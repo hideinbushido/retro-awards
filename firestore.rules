@@ -3,7 +3,7 @@
 // voteAccess) et les lit depuis le navigateur.
 //
 // Ne remplace donc PAS les règles existantes par ce fichier : ajoute seulement
-// les trois blocs `ballots`, `tallies` et `voters` ci-dessous à tes règles actuelles,
+// les quatre blocs `ballots`, `tallies`, `voters` et `retroComments` ci-dessous à tes règles actuelles,
 // sinon Zenkai n'aura plus accès à rien.
 //
 // Pourquoi fermer ces collections : les votes des Retro Awards ne passent
@@ -16,7 +16,7 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // ── Retro Awards : bulletins, totaux et votants, serveur uniquement ──
+    // ── Retro Awards : bulletins, totaux, votants et commentaires — serveur seul ──
     match /ballots/{ballot} {
       allow read, write: if false;
     }
@@ -24,6 +24,9 @@ service cloud.firestore {
       allow read, write: if false;
     }
     match /voters/{voter} {
+      allow read, write: if false;
+    }
+    match /retroComments/{comment} {
       allow read, write: if false;
     }
 

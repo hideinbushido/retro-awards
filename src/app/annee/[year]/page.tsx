@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight, Music, Tv } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import OpeningNominees from '@/components/OpeningNominees';
 import AnimeNominees from '@/components/AnimeNominees';
+import Comments from '@/components/Comments';
 import { YEARS } from '@/lib/firestore';
 import { nominees } from '@/data/nominees';
 
@@ -99,6 +100,10 @@ export default async function YearPage({ params }: Props) {
             ) : (
               <AnimeNominees year={year} animes={yearData.animes} />
             )}
+          </section>
+
+          <section className="mt-20 pt-10" style={{ borderTop: '1px solid var(--border)' }}>
+            <Comments scope={String(year)} title={`Vos commentaires sur ${year}`} />
           </section>
 
           <div className="text-center mt-16">
