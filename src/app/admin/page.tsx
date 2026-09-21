@@ -42,6 +42,7 @@ type AdminComment = {
   scope: string;
   author: string;
   text: string;
+  media: { kind: 'image' | 'video' | 'gif' | 'sticker'; url: string } | null;
   isReply: boolean;
   createdAt: string | null;
 };
@@ -599,9 +600,21 @@ function CommentsPanel({
                 {c.createdAt ? new Date(c.createdAt).toLocaleString('fr-FR') : ''}
               </span>
             </div>
-            <p className="text-sm mt-1" style={{ color: 'var(--sepia)', opacity: 0.9, whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' }}>
-              {c.text}
-            </p>
+            {c.text && (
+              <p className="text-sm mt-1" style={{ color: 'var(--sepia)', opacity: 0.9, whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' }}>
+                {c.text}
+              </p>
+            )}
+            {c.media && (
+              <div className="mt-2">
+                {c.media.kind === 'video' ? (
+                  <video src={c.media.url} controls playsInline preload="metadata" className="rounded" style={{ maxHeight: '10rem' }} />
+                ) : (
+                  // eslint-disable-next-line @next/next/no-img-element -- média externe, souvent animé
+                  <img src={c.media.url} alt="" loading="lazy" className="rounded" style={{ maxHeight: '10rem' }} />
+                )}
+              </div>
+            )}
           </div>
           <button
             onClick={() => supprimer(c.id)}

@@ -77,6 +77,7 @@ export async function POST(request: NextRequest) {
       scope: c.scope,
       author: c.author,
       text: c.text,
+      media: c.media,
       isReply: Boolean(c.parentId),
       createdAt: c.createdAt,
     })),

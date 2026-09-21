@@ -7,9 +7,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { timingSafeEqual } from 'crypto';
+import { del } from '@vercel/blob';
 import { YEARS } from '@/lib/firestore';
 import { getVoterIdentity } from '@/lib/voteStore';
-import { addComment, deleteComment, listComments } from '@/lib/commentStore';
+import { addComment, deleteComment, listComments, type StoredComment } from '@/lib/commentStore';
+import { gifsEnabled, isBlobUrl, normalizeMedia, uploadsEnabled } from '@/lib/media';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -36,33 +38,38 @@ function adminOk(given: unknown): boolean {
   return a.length === b.length && timingSafeEqual(a, b);
 }
 
+/** Ce que le navigateur voit d'un commentaire : jamais l'identifiant du votant. */
+function publier(c: StoredComment, voter: string | null) {
+  return {
+    id: c.id,
+    author: c.author,
+    text: c.text,
+    media: c.media,
+    parentId: c.parentId,
+    createdAt: c.createdAt,
+    mine: Boolean(voter) && c.voter === voter,
+  };
+}
+
 /** GET /api/comments?scope=accueil */
 export async function GET(request: NextRequest) {
   const scope = normalizeScope(request.nextUrl.searchParams.get('scope'));
   if (!scope) return NextResponse.json({ error: 'Page inconnue.' }, { status: 400 });
 
+  const features = { gif: gifsEnabled(), upload: uploadsEnabled() };
   const voter = (await cookies()).get(COOKIE)?.value ?? null;
   try {
     const comments = await listComments(scope);
-    return NextResponse.json({
-      comments: comments.map((c) => ({
-        id: c.id,
-        author: c.author,
-        text: c.text,
-        parentId: c.parentId,
-        createdAt: c.createdAt,
-        mine: Boolean(voter) && c.voter === voter,
-      })),
-    });
+    return NextResponse.json({ comments: comments.map((c) => publier(c, voter)), features });
   } catch (e) {
     console.error('[comments] lecture impossible', e);
-    return NextResponse.json({ comments: [] });
+    return NextResponse.json({ comments: [], features });
   }
 }
 
-/** POST /api/comments { scope, text, parentId? } */
+/** POST /api/comments { scope, text, media?, parentId? } */
 export async function POST(request: NextRequest) {
-  let body: { scope?: unknown; text?: unknown; parentId?: unknown };
+  let body: { scope?: unknown; text?: unknown; media?: unknown; parentId?: unknown };
   try {
     body = await request.json();
   } catch {
@@ -73,7 +80,11 @@ export async function POST(request: NextRequest) {
   if (!scope) return NextResponse.json({ error: 'Page inconnue.' }, { status: 400 });
 
   const text = typeof body.text === 'string' ? body.text.trim() : '';
-  if (!text) return NextResponse.json({ error: 'Ton message est vide.' }, { status: 400 });
+  const media = body.media ? normalizeMedia(body.media) : null;
+  if (body.media && !media) {
+    return NextResponse.json({ error: 'Ce fichier ne peut pas être publié.' }, { status: 400 });
+  }
+  if (!text && !media) return NextResponse.json({ error: 'Ton message est vide.' }, { status: 400 });
   if (text.length > MAX_LONGUEUR) {
     return NextResponse.json({ error: `Message trop long (${MAX_LONGUEUR} caractères maximum).` }, { status: 400 });
   }
@@ -111,26 +122,9 @@ export async function POST(request: NextRequest) {
       racine = cible.parentId ?? cible.id;
     }
 
-    const created = await addComment({
-      scope,
-      author: identity.pseudo,
-      text,
-      parentId: racine,
-      voter,
-    });
+    const created = await addComment({ scope, author: identity.pseudo, text, media, parentId: racine, voter });
     dernierEnvoi.set(voter, Date.now());
-
-    return NextResponse.json({
-      ok: true,
-      comment: {
-        id: created.id,
-        author: created.author,
-        text: created.text,
-        parentId: created.parentId,
-        createdAt: created.createdAt,
-        mine: true,
-      },
-    });
+    return NextResponse.json({ ok: true, comment: publier(created, voter) });
   } catch (e) {
     console.error('[comments] publication impossible', e);
     return NextResponse.json({ error: 'Ton message n’a pas pu être publié.' }, { status: 503 });
@@ -154,8 +148,15 @@ export async function DELETE(request: NextRequest) {
   if (!voter && !admin) return NextResponse.json({ error: 'Suppression refusée.' }, { status: 401 });
 
   try {
-    const removed = await deleteComment(id, voter, admin);
-    if (!removed) return NextResponse.json({ error: 'Suppression refusée.' }, { status: 403 });
+    const { ok, media } = await deleteComment(id, voter, admin);
+    if (!ok) return NextResponse.json({ error: 'Suppression refusée.' }, { status: 403 });
+
+    // Les fichiers envoyés partent avec leur message : pas de photo orpheline
+    // qui resterait en ligne après une modération.
+    const fichiers = media.map((m) => m.url).filter(isBlobUrl);
+    if (fichiers.length && uploadsEnabled()) {
+      await del(fichiers).catch((e) => console.error('[comments] fichiers non supprimés', e));
+    }
     return NextResponse.json({ ok: true });
   } catch (e) {
     console.error('[comments] suppression impossible', e);
