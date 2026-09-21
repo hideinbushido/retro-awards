@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+/* Un cran au-dessus des tailles par défaut : les petits textes du site
+   (légendes, boutons, cartes) se lisaient mal sur téléphone. */
+@theme {
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+}
+
 /* ── PALETTE RETRO AWARDS ── */
 :root {
   --bg:        #0d0a06;
@@ -25,8 +32,19 @@ button, a, [role="button"] {
 body {
   background: var(--bg);
   color: var(--sepia);
-  font-family: 'Courier New', Courier, monospace;
+  font-family: var(--font-body), system-ui, sans-serif;
   overflow-x: hidden;
+}
+
+/* Titres en Anton. Une seule graisse existe : on interdit au navigateur d'en
+   fabriquer une plus grasse, qui baverait. */
+h1, h2, h3,
+.year-number,
+.year-title,
+.font-display {
+  font-family: var(--font-display), Impact, sans-serif;
+  font-synthesis: none;
+  letter-spacing: 0.01em;
 }
 
 /* ── SCANLINES OVERLAY ── */
@@ -138,7 +156,7 @@ body::after {
   background: transparent;
   border: 1px solid var(--neon);
   color: var(--neon);
-  font-family: 'Courier New', monospace;
+  font-family: var(--font-body), system-ui, sans-serif;
   font-weight: bold;
   letter-spacing: 0.1em;
   text-transform: uppercase;

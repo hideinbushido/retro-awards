@@ -37,10 +37,10 @@ export default function Hero() {
         </h1>
 
         {/* Year range */}
-        <p className="text-xs md:text-sm mb-3 md:mb-5" style={{ color: 'var(--sepia-dim)', letterSpacing: '0.1em' }}>2005 — 2019</p>
+        <p className="font-display mb-3 md:mb-5" style={{ color: 'var(--neon)', letterSpacing: '0.12em', fontSize: 'clamp(1.25rem, 4vw, 1.9rem)' }}>2005 — 2019</p>
 
         {/* Description */}
-        <p className="text-xs md:text-sm mb-8 md:mb-10 max-w-lg mx-auto leading-relaxed" style={{ color: 'var(--sepia-dim)' }}>
+        <p className="text-base md:text-lg font-medium mb-8 md:mb-10 max-w-xl mx-auto leading-relaxed" style={{ color: 'var(--sepia)' }}>
           Reviens aux sources. Vote pour les meilleurs openings et animes de chaque année, de 2019 jusqu&apos;aux origines.
         </p>
 
