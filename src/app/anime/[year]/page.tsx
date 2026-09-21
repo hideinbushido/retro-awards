@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { ChevronLeft, ChevronRight, Tv } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import AnimeNominees from '@/components/AnimeNominees';
+import Comments from '@/components/Comments';
 import { YEARS } from '@/lib/firestore';
 import { nominees } from '@/data/nominees';
 
@@ -69,6 +70,11 @@ export default async function AnimeYearPage({ params }: Props) {
               <ChevronLeft size={16} /> Toutes les années
             </Link>
           </div>
+
+          {/* Même fil que la page de l’année : on discute d’une année, pas d’une catégorie. */}
+          <section className="mt-16 pt-10" style={{ borderTop: '1px solid var(--border)' }}>
+            <Comments scope={String(year)} title={`Vos commentaires sur ${year}`} />
+          </section>
         </div>
       </main>
     </>

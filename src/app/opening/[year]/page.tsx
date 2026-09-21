@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { ChevronLeft, ChevronRight, Music } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import OpeningNominees from '@/components/OpeningNominees';
+import Comments from '@/components/Comments';
 import { YEARS } from '@/lib/firestore';
 import { nominees, TEASER_MODE } from '@/data/nominees';
 
@@ -69,6 +70,12 @@ export default async function OpeningYearPage({ params }: Props) {
               <ChevronLeft size={16} /> Toutes les années
             </Link>
           </div>
+
+          {/* Même fil que la page de l’année : on discute d’une année, pas d’une catégorie.
+              La marge du bas laisse passer la barre de vote fixée en bas de l’écran. */}
+          <section className="mt-16 pt-10 pb-56" style={{ borderTop: '1px solid var(--border)' }}>
+            <Comments scope={String(year)} title={`Vos commentaires sur ${year}`} />
+          </section>
         </div>
       </main>
     </>
