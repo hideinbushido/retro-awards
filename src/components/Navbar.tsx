@@ -22,7 +22,7 @@ export default function Navbar() {
         <Image src="/logo-zenkai.png" alt="Zenkai" width={30} height={30} priority style={{ height: '1.85rem', width: 'auto' }} />
         <span className="h-6 w-px" style={{ background: 'var(--border)' }} aria-hidden="true" />
         <Image src="/logo-mark.png" alt="" width={36} height={32} priority style={{ height: '2rem', width: 'auto' }} />
-        <span className="font-display tracking-wide neon-text text-base sm:text-lg">RETRO AWARDS</span>
+        <span className="font-title font-black tracking-wider neon-text text-sm">RETRO AWARDS</span>
       </Link>
 
       {/* Desktop links */}

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Anton, Space_Grotesk } from 'next/font/google';
+import { Space_Grotesk } from 'next/font/google';
 import './globals.css';
 import { MusicProvider } from '@/contexts/MusicContext';
 import EntryTracker from '@/components/EntryTracker';
@@ -7,11 +7,10 @@ import Footer from '@/components/Footer';
 import { siteUrl } from '@/lib/site';
 
 /*
- * Anton pour les titres : c'est presque le lettrage « RETRO AWARDS » du logo.
  * Space Grotesk pour le texte courant : lisible, avec du caractère, là où le
- * Courier d'origine paraissait fin et petit.
+ * Courier d'origine paraissait fin et petit. Les titres, eux, gardent le
+ * Courier (voir globals.css).
  */
-const display = Anton({ subsets: ['latin'], weight: '400', variable: '--font-display' });
 const body = Space_Grotesk({ subsets: ['latin'], variable: '--font-body' });
 
 /** L'adresse publique sert aux liens absolus des aperçus de partage. */
@@ -39,7 +38,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" className={`h-full ${display.variable} ${body.variable}`}>
+    <html lang="fr" className={`h-full ${body.variable}`}>
       <head>
         {/* Preload uniquement la vidéo hero — les autres chargent à la demande */}
         <link rel="preload" href="/Fondaccueil2.mp4" as="video" type="video/mp4" />

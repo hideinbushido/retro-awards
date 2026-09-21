@@ -37,7 +37,7 @@ export default function Hero() {
         </h1>
 
         {/* Year range */}
-        <p className="font-display mb-3 md:mb-5" style={{ color: 'var(--neon)', letterSpacing: '0.12em', fontSize: 'clamp(1.25rem, 4vw, 1.9rem)' }}>2005 — 2019</p>
+        <p className="text-lg md:text-xl font-semibold mb-3 md:mb-5" style={{ color: 'var(--neon)', letterSpacing: '0.15em' }}>2005 — 2019</p>
 
         {/* Description */}
         <p className="text-base md:text-lg font-medium mb-8 md:mb-10 max-w-xl mx-auto leading-relaxed" style={{ color: 'var(--sepia)' }}>
