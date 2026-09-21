@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { MusicProvider } from '@/contexts/MusicContext';
 import EntryTracker from '@/components/EntryTracker';
+import Footer from '@/components/Footer';
 import { siteUrl } from '@/lib/site';
 
 /** L'adresse publique sert aux liens absolus des aperçus de partage. */
@@ -38,6 +39,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <EntryTracker />
         <MusicProvider src="/CRYSTAL.mp3">
           {children}
+          <Footer />
         </MusicProvider>
       </body>
     </html>

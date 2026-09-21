@@ -8,6 +8,7 @@ import Navbar from '@/components/Navbar';
 import { PODIUM_POINTS } from '@/lib/votes';
 import { YEARS } from '@/lib/firestore';
 import { useVoterGate } from '@/components/VoterGate';
+import ZenkaiSpinner from '@/components/ZenkaiSpinner';
 import type { RecapEntry } from '@/app/api/voter/recap/route';
 
 type Recap = {
@@ -79,7 +80,7 @@ export default function MesVotesPage() {
           </div>
 
           {!recap && (
-            <p className="text-center text-sm" style={{ color: 'var(--sepia-dim)' }}>Chargement…</p>
+            <ZenkaiSpinner label="Chargement de tes votes" />
           )}
 
           {recap && !years.length && (

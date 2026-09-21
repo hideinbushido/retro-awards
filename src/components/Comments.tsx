@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { MessageCircle, Reply, Send, Trash2 } from 'lucide-react';
 import { useVoterGate } from '@/components/VoterGate';
+import ZenkaiSpinner from '@/components/ZenkaiSpinner';
 
 type Comment = {
   id: string;
@@ -163,7 +164,7 @@ export default function Comments({ scope, title = 'Commentaires' }: Props) {
 
       {/* Fil */}
       {comments === null && (
-        <p className="text-xs text-center" style={{ color: 'var(--sepia-dim)' }}>Chargement…</p>
+        <ZenkaiSpinner label="Chargement des messages" size={26} />
       )}
 
       {comments !== null && racines.length === 0 && (

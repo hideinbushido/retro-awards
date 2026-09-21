@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
+import Image from 'next/image';
 import { BarChart3, Trophy, Music, Tv, RefreshCw, Upload, Copy, Check, Users, MessageCircle, Trash2 } from 'lucide-react';
 import { YEARS } from '@/lib/firestore';
 import { PODIUM_POINTS } from '@/lib/votes';
@@ -90,8 +91,8 @@ export default function AdminPage() {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--bg)' }}>
         <div className="retro-card rounded-xl p-8 w-full max-w-sm">
-          <div className="flex items-center gap-2 mb-6">
-            <BarChart3 size={20} style={{ color: 'var(--neon)' }} />
+          <div className="flex flex-col items-center gap-3 mb-6">
+            <Image src="/logo-mark.png" alt="" width={66} height={60} style={{ height: '3.75rem', width: 'auto' }} />
             <h1 className="font-black text-xl neon-text tracking-widest">ADMIN</h1>
           </div>
           <input

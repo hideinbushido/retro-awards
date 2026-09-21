@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { Trophy, ChevronLeft, Lock } from 'lucide-react';
+import Image from 'next/image';
+import { ChevronLeft, Lock } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import { PODIUM_POINTS } from '@/lib/votes';
 
@@ -19,7 +20,15 @@ export default function ResultatsPage() {
         <div className="max-w-3xl mx-auto">
 
           <div className="text-center py-12 mb-8">
-            <Trophy size={32} className="mx-auto mb-4" style={{ color: 'var(--neon)' }} />
+            <Image
+              src="/logo-retro.png"
+              alt="Retro Awards"
+              width={384}
+              height={294}
+              priority
+              className="mx-auto mb-6"
+              style={{ height: 'clamp(6rem, 18vw, 9rem)', width: 'auto', filter: 'drop-shadow(0 0 24px rgba(0,255,204,0.25))' }}
+            />
             <h1 className="text-3xl md:text-5xl font-black mb-3" style={{ color: 'var(--sepia)' }}>Résultats</h1>
             <p className="text-xs tracking-widest uppercase" style={{ color: 'var(--sepia-dim)' }}>
               2019 à 2005

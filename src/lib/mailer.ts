@@ -45,7 +45,9 @@ const DIM = '#9c8f74';
 function shell(title: string, body: string): string {
   return `<div style="margin:0;padding:24px 0;background:${BG};font-family:Helvetica,Arial,sans-serif">
   <div style="max-width:520px;margin:0 auto;padding:0 16px">
-    <p style="margin:0 0 20px;text-align:center;letter-spacing:4px;font-size:12px;color:${NEON};text-transform:uppercase">Retro Awards</p>
+    <p style="margin:0 0 20px;text-align:center">
+      <img src="${SITE}/logo-retro.png" alt="Retro Awards" width="150" style="display:inline-block;width:150px;height:auto;border:0">
+    </p>
     <div style="background:${CARD};border:1px solid #2a2118;border-radius:10px;padding:24px">
       <h1 style="margin:0 0 16px;font-size:20px;color:${TEXT}">${title}</h1>
       ${body}

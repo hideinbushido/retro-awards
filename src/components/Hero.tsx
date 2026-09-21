@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { ChevronDown, ChevronRight, Music, Tv, Rewind } from 'lucide-react';
+import { ChevronDown, ChevronRight, Music, Tv } from 'lucide-react';
 
 export default function Hero() {
   return (
@@ -27,7 +27,7 @@ export default function Hero() {
           className="inline-flex items-center gap-2 px-3 py-1 mb-5 md:mb-8 text-xs font-bold tracking-widest uppercase rounded"
           style={{ border: '1px solid var(--border)', color: 'var(--neon)', background: 'rgba(0,255,204,0.05)' }}
         >
-          <Rewind size={10} /> ZENKAI HORS-SÉRIE
+          <Image src="/logo-zenkai.png" alt="" width={14} height={14} /> ZENKAI HORS-SÉRIE
         </div>
 
         {/* Title */}
