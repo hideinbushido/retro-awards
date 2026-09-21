@@ -41,7 +41,7 @@ export default function Footer() {
 
         <div className="flex items-center gap-2 text-xs" style={{ color: 'var(--sepia-dim)' }}>
           <Image src="/logo-zenkai.png" alt="" width={20} height={20} />
-          Un hors-série de la communauté Zenkai
+          Un événement organisé par Zenkai
         </div>
       </div>
     </footer>
