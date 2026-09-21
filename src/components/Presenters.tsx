@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { TikTokIcon } from '@/components/icons';
 
 /**
  * Les deux voix des Retro Awards.
@@ -89,10 +90,3 @@ export default function Presenters() {
   );
 }
 
-function TikTokIcon() {
-  return (
-    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M16.6 5.82A4.28 4.28 0 0 1 15.54 3h-3.09v12.4a2.59 2.59 0 0 1-2.59 2.5 2.59 2.59 0 0 1 0-5.18c.27 0 .52.04.76.12V9.7a5.76 5.76 0 0 0-.76-.05 5.68 5.68 0 1 0 5.68 5.68V9.01a7.35 7.35 0 0 0 4.29 1.37V7.3a4.29 4.29 0 0 1-3.23-1.48Z" />
-    </svg>
-  );
-}

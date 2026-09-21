@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ChevronLeft, Lock } from 'lucide-react';
 import Navbar from '@/components/Navbar';
+import LiveSchedule from '@/components/LiveSchedule';
 import { PODIUM_POINTS } from '@/lib/votes';
 
 /**
@@ -40,9 +41,10 @@ export default function ResultatsPage() {
             <Lock size={28} style={{ color: 'var(--neon)' }} />
             <h2 className="font-black text-xl" style={{ color: 'var(--sepia)' }}>Le vote est en cours</h2>
             <p className="text-sm leading-relaxed" style={{ color: 'var(--sepia-dim)', maxWidth: '38rem' }}>
-              Les résultats restent scellés jusqu’à la clôture, pour que personne ne soit influencé
-              en votant. Reviens à l’annonce des gagnants.
+              Les résultats restent scellés jusqu’au bout, pour que personne ne soit influencé
+              en votant. Ils seront dévoilés en direct, catégorie par catégorie :
             </p>
+            <LiveSchedule />
             <div className="h-px w-full my-2" style={{ background: 'var(--border)' }} />
             <div className="text-xs leading-relaxed" style={{ color: 'var(--sepia-dim)' }}>
               <p className="font-bold tracking-widest uppercase mb-2" style={{ color: 'var(--neon)' }}>

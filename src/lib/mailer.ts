@@ -7,6 +7,7 @@
  */
 import nodemailer, { type Transporter } from 'nodemailer';
 import { siteUrl } from './site';
+import { CALENDRIER_PHRASE } from './event';
 
 const USER = process.env.MAIL_USER;
 const PASS = process.env.MAIL_APP_PASSWORD;
@@ -85,11 +86,12 @@ export async function sendWelcome(email: string, pseudo: string): Promise<void> 
        <li>Meilleur opening : <strong style="color:${TEXT}">un podium de 3</strong> — 10 points pour le 1er, 6 pour le 2e, 3 pour le 3e</li>
      </ul>
      <p style="margin:0 0 18px;font-size:14px;line-height:1.6;color:${DIM}">
-       Chaque vote est définitif, prends ton temps. Les résultats seront dévoilés à la clôture.
+       Ton podium d’openings est définitif, prends ton temps ; ton vote animé peut être annulé.
+       Résultats en live ${CALENDRIER_PHRASE}, sur notre chaîne Twitch et notre compte TikTok.
      </p>
      <a href="${SITE}" style="display:inline-block;background:${NEON};color:${BG};font-weight:bold;font-size:14px;text-decoration:none;padding:12px 22px;border-radius:6px">Aller voter</a>`,
   );
-  const text = `Bienvenue ${pseudo} !\n\nTa participation aux Retro Awards est confirmée.\nMeilleur anime : un vote par année. Meilleur opening : un podium de 3 (10, 6 et 3 points).\nChaque vote est définitif.\n\n${SITE}`;
+  const text = `Bienvenue ${pseudo} !\n\nTa participation aux Retro Awards est confirmée.\nMeilleur anime : un vote par année, annulable. Meilleur opening : un podium de 3 (10, 6 et 3 points), définitif.\nRésultats en live ${CALENDRIER_PHRASE}, sur Twitch et TikTok.\n\n${SITE}`;
   await send(email, 'Ta participation aux Retro Awards est confirmée', html, text);
 }
 
@@ -115,7 +117,7 @@ export async function sendRecap(email: string, pseudo: string, years: RecapYear[
   const html = shell(
     `Le récap de tes votes, ${pseudo}`,
     `<p style="margin:0 0 6px;font-size:14px;line-height:1.6;color:${DIM}">
-       Voilà tout ce que tu as voté jusqu’ici. Garde ce mail, les résultats arrivent à la clôture.
+       Voilà tout ce que tu as voté jusqu’ici. Garde ce mail : résultats en live ${CALENDRIER_PHRASE}.
      </p>
      ${blocks}`,
   );

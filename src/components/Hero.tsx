@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import LiveSchedule from '@/components/LiveSchedule';
 import { ChevronDown, ChevronRight, Music, Tv } from 'lucide-react';
 
 export default function Hero() {
@@ -58,6 +59,10 @@ export default function Hero() {
         <Link href="/carrousel" className="btn-neon inline-flex items-center gap-2 px-6 py-3 rounded text-xs tracking-widest">
           ALLEZ DANS LE CARROUSSEL <ChevronRight size={14} />
         </Link>
+
+        <div className="mt-8">
+          <LiveSchedule compact />
+        </div>
       </div>
 
       <a

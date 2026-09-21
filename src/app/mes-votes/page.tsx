@@ -9,6 +9,7 @@ import { PODIUM_POINTS } from '@/lib/votes';
 import { YEARS } from '@/lib/firestore';
 import { useVoterGate } from '@/components/VoterGate';
 import ZenkaiSpinner from '@/components/ZenkaiSpinner';
+import { CALENDRIER_PHRASE } from '@/lib/event';
 import type { RecapEntry } from '@/app/api/voter/recap/route';
 
 type Recap = {
@@ -112,7 +113,7 @@ export default function MesVotesPage() {
                 <p className="text-xs leading-relaxed flex-1" style={{ color: 'var(--sepia-dim)' }}>
                   <strong style={{ color: 'var(--sepia)' }}>{animeCount}</strong> anime{animeCount > 1 ? 's' : ''} et{' '}
                   <strong style={{ color: 'var(--sepia)' }}>{openingCount}</strong> podium{openingCount > 1 ? 's' : ''} d’openings
-                  sur {YEARS.length} années. Les résultats restent scellés jusqu’à la clôture.
+                  sur {YEARS.length} années. Résultats en live {CALENDRIER_PHRASE}.
                 </p>
                 {recap.mail && (
                   <button

@@ -3,6 +3,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { CHAINES } from '@/lib/event';
+import { TikTokIcon, TwitchIcon } from '@/components/icons';
 
 /** Pages en plein écran : un pied de page n'y aurait pas sa place. */
 const SANS_PIED = ['/carrousel', '/admin'];
@@ -38,6 +40,21 @@ export default function Footer() {
             </Link>
           ))}
         </nav>
+
+        {(CHAINES.twitch || CHAINES.tiktok) && (
+          <div className="flex items-center gap-3">
+            {CHAINES.twitch && (
+              <a href={CHAINES.twitch} target="_blank" rel="noopener noreferrer" aria-label="Twitch" className="btn-neon rounded-full p-2.5">
+                <TwitchIcon size={16} />
+              </a>
+            )}
+            {CHAINES.tiktok && (
+              <a href={CHAINES.tiktok} target="_blank" rel="noopener noreferrer" aria-label="TikTok" className="btn-neon rounded-full p-2.5">
+                <TikTokIcon size={16} />
+              </a>
+            )}
+          </div>
+        )}
 
         <div className="flex items-center gap-2 text-xs" style={{ color: 'var(--sepia-dim)' }}>
           <Image src="/logo-zenkai.png" alt="" width={20} height={20} />
