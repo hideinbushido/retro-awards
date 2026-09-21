@@ -8,7 +8,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { timingSafeEqual } from 'crypto';
 import { nominees } from '@/data/nominees';
 import { YEARS } from '@/lib/firestore';
-import { getTallies, isMemoryMode, listVoters } from '@/lib/voteStore';
+import { getTallies, isMemoryMode, listBallots, listVoters } from '@/lib/voteStore';
 import { listAllComments } from '@/lib/commentStore';
 
 export const runtime = 'nodejs';
@@ -42,8 +42,14 @@ export async function POST(request: NextRequest) {
   let tallies;
   let voters;
   let comments;
+  let ballots;
   try {
-    [tallies, voters, comments] = await Promise.all([getTallies(YEARS), listVoters(), listAllComments()]);
+    [tallies, voters, comments, ballots] = await Promise.all([
+      getTallies(YEARS),
+      listVoters(),
+      listAllComments(),
+      listBallots(),
+    ]);
   } catch (e) {
     console.error('[results] stockage indisponible', e);
     return NextResponse.json({ error: 'Résultats indisponibles.' }, { status: 503 });
@@ -72,6 +78,7 @@ export async function POST(request: NextRequest) {
   return NextResponse.json({
     years,
     voters,
+    ballots,
     comments: comments.map((c) => ({
       id: c.id,
       scope: c.scope,

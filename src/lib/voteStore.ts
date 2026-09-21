@@ -329,6 +329,57 @@ export async function listVoters(): Promise<VoterSummary[]> {
     .sort((a, b) => (b.createdAt ?? '').localeCompare(a.createdAt ?? ''));
 }
 
+export type AdminBallot = {
+  pseudo: string;
+  email: string;
+  year: number;
+  podium: string[] | null;
+  anime: string | null;
+  createdAt: string | null;
+};
+
+/**
+ * Tous les bulletins, avec le nom de leur auteur : réservé à l'admin.
+ *
+ * Le pseudo vient de la fiche du votant quand elle existe — il a pu le
+ * changer depuis — et à défaut de celui inscrit sur le bulletin.
+ */
+export async function listBallots(): Promise<AdminBallot[]> {
+  const text = (value: unknown) => (typeof value === 'string' && value ? value : null);
+
+  if (isMemoryMode()) {
+    const list: AdminBallot[] = [];
+    for (const [cle, ballot] of memBallots) {
+      const [voter, year] = cle.split('_');
+      const identity = memVoters.get(voter);
+      const base = { pseudo: identity?.pseudo ?? '(anonyme)', email: identity?.email ?? '', year: Number(year), createdAt: null };
+      if (ballot.podium) list.push({ ...base, podium: ballot.podium, anime: null });
+      if (ballot.anime) list.push({ ...base, podium: null, anime: ballot.anime });
+    }
+    return list;
+  }
+
+  const db = getAdminDb();
+  const [ballots, voters] = await Promise.all([db.collection('ballots').get(), db.collection('voters').get()]);
+  const identites = new Map(voters.docs.map((doc) => [doc.id, doc.data()]));
+
+  return ballots.docs
+    .map((doc) => {
+      const data = doc.data();
+      const identity = identites.get(data.voter);
+      return {
+        pseudo: text(identity?.pseudo) ?? text(data.pseudo) ?? '(anonyme)',
+        email: text(identity?.email) ?? text(data.email) ?? '',
+        year: Number(data.year),
+        podium: Array.isArray(data.podium) ? (data.podium as string[]) : null,
+        anime: text(data.id),
+        createdAt: data.createdAt?.toDate?.().toISOString() ?? null,
+      };
+    })
+    .filter((b) => Number.isFinite(b.year))
+    .sort((a, b) => (b.createdAt ?? '').localeCompare(a.createdAt ?? ''));
+}
+
 /** Tous les bulletins d’un votant, pour le récapitulatif. */
 export async function getVoterBallots(
   voter: string,

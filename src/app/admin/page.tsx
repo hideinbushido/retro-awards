@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { Fragment, useState, useRef } from 'react';
 import Image from 'next/image';
 import { BarChart3, Trophy, Music, Tv, RefreshCw, Upload, Copy, Check, Users, MessageCircle, Trash2 } from 'lucide-react';
 import { YEARS } from '@/lib/firestore';
@@ -37,6 +37,31 @@ type Voter = {
   landing: string | null;
 };
 
+type Ballot = {
+  pseudo: string;
+  email: string;
+  year: number;
+  podium: string[] | null;
+  anime: string | null;
+  createdAt: string | null;
+};
+
+/** Un votant sur une année : son animé et son podium, réunis en une ligne. */
+type BulletinAnnee = { pseudo: string; email: string; anime: string | null; podium: string[] | null };
+
+function regrouperParVotant(ballots: Ballot[], year: number): BulletinAnnee[] {
+  const parVotant = new Map<string, BulletinAnnee>();
+  for (const b of ballots) {
+    if (b.year !== year) continue;
+    const cle = b.email || b.pseudo;
+    const ligne = parVotant.get(cle) ?? { pseudo: b.pseudo, email: b.email, anime: null, podium: null };
+    if (b.anime) ligne.anime = b.anime;
+    if (b.podium) ligne.podium = b.podium;
+    parVotant.set(cle, ligne);
+  }
+  return [...parVotant.values()].sort((a, b) => a.pseudo.localeCompare(b.pseudo, 'fr'));
+}
+
 type AdminComment = {
   id: string;
   scope: string;
@@ -52,6 +77,7 @@ export default function AdminPage() {
   const [pwd, setPwd] = useState('');
   const [data, setData] = useState<YearResult[]>([]);
   const [voters, setVoters] = useState<Voter[]>([]);
+  const [ballots, setBallots] = useState<Ballot[]>([]);
   const [comments, setComments] = useState<AdminComment[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -74,6 +100,7 @@ export default function AdminPage() {
       }
       setData(json.years as YearResult[]);
       setVoters((json.voters ?? []) as Voter[]);
+      setBallots((json.ballots ?? []) as Ballot[]);
       setComments((json.comments ?? []) as AdminComment[]);
       return true;
     } catch {
@@ -115,6 +142,11 @@ export default function AdminPage() {
   }
 
   const yearData = selectedYear ? data.find((d) => d.year === selectedYear) : null;
+
+  const nomOpening = (year: number, id: string) =>
+    data.find((d) => d.year === year)?.openings.find((o) => o.id === id)?.label ?? `#${id}`;
+  const nomAnime = (year: number, id: string) =>
+    data.find((d) => d.year === year)?.animes.find((a) => a.id === id)?.label ?? `#${id}`;
   const totalOpeningBallots = data.reduce((s, d) => s + d.openingBallots, 0);
   const totalAnimeBallots = data.reduce((s, d) => s + d.animeBallots, 0);
 
@@ -156,7 +188,9 @@ export default function AdminPage() {
 
         {tab === 'upload' && <UploadPanel />}
 
-        {tab === 'votants' && <VotersPanel voters={voters} />}
+        {tab === 'votants' && (
+          <VotersPanel voters={voters} ballots={ballots} nomAnime={nomAnime} nomOpening={nomOpening} />
+        )}
 
         {tab === 'commentaires' && (
           <CommentsPanel
@@ -243,6 +277,20 @@ export default function AdminPage() {
               ) : (
                 <VoteBar items={yearData.animes.map((a) => ({ label: a.label, value: a.votes }))} unit="voix" />
               )}
+            </section>
+
+            <section className="mt-10">
+              <div className="flex items-center gap-2 mb-1">
+                <Users size={14} style={{ color: 'var(--neon)' }} />
+                <h3 className="font-black text-sm tracking-widest uppercase" style={{ color: 'var(--sepia)' }}>
+                  Qui a voté quoi
+                </h3>
+              </div>
+              <BulletinsAnnee
+                lignes={regrouperParVotant(ballots, selectedYear)}
+                nomAnime={(id) => nomAnime(selectedYear, id)}
+                nomOpening={(id) => nomOpening(selectedYear, id)}
+              />
             </section>
           </div>
         )}
@@ -433,7 +481,18 @@ function VoteBar({ items, unit }: { items: { label: string; value: number }[]; u
 }
 
 /** Qui a voté, quand, et combien d’années chacun a couvert. */
-function VotersPanel({ voters }: { voters: Voter[] }) {
+function VotersPanel({
+  voters,
+  ballots,
+  nomAnime,
+  nomOpening,
+}: {
+  voters: Voter[];
+  ballots: Ballot[];
+  nomAnime: (year: number, id: string) => string;
+  nomOpening: (year: number, id: string) => string;
+}) {
+  const [ouvert, setOuvert] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const actifs = voters.filter((v) => v.animes + v.openings > 0);
 
@@ -491,7 +550,12 @@ function VotersPanel({ voters }: { voters: Voter[] }) {
             </thead>
             <tbody>
               {voters.map((v) => (
-                <tr key={v.email} style={{ borderTop: '1px solid var(--border)' }}>
+              <Fragment key={v.email}>
+                <tr
+                  onClick={() => setOuvert((o) => (o === v.email ? null : v.email))}
+                  className="cursor-pointer"
+                  style={{ borderTop: '1px solid var(--border)', background: ouvert === v.email ? 'rgba(0,255,204,0.05)' : undefined }}
+                >
                   <td className="px-4 py-3 font-black">{v.pseudo}</td>
                   <td className="px-4 py-3" style={{ color: 'var(--sepia-dim)' }}>{v.email}</td>
                   <td className="px-4 py-3" style={{ color: 'var(--sepia-dim)' }}>
@@ -509,6 +573,18 @@ function VotersPanel({ voters }: { voters: Voter[] }) {
                     {v.createdAt ? new Date(v.createdAt).toLocaleDateString('fr-FR') : '—'}
                   </td>
                 </tr>
+                {ouvert === v.email && (
+                  <tr>
+                    <td colSpan={8} className="px-4 pb-4" style={{ background: 'rgba(0,255,204,0.03)' }}>
+                      <HistoriqueVotant
+                        ballots={ballots.filter((b) => (b.email || b.pseudo) === (v.email || v.pseudo))}
+                        nomAnime={nomAnime}
+                        nomOpening={nomOpening}
+                      />
+                    </td>
+                  </tr>
+                )}
+              </Fragment>
               ))}
             </tbody>
           </table>
@@ -624,6 +700,96 @@ function CommentsPanel({
           </button>
         </div>
       ))}
+    </div>
+  );
+}
+
+const RANGS = ['🥇', '🥈', '🥉'];
+
+/** Tableau d'une année : une ligne par votant, son animé et son podium. */
+function BulletinsAnnee({
+  lignes,
+  nomAnime,
+  nomOpening,
+}: {
+  lignes: BulletinAnnee[];
+  nomAnime: (id: string) => string;
+  nomOpening: (id: string) => string;
+}) {
+  if (!lignes.length) {
+    return <p className="text-xs mt-3" style={{ color: 'var(--sepia-dim)' }}>Personne n’a encore voté pour cette année.</p>;
+  }
+  return (
+    <div className="retro-card rounded-lg overflow-hidden mt-4">
+      <div className="overflow-x-auto">
+        <table className="w-full text-xs" style={{ color: 'var(--sepia)' }}>
+          <thead>
+            <tr style={{ background: 'var(--bg2)', color: 'var(--neon)' }}>
+              <th className="text-left font-black tracking-widest uppercase px-3 py-3">Votant</th>
+              <th className="text-left font-black tracking-widest uppercase px-3 py-3">Animé</th>
+              {RANGS.map((r, i) => (
+                <th key={r} className="text-left font-black tracking-widest uppercase px-3 py-3">
+                  {r} {PODIUM_POINTS[i]} pts
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {lignes.map((l) => (
+              <tr key={l.email || l.pseudo} style={{ borderTop: '1px solid var(--border)' }}>
+                <td className="px-3 py-3 font-black whitespace-nowrap">{l.pseudo}</td>
+                <td className="px-3 py-3" style={{ color: l.anime ? 'var(--sepia)' : 'var(--sepia-dim)' }}>
+                  {l.anime ? nomAnime(l.anime) : '—'}
+                </td>
+                {[0, 1, 2].map((rang) => (
+                  <td key={rang} className="px-3 py-3" style={{ color: l.podium ? 'var(--sepia)' : 'var(--sepia-dim)' }}>
+                    {l.podium?.[rang] ? nomOpening(l.podium[rang]) : '—'}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+/** Tout ce qu'une personne a voté, année par année. */
+function HistoriqueVotant({
+  ballots,
+  nomAnime,
+  nomOpening,
+}: {
+  ballots: Ballot[];
+  nomAnime: (year: number, id: string) => string;
+  nomOpening: (year: number, id: string) => string;
+}) {
+  const annees = [...new Set(ballots.map((b) => b.year))].sort((a, b) => b - a);
+  if (!annees.length) {
+    return <p className="text-xs pt-3" style={{ color: 'var(--sepia-dim)' }}>Inscrit, mais n’a encore rien voté.</p>;
+  }
+  return (
+    <div className="flex flex-col gap-3 pt-3">
+      {annees.map((year) => {
+        const anime = ballots.find((b) => b.year === year && b.anime)?.anime ?? null;
+        const podium = ballots.find((b) => b.year === year && b.podium)?.podium ?? null;
+        return (
+          <div key={year} className="flex flex-col sm:flex-row gap-1 sm:gap-4">
+            <span className="font-black shrink-0" style={{ color: 'var(--neon)', minWidth: '3rem' }}>{year}</span>
+            <div className="flex flex-col gap-0.5" style={{ color: 'var(--sepia)' }}>
+              <span><span style={{ color: 'var(--sepia-dim)' }}>Animé :</span> {anime ? nomAnime(year, anime) : '—'}</span>
+              {podium ? (
+                podium.map((id, rang) => (
+                  <span key={id}>{RANGS[rang]} {nomOpening(year, id)}</span>
+                ))
+              ) : (
+                <span style={{ color: 'var(--sepia-dim)' }}>Podium : —</span>
+              )}
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }
