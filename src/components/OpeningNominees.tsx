@@ -201,19 +201,32 @@ export default function OpeningNominees({ year, openings, teaser = false }: Prop
   const filled = slots.filter(Boolean).length;
   const byId = (id: string | null | undefined) => openings.find((o) => o.id === id);
 
-  /* ── PODIUM EN TRIANGLE, une fois le vote validé ── */
-  if (locked && !teaser) {
-    return <PodiumTriangle year={year} podium={locked.map((id) => byId(id))} />;
-  }
+  /*
+   * Vote validé : le podium s'affiche en tête, et les nominés restent visibles
+   * dessous, en lecture seule — on doit pouvoir réécouter un opening ou revoir
+   * qui était en lice après avoir voté.
+   */
+  const readOnly = Boolean(locked) && !teaser;
 
   /* ── VERSION TACTILE : le glisser-déposer ne se fait pas au doigt ── */
-  if (isTouch && !teaser) {
+  if (isTouch && !teaser && !locked) {
     return <MobileOpeningVote year={year} openings={openings} onVoted={setLocked} />;
   }
 
   return (
     <>
     {gate}
+    {readOnly && locked && (
+      <>
+        <PodiumTriangle year={year} podium={locked.map((id) => byId(id))} />
+        <div className="text-center mt-4 mb-8">
+          <h3 className="font-black text-lg" style={{ color: 'var(--sepia)' }}>Tous les nominés {year}</h3>
+          <p className="text-xs mt-1" style={{ color: 'var(--sepia-dim)' }}>
+            Ton podium est enregistré. Réécoute les openings quand tu veux.
+          </p>
+        </div>
+      </>
+    )}
     {teaser && revealed.size > 0 && (
       <div className="flex justify-end mb-4">
         <button onClick={handleResetAll} className="btn-neon text-xs px-4 py-2 rounded flex items-center gap-2">
@@ -222,7 +235,7 @@ export default function OpeningNominees({ year, openings, teaser = false }: Prop
       </div>
     )}
 
-    {!teaser && (
+    {!teaser && !readOnly && (
       <div className="retro-card rounded-lg p-4 mb-6 flex flex-col sm:flex-row sm:items-center gap-3">
         <Trophy size={18} style={{ color: 'var(--neon)' }} className="shrink-0" />
         <p className="text-xs leading-relaxed" style={{ color: 'var(--sepia-dim)' }}>
@@ -237,7 +250,7 @@ export default function OpeningNominees({ year, openings, teaser = false }: Prop
       </div>
     )}
 
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 pb-40">
+    <div className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 ${readOnly ? 'pb-8' : 'pb-40'}`}>
       {openings.map((op) => {
         const isHidden  = teaser && !revealed.has(op.id);
         const isGlitch  = glitching === op.id;
@@ -270,10 +283,12 @@ export default function OpeningNominees({ year, openings, teaser = false }: Prop
         return (
           <div
             key={op.id}
-            draggable={!teaser}
+            draggable={!teaser && !readOnly}
             onDragStart={(e) => { e.dataTransfer.setData('text/plain', op.id); e.dataTransfer.effectAllowed = 'move'; }}
             className="retro-card rounded-lg overflow-hidden flex flex-col group relative"
-            style={isPicked ? { borderColor: 'var(--neon)', boxShadow: '0 0 0 1px var(--neon)', cursor: 'grab' } : { cursor: teaser ? 'pointer' : 'grab' }}
+            style={isPicked
+              ? { borderColor: 'var(--neon)', boxShadow: '0 0 0 1px var(--neon)', cursor: readOnly ? 'default' : 'grab' }
+              : { cursor: teaser ? 'pointer' : readOnly ? 'default' : 'grab' }}
             onMouseEnter={() => !teaser && playAudio(op)}
             onMouseLeave={() => !teaser && stopAudio()}
             onTouchStart={() => !teaser && (isPlaying ? stopAudio() : playAudio(op))}
@@ -313,7 +328,7 @@ export default function OpeningNominees({ year, openings, teaser = false }: Prop
                   {op.op && op.op > 1 ? `Opening ${op.op}` : 'Opening'}
                 </p>
               </div>
-              {!teaser && (
+              {!teaser && !readOnly && (
                 <button
                   onClick={(e) => { e.stopPropagation(); pickNextSlot(op.id); }}
                   disabled={!isPicked && filled >= PODIUM_SIZE}
@@ -330,7 +345,7 @@ export default function OpeningNominees({ year, openings, teaser = false }: Prop
     </div>
 
     {/* ── LES TROIS PANIERS, FIXÉS EN BAS ── */}
-    {!teaser && (
+    {!teaser && !readOnly && (
       <div
         className="fixed bottom-0 left-0 right-0 z-40 px-3 py-3"
         style={{ background: 'rgba(13,10,6,0.96)', borderTop: '1px solid var(--border)', backdropFilter: 'blur(8px)' }}
