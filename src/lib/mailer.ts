@@ -6,11 +6,12 @@
  * ignoré : un mail qui ne part pas ne doit jamais faire échouer un vote.
  */
 import nodemailer, { type Transporter } from 'nodemailer';
+import { siteUrl } from './site';
 
 const USER = process.env.MAIL_USER;
 const PASS = process.env.MAIL_APP_PASSWORD;
 const FROM_NAME = process.env.MAIL_FROM_NAME ?? 'Retro Awards';
-const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://retro-awards.vercel.app';
+const SITE = siteUrl();
 
 export function isMailConfigured(): boolean {
   return Boolean(USER && PASS);

@@ -2,9 +2,10 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { MusicProvider } from '@/contexts/MusicContext';
 import EntryTracker from '@/components/EntryTracker';
+import { siteUrl } from '@/lib/site';
 
 /** L'adresse publique sert aux liens absolus des aperçus de partage. */
-const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://retro-awards.vercel.app';
+const SITE = siteUrl();
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
