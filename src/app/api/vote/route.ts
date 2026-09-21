@@ -9,6 +9,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { PODIUM_SIZE, isKnownYear, validateAnime, validatePodium } from '@/lib/votes';
+import { votesClos } from '@/lib/event';
 import {
   AlreadyVotedError,
   getBallot,
@@ -70,6 +71,11 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Anime invalide.' }, { status: 400 });
   }
 
+  // L'échéance se juge ici, à l'horloge du serveur : celle du visiteur ne compte pas.
+  if (votesClos()) {
+    return NextResponse.json({ error: 'Les votes sont clos depuis le dimanche 25 octobre.', closed: true }, { status: 403 });
+  }
+
   /* Pseudo et mail d’abord : c’est eux qui rattachent le bulletin à quelqu’un. */
   const voter = (await cookies()).get(COOKIE)?.value;
   let identity = null;
@@ -112,6 +118,11 @@ export async function POST(request: NextRequest) {
  * des openings, lui, est annoncé comme définitif et le reste.
  */
 export async function DELETE(request: NextRequest) {
+  // Passé l'échéance, un vote ne se retire plus : les totaux sont figés.
+  if (votesClos()) {
+    return NextResponse.json({ error: 'Les votes sont clos depuis le dimanche 25 octobre.', closed: true }, { status: 403 });
+  }
+
   let body: { year?: unknown; category?: unknown };
   try {
     body = await request.json();

@@ -1,5 +1,8 @@
-import { CHAINES, LIVES } from '@/lib/event';
+'use client';
+
+import { CHAINES, FIN_DES_VOTES_COURT, FIN_DES_VOTES_TEXTE, LIVES, type Chaine } from '@/lib/event';
 import { TikTokIcon, TwitchIcon } from '@/components/icons';
+import { useVotesClos } from '@/hooks/useVotesClos';
 
 /** Le point rouge qui pulse, signe universel du direct. */
 function PointLive() {
@@ -11,50 +14,65 @@ function PointLive() {
   );
 }
 
-/** Les boutons des chaînes ; sans adresse connue, la plateforme est seulement nommée. */
+function Icone({ chaine, size }: { chaine: Chaine; size: number }) {
+  return chaine.plateforme === 'twitch' ? <TwitchIcon size={size} /> : <TikTokIcon size={size} />;
+}
+
+/** Les boutons des chaînes du live. */
 export function LiveLinks() {
-  const liens = [
-    { nom: 'Twitch', url: CHAINES.twitch, icone: <TwitchIcon size={14} /> },
-    { nom: 'TikTok', url: CHAINES.tiktok, icone: <TikTokIcon size={14} /> },
-  ];
-
-  if (liens.every((l) => !l.url)) {
-    return (
-      <p className="text-sm" style={{ color: 'var(--sepia-dim)' }}>
-        En direct sur notre chaîne <strong style={{ color: 'var(--sepia)' }}>Twitch</strong> et notre compte{' '}
-        <strong style={{ color: 'var(--sepia)' }}>TikTok</strong>.
-      </p>
-    );
-  }
-
   return (
     <div className="flex flex-wrap gap-3 justify-center">
-      {liens.map((l) =>
-        l.url ? (
-          <a
-            key={l.nom}
-            href={l.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-neon px-5 py-3 rounded text-sm inline-flex items-center gap-2"
-          >
-            {l.icone} Suivre sur {l.nom}
-          </a>
-        ) : null,
-      )}
+      {CHAINES.map((c) => (
+        <a
+          key={c.url}
+          href={c.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn-neon px-4 py-3 rounded text-sm inline-flex items-center gap-2"
+        >
+          <Icone chaine={c} size={14} />
+          {c.plateforme === 'twitch' ? `Twitch · ${c.nom}` : c.nom}
+        </a>
+      ))}
+    </div>
+  );
+}
+
+/** Les mêmes chaînes en simples icônes rondes, pour le pied de page. */
+export function LiveIcons() {
+  return (
+    <div className="flex items-center gap-3">
+      {CHAINES.map((c) => (
+        <a
+          key={c.url}
+          href={c.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`${c.plateforme === 'twitch' ? 'Twitch' : 'TikTok'} ${c.nom}`}
+          title={c.nom}
+          className="btn-neon rounded-full p-2.5"
+        >
+          <Icone chaine={c} size={16} />
+        </a>
+      ))}
     </div>
   );
 }
 
 /**
- * Le calendrier des résultats.
- *   • compact : une ligne, pour l'accueil
+ * Le calendrier : fin des votes, puis les deux lives.
+ *   • compact : quelques lignes, pour l'accueil
  *   • complet : une carte par live, puis les chaînes, pour la page Résultats
  */
 export default function LiveSchedule({ compact = false }: { compact?: boolean }) {
+  const clos = useVotesClos();
+
   if (compact) {
     return (
       <div className="flex flex-col items-center gap-1.5 text-sm">
+        <p className="text-xs font-bold tracking-widest uppercase" style={{ color: clos ? 'var(--sepia-dim)' : 'var(--neon)' }}>
+          {clos ? 'Votes clos' : `Votes ouverts jusqu’au ${FIN_DES_VOTES_COURT}`}
+        </p>
         <p className="flex items-center gap-2 font-bold tracking-widest uppercase text-xs" style={{ color: '#ff5c5c' }}>
           <PointLive /> Résultats en live
         </p>
@@ -72,6 +90,13 @@ export default function LiveSchedule({ compact = false }: { compact?: boolean })
 
   return (
     <div className="w-full flex flex-col items-center gap-5">
+      <p className="text-sm" style={{ color: 'var(--sepia)' }}>
+        {clos ? (
+          <>Les votes sont clos depuis le <strong>{FIN_DES_VOTES_TEXTE}</strong>.</>
+        ) : (
+          <>Votes ouverts jusqu’au <strong style={{ color: 'var(--neon)' }}>{FIN_DES_VOTES_TEXTE}</strong> inclus.</>
+        )}
+      </p>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
         {LIVES.map((l) => (
           <div

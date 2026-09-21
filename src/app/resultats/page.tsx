@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { ChevronLeft, Lock } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import LiveSchedule from '@/components/LiveSchedule';
+import { useVotesClos } from '@/hooks/useVotesClos';
 import { PODIUM_POINTS } from '@/lib/votes';
 
 /**
@@ -14,6 +15,7 @@ import { PODIUM_POINTS } from '@/lib/votes';
  * ils ne sortent que par /api/admin/results, protégée par mot de passe.
  */
 export default function ResultatsPage() {
+  const clos = useVotesClos();
   return (
     <>
       <Navbar />
@@ -39,7 +41,9 @@ export default function ResultatsPage() {
 
           <div className="retro-card rounded-xl p-8 text-center flex flex-col items-center gap-4">
             <Lock size={28} style={{ color: 'var(--neon)' }} />
-            <h2 className="font-black text-xl" style={{ color: 'var(--sepia)' }}>Le vote est en cours</h2>
+            <h2 className="font-black text-xl" style={{ color: 'var(--sepia)' }}>
+              {clos ? 'Les votes sont clos' : 'Le vote est en cours'}
+            </h2>
             <p className="text-sm leading-relaxed" style={{ color: 'var(--sepia-dim)', maxWidth: '38rem' }}>
               Les résultats restent scellés jusqu’au bout, pour que personne ne soit influencé
               en votant. Ils seront dévoilés en direct, catégorie par catégorie :

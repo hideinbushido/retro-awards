@@ -7,7 +7,7 @@
  */
 import nodemailer, { type Transporter } from 'nodemailer';
 import { siteUrl } from './site';
-import { CALENDRIER_PHRASE } from './event';
+import { CALENDRIER_PHRASE, FIN_DES_VOTES_TEXTE } from './event';
 
 const USER = process.env.MAIL_USER;
 const PASS = process.env.MAIL_APP_PASSWORD;
@@ -86,12 +86,13 @@ export async function sendWelcome(email: string, pseudo: string): Promise<void> 
        <li>Meilleur opening : <strong style="color:${TEXT}">un podium de 3</strong> — 10 points pour le 1er, 6 pour le 2e, 3 pour le 3e</li>
      </ul>
      <p style="margin:0 0 18px;font-size:14px;line-height:1.6;color:${DIM}">
+       Tu as jusqu’au <strong style="color:${TEXT}">${FIN_DES_VOTES_TEXTE} inclus</strong> pour voter.
        Ton podium d’openings est définitif, prends ton temps ; ton vote animé peut être annulé.
-       Résultats en live ${CALENDRIER_PHRASE}, sur notre chaîne Twitch et notre compte TikTok.
+       Résultats en live ${CALENDRIER_PHRASE}, sur Twitch (zenkai_anime) et TikTok (@zenkai_team0).
      </p>
      <a href="${SITE}" style="display:inline-block;background:${NEON};color:${BG};font-weight:bold;font-size:14px;text-decoration:none;padding:12px 22px;border-radius:6px">Aller voter</a>`,
   );
-  const text = `Bienvenue ${pseudo} !\n\nTa participation aux Retro Awards est confirmée.\nMeilleur anime : un vote par année, annulable. Meilleur opening : un podium de 3 (10, 6 et 3 points), définitif.\nRésultats en live ${CALENDRIER_PHRASE}, sur Twitch et TikTok.\n\n${SITE}`;
+  const text = `Bienvenue ${pseudo} !\n\nTa participation aux Retro Awards est confirmée.\nMeilleur anime : un vote par année, annulable. Meilleur opening : un podium de 3 (10, 6 et 3 points), définitif.\nVotes ouverts jusqu’au ${FIN_DES_VOTES_TEXTE} inclus.\nRésultats en live ${CALENDRIER_PHRASE}, sur Twitch (zenkai_anime) et TikTok (@zenkai_team0).\n\n${SITE}`;
   await send(email, 'Ta participation aux Retro Awards est confirmée', html, text);
 }
 

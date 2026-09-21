@@ -10,6 +10,8 @@ import { useIsTouch } from '@/hooks/useIsTouch';
 import { PodiumTriangle } from '@/components/PodiumTriangle';
 import MobileOpeningVote from '@/components/MobileOpeningVote';
 import { useVoterGate } from '@/components/VoterGate';
+import { useVotesClos } from '@/hooks/useVotesClos';
+import { FIN_DES_VOTES_TEXTE, LIVES } from '@/lib/event';
 
 type Props = { year: number; openings: Opening[]; teaser?: boolean };
 
@@ -206,16 +208,25 @@ export default function OpeningNominees({ year, openings, teaser = false }: Prop
    * dessous, en lecture seule — on doit pouvoir réécouter un opening ou revoir
    * qui était en lice après avoir voté.
    */
-  const readOnly = Boolean(locked) && !teaser;
+  const clos = useVotesClos();
+  const readOnly = (Boolean(locked) || clos) && !teaser;
 
   /* ── VERSION TACTILE : le glisser-déposer ne se fait pas au doigt ── */
-  if (isTouch && !teaser && !locked) {
+  if (isTouch && !teaser && !locked && !clos) {
     return <MobileOpeningVote year={year} openings={openings} onVoted={setLocked} />;
   }
 
   return (
     <>
     {gate}
+    {readOnly && !locked && (
+      <div className="retro-card rounded-lg p-4 mb-6 text-center">
+        <p className="font-black text-sm" style={{ color: 'var(--sepia)' }}>Les votes sont clos</p>
+        <p className="text-xs mt-1" style={{ color: 'var(--sepia-dim)' }}>
+          Ils ont fermé le {FIN_DES_VOTES_TEXTE}. Résultats des openings en live le {LIVES[0].date}.
+        </p>
+      </div>
+    )}
     {readOnly && locked && (
       <>
         <PodiumTriangle year={year} podium={locked.map((id) => byId(id))} />
@@ -246,6 +257,7 @@ export default function OpeningNominees({ year, openings, teaser = false }: Prop
             Appuie sur « Choisir » pour remplir les paniers du bas.{' '}
           </span>
           1er = {PODIUM_POINTS[0]} points, 2e = {PODIUM_POINTS[1]}, 3e = {PODIUM_POINTS[2]}.
+          {' '}Votes ouverts jusqu’au {FIN_DES_VOTES_TEXTE} inclus.
         </p>
       </div>
     )}

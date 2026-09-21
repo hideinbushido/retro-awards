@@ -5,6 +5,8 @@ import Image from 'next/image';
 import { X, Check } from 'lucide-react';
 import { Anime } from '@/data/nominees';
 import { useVoterGate } from '@/components/VoterGate';
+import { useVotesClos } from '@/hooks/useVotesClos';
+import { FIN_DES_VOTES_TEXTE, LIVES } from '@/lib/event';
 
 type Props = { year: number; animes: Anime[] };
 
@@ -15,6 +17,7 @@ export default function AnimeNominees({ year, animes }: Props) {
   const [loading, setLoading] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const { guard, gate, ask } = useVoterGate();
+  const clos = useVotesClos();
 
   /* Le vote fait foi côté serveur : on le relit au chargement. */
   useEffect(() => {
@@ -78,15 +81,30 @@ export default function AnimeNominees({ year, animes }: Props) {
     <>
       {gate}
       {error && (<p className="text-xs mb-3" style={{ color: "#ff5555" }}>{error}</p>)}
+      {clos && (
+        <div className="retro-card rounded-lg p-4 mb-4 text-center">
+          <p className="font-black text-sm" style={{ color: 'var(--sepia)' }}>Les votes sont clos</p>
+          <p className="text-xs mt-1" style={{ color: 'var(--sepia-dim)' }}>
+            Ils ont fermé le {FIN_DES_VOTES_TEXTE}. Résultats des animés en live le {LIVES[1].date}.
+          </p>
+        </div>
+      )}
+      {!clos && !votedId && (
+        <p className="text-xs mb-4" style={{ color: 'var(--sepia-dim)' }}>
+          Un vote par année, annulable jusqu’au {FIN_DES_VOTES_TEXTE} inclus.
+        </p>
+      )}
       {votedId && (
         <div className="retro-card rounded-lg p-3 mb-4 flex items-center justify-between gap-3">
           <p className="text-xs" style={{ color: 'var(--sepia-dim)' }}>
-            Vote enregistré pour {year}. Ce n’est pas le bon ? Tu peux l’annuler.
+            {clos ? `Ton vote pour ${year} est enregistré.` : `Vote enregistré pour ${year}. Ce n’est pas le bon ? Tu peux l’annuler.`}
           </p>
           <div className="flex gap-2 shrink-0">
-            <button onClick={cancelVote} disabled={!!loading} className="btn-neon text-xs px-3 py-2 rounded">
-              {loading ? '...' : 'Annuler'}
-            </button>
+            {!clos && (
+              <button onClick={cancelVote} disabled={!!loading} className="btn-neon text-xs px-3 py-2 rounded">
+                {loading ? '...' : 'Annuler'}
+              </button>
+            )}
             <a href="/mes-votes" className="btn-neon text-xs px-3 py-2 rounded">Mes votes</a>
           </div>
         </div>
@@ -129,14 +147,16 @@ export default function AnimeNominees({ year, animes }: Props) {
                     </p>
                   )}
                 </div>
-                <button
-                  onClick={() => (isMyVote ? cancelVote() : handleVote(anime.id))}
-                  disabled={(hasVoted && !isMyVote) || loading === anime.id}
-                  className="btn-neon text-xs py-1.5 px-3 rounded w-full mt-auto"
-                  style={isMyVote ? { background: 'var(--neon)', color: 'var(--bg)' } : {}}
-                >
-                  {loading === anime.id ? '...' : isMyVote ? '✓ Voté — annuler' : hasVoted ? 'Voté' : 'Voter'}
-                </button>
+                {!clos && (
+                  <button
+                    onClick={() => (isMyVote ? cancelVote() : handleVote(anime.id))}
+                    disabled={(hasVoted && !isMyVote) || loading === anime.id}
+                    className="btn-neon text-xs py-1.5 px-3 rounded w-full mt-auto"
+                    style={isMyVote ? { background: 'var(--neon)', color: 'var(--bg)' } : {}}
+                  >
+                    {loading === anime.id ? '...' : isMyVote ? '✓ Voté — annuler' : hasVoted ? 'Voté' : 'Voter'}
+                  </button>
+                )}
               </div>
             </div>
           );
@@ -170,18 +190,20 @@ export default function AnimeNominees({ year, animes }: Props) {
               {zoomed.author && (
                 <p className="text-xs opacity-80" style={{ color: 'var(--sepia)' }}>Auteur : {zoomed.author}</p>
               )}
-              <button
-                onClick={() => {
-                  if (votedId === zoomed.id) cancelVote();
-                  else handleVote(zoomed.id);
-                  setZoomed(null);
-                }}
-                disabled={!!votedId && votedId !== zoomed.id}
-                className="btn-neon px-6 py-2 rounded text-sm mt-3"
-                style={votedId === zoomed.id ? { background: 'var(--neon)', color: 'var(--bg)' } : {}}
-              >
-                {votedId === zoomed.id ? '✓ Voté — annuler' : votedId ? 'Déjà voté' : 'Voter pour cet anime'}
-              </button>
+              {!clos && (
+                <button
+                  onClick={() => {
+                    if (votedId === zoomed.id) cancelVote();
+                    else handleVote(zoomed.id);
+                    setZoomed(null);
+                  }}
+                  disabled={!!votedId && votedId !== zoomed.id}
+                  className="btn-neon px-6 py-2 rounded text-sm mt-3"
+                  style={votedId === zoomed.id ? { background: 'var(--neon)', color: 'var(--bg)' } : {}}
+                >
+                  {votedId === zoomed.id ? '✓ Voté — annuler' : votedId ? 'Déjà voté' : 'Voter pour cet anime'}
+                </button>
+              )}
             </div>
           </div>
         </div>
