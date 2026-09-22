@@ -522,7 +522,7 @@ function VotersPanel({
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <Repartition title="Pays" items={compte(voters.map((v) => v.country))} />
+        <Repartition title="Pays" items={compte(voters.map((v) => nomPays(v.country)))} />
         <Repartition title="Appareils" items={compte(voters.map((v) => v.device))} />
         <Repartition title="Arrivés par" items={compte(voters.map((v) => v.source))} />
       </div>
@@ -559,7 +559,7 @@ function VotersPanel({
                   <td className="px-4 py-3 font-black">{v.pseudo}</td>
                   <td className="px-4 py-3" style={{ color: 'var(--sepia-dim)' }}>{v.email}</td>
                   <td className="px-4 py-3" style={{ color: 'var(--sepia-dim)' }}>
-                    {v.country ?? '—'}{v.city ? ' · ' + v.city : ''}
+                    {nomPays(v.country) ?? '—'}{v.city ? ' · ' + v.city : ''}
                   </td>
                   <td className="px-4 py-3" style={{ color: 'var(--sepia-dim)' }}>
                     {v.device ?? '—'}{v.os ? ' · ' + v.os : ''}{v.browser ? ' · ' + v.browser : ''}
@@ -592,6 +592,25 @@ function VotersPanel({
       </div>
     </>
   );
+}
+
+/** Noms de pays en français, fournis par le navigateur : pas de liste à tenir à jour. */
+const PAYS = (() => {
+  try {
+    return new Intl.DisplayNames(['fr'], { type: 'region' });
+  } catch {
+    return null;
+  }
+})();
+
+/** « CI » → « Côte d’Ivoire ». Un code inconnu reste affiché tel quel plutôt que de disparaître. */
+function nomPays(code: string | null): string | null {
+  if (!code) return null;
+  try {
+    return PAYS?.of(code.toUpperCase()) ?? code;
+  } catch {
+    return code;
+  }
 }
 
 /** Compte les valeurs identiques, les plus fréquentes d’abord. */
