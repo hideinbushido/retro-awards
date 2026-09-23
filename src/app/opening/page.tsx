@@ -21,7 +21,7 @@ export default function OpeningPage() {
             </p>
             <h1 className="text-3xl md:text-5xl font-black mb-3" style={{ color: 'var(--sepia)' }}>Opening</h1>
             <p className="text-xs tracking-widest" style={{ color: 'var(--sepia-dim)' }}>
-              Choisis une année pour voter
+              Choisis une année pour voir les nominés et voter
             </p>
             <div className="h-px w-24 mx-auto mt-4" style={{ background: 'linear-gradient(to right, transparent, var(--neon), transparent)' }} />
           </div>

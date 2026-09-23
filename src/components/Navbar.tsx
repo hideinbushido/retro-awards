@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
-import { Menu, X, ChevronDown, Music, Tv } from 'lucide-react';
+import { Menu, X, ChevronDown, Music, Tv, Vote } from 'lucide-react';
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -67,6 +67,9 @@ export default function Navbar() {
           )}
         </div>
 
+        <Link href="/voter" className="inline-flex items-center gap-1.5 neon-text hover:opacity-80 transition-opacity">
+          <Vote size={13} /> Voter
+        </Link>
         <Link href="/mes-votes" className="hover:neon-text transition-colors" style={{ color: 'var(--sepia-dim)' }}>
           Mes votes
         </Link>
@@ -98,7 +101,7 @@ export default function Navbar() {
           {/* Catégories section mobile */}
           <div style={{ borderBottom: '1px solid var(--border)' }}>
             <p className="px-6 py-3 text-xs tracking-widest" style={{ color: 'var(--neon)', opacity: 0.7 }}>
-              Catégories
+              Voir les nominés
             </p>
             <Link href="/opening" onClick={() => setOpen(false)}
               className="flex items-center gap-2 px-8 py-3 hover:neon-text transition-colors"
@@ -112,6 +115,11 @@ export default function Navbar() {
             </Link>
           </div>
 
+          <Link href="/voter" onClick={() => setOpen(false)}
+            className="px-6 py-4 flex items-center gap-2 neon-text"
+            style={{ borderBottom: '1px solid var(--border)' }}>
+            <Vote size={14} /> Voter
+          </Link>
           <Link href="/mes-votes" onClick={() => setOpen(false)}
             className="px-6 py-4 hover:neon-text transition-colors"
             style={{ color: 'var(--sepia-dim)', borderBottom: '1px solid var(--border)' }}>

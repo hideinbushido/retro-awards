@@ -55,10 +55,19 @@ export default function Hero() {
           </Link>
         </div>
 
-        {/* CTA vers le carrousel */}
-        <Link href="/carrousel" className="btn-neon inline-flex items-center gap-2 px-6 py-3 rounded text-xs tracking-widest">
-          ALLEZ DANS LE CARROUSSEL <ChevronRight size={14} />
-        </Link>
+        {/* Le vote d'abord : des visiteurs repartaient sans avoir trouvé où voter */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+          <Link
+            href="/voter"
+            className="btn-neon inline-flex items-center gap-2 px-8 py-4 rounded text-sm tracking-widest"
+            style={{ background: 'var(--neon)', color: 'var(--bg)' }}
+          >
+            VOTER MAINTENANT <ChevronRight size={16} />
+          </Link>
+          <Link href="/carrousel" className="btn-neon inline-flex items-center gap-2 px-6 py-3 rounded text-xs tracking-widest">
+            ALLEZ DANS LE CARROUSSEL <ChevronRight size={14} />
+          </Link>
+        </div>
 
         <div className="mt-8">
           <LiveSchedule compact />

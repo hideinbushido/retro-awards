@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { ChevronLeft, ChevronRight, Music, Tv } from 'lucide-react';
+import { ChevronLeft, ChevronRight, MessageCircle, Music, Tv } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import OpeningNominees from '@/components/OpeningNominees';
 import AnimeNominees from '@/components/AnimeNominees';
@@ -58,6 +58,10 @@ export default async function YearPage({ params }: Props) {
               2 CATÉGORIES · {yearData.openings.length + yearData.animes.length} NOMINÉS
             </p>
             <div className="h-px w-32 mx-auto mt-4" style={{ background: 'linear-gradient(to right, transparent, var(--neon), transparent)' }} />
+            {/* Le fil était tout en bas de page : personne ne descendait jusque-là */}
+            <a href="#commentaires" className="btn-neon text-xs px-4 py-2 rounded inline-flex items-center gap-2 mt-5">
+              <MessageCircle size={12} /> Commentaires
+            </a>
           </div>
 
           {/* ── OPENING ── */}
@@ -102,7 +106,7 @@ export default async function YearPage({ params }: Props) {
             )}
           </section>
 
-          <section className="mt-20 pt-10" style={{ borderTop: '1px solid var(--border)' }}>
+          <section id="commentaires" className="mt-20 pt-10 scroll-mt-24" style={{ borderTop: '1px solid var(--border)' }}>
             <Comments scope={String(year)} title={`Vos commentaires sur ${year}`} />
           </section>
 

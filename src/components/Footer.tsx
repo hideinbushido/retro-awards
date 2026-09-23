@@ -9,6 +9,7 @@ import { LiveIcons } from '@/components/LiveSchedule';
 const SANS_PIED = ['/carrousel', '/admin'];
 
 const LIENS = [
+  { href: '/voter', label: 'Voter' },
   { href: '/opening', label: 'Openings' },
   { href: '/anime', label: 'Animés' },
   { href: '/mes-votes', label: 'Mes votes' },
