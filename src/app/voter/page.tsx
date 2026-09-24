@@ -40,6 +40,9 @@ export default function VoterPage() {
     avancement?.find((a) => a.year === year)?.[quoi] ?? false;
 
   const total = (avancement ?? []).reduce((n, a) => n + (a.anime ? 1 : 0) + (a.openings ? 1 : 0), 0);
+  // Le piège classique : classer les openings et croire l'année terminée.
+  const animesOublies = (avancement ?? []).filter((a) => a.openings && !a.anime);
+  const openingsOublies = (avancement ?? []).filter((a) => a.anime && !a.openings);
 
   return (
     <>
@@ -84,6 +87,33 @@ export default function VoterPage() {
               </div>
             ))}
           </div>
+
+          {animesOublies.length > 0 && !clos && (
+            <div className="retro-card rounded-lg p-4 mb-6 text-center" style={{ borderColor: 'var(--neon)' }}>
+              <p className="font-black text-sm" style={{ color: 'var(--sepia)' }}>
+                Il te manque {animesOublies.length} animé{animesOublies.length > 1 ? 's' : ''}
+              </p>
+              <p className="text-xs mt-1" style={{ color: 'var(--sepia-dim)' }}>
+                Tu as classé les openings de {animesOublies.map((a) => a.year).join(', ')} sans voter l’animé de ces années.
+              </p>
+              <Link
+                href={`/anime/${animesOublies[0].year}`}
+                className="btn-neon px-5 py-3 rounded text-sm inline-flex items-center gap-2 mt-3"
+                style={{ background: 'var(--neon)', color: 'var(--bg)' }}
+              >
+                <Tv size={14} /> Voter l’animé {animesOublies[0].year}
+              </Link>
+            </div>
+          )}
+
+          {openingsOublies.length > 0 && !clos && (
+            <div className="retro-card rounded-lg p-4 mb-6 text-center">
+              <p className="text-xs" style={{ color: 'var(--sepia-dim)' }}>
+                Il te manque aussi {openingsOublies.length} podium{openingsOublies.length > 1 ? 's' : ''} d’openings :{' '}
+                {openingsOublies.map((a) => a.year).join(', ')}.
+              </p>
+            </div>
+          )}
 
           {total > 0 && (
             <p className="text-center text-xs mb-6" style={{ color: 'var(--sepia-dim)' }}>

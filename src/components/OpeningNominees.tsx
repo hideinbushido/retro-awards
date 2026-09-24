@@ -51,6 +51,8 @@ export default function OpeningNominees({ year, openings, teaser = false }: Prop
   const [slots, setSlots] = useState<(string | null)[]>(() => loadDraft(year, openings) ?? EMPTY_SLOTS);
   /** Podium déjà enregistré côté serveur, ou null tant que rien n’a été voté. */
   const [locked, setLocked] = useState<string[] | null>(null);
+  /** L'animé de l'année, pour rappeler qu'il reste à voter. */
+  const [animeVote, setAnimeVote] = useState<boolean | undefined>(undefined);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [dragOver, setDragOver] = useState<number | null>(null);
@@ -80,7 +82,11 @@ export default function OpeningNominees({ year, openings, teaser = false }: Prop
     let alive = true;
     fetch(`/api/vote?year=${year}`)
       .then((r) => (r.ok ? r.json() : null))
-      .then((data) => { if (alive && data?.podium) setLocked(data.podium as string[]); })
+      .then((data) => {
+        if (!alive || !data) return;
+        if (data.podium) setLocked(data.podium as string[]);
+        setAnimeVote(Boolean(data.anime));
+      })
       .catch(() => {});
     return () => { alive = false; };
   }, [year]);
@@ -229,7 +235,7 @@ export default function OpeningNominees({ year, openings, teaser = false }: Prop
     )}
     {readOnly && locked && (
       <>
-        <PodiumTriangle year={year} podium={locked.map((id) => byId(id))} />
+        <PodiumTriangle year={year} podium={locked.map((id) => byId(id))} animeVote={animeVote} />
         <div className="text-center mt-4 mb-8">
           <h3 className="font-black text-lg" style={{ color: 'var(--sepia)' }}>Tous les nominés {year}</h3>
           <p className="text-xs mt-1" style={{ color: 'var(--sepia-dim)' }}>

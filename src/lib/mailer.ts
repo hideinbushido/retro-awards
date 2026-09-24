@@ -96,6 +96,56 @@ export async function sendWelcome(email: string, pseudo: string): Promise<void> 
   await send(email, 'Ta participation aux Retro Awards est confirmée', html, text);
 }
 
+/**
+ * Rappel : il manque des bulletins.
+ *
+ * Beaucoup de gens ont classé les openings sans voter l'animé de l'année —
+ * les deux catégories se votent sur des pages différentes, et rien ne le
+ * disait assez fort.
+ */
+export async function sendRappel(
+  email: string,
+  pseudo: string,
+  manquants: { animes: number[]; openings: number[] },
+): Promise<void> {
+  const liste = (titre: string, annees: number[], chemin: string) => {
+    if (!annees.length) return '';
+    return `<p style="margin:0 0 14px;font-size:14px;line-height:1.6;color:${TEXT}">
+        <strong>${titre}</strong><br>
+        <span style="color:${DIM}">${annees.join(', ')}</span><br>
+        <a href="${SITE}${chemin}" style="color:${NEON}">Compléter →</a>
+      </p>`;
+  };
+
+  const html = shell(
+    `Il te manque quelques votes, ${pseudo}`,
+    `<p style="margin:0 0 16px;font-size:14px;line-height:1.6;color:${TEXT}">
+       Merci pour tes votes ! Il en reste quelques-uns, et les deux catégories
+       comptent séparément : un <strong>animé</strong> par année, et un
+       <strong>podium de 3 openings</strong>.
+     </p>
+     ${liste('Animés à voter', manquants.animes, '/anime')}
+     ${liste('Openings à classer', manquants.openings, '/opening')}
+     <p style="margin:0 0 18px;font-size:14px;line-height:1.6;color:${DIM}">
+       Tu as jusqu’au <strong style="color:${TEXT}">${FIN_DES_VOTES_TEXTE} inclus</strong>.
+       Résultats en live ${CALENDRIER_PHRASE}.
+     </p>
+     <a href="${SITE}/voter" style="display:inline-block;background:${NEON};color:${BG};font-weight:bold;font-size:14px;text-decoration:none;padding:12px 22px;border-radius:6px">Finir mes votes</a>`,
+  );
+
+  const text = [
+    `Il te manque quelques votes, ${pseudo}`,
+    '',
+    manquants.animes.length ? `Animés à voter : ${manquants.animes.join(', ')}` : '',
+    manquants.openings.length ? `Openings à classer : ${manquants.openings.join(', ')}` : '',
+    '',
+    `Jusqu'au ${FIN_DES_VOTES_TEXTE} inclus. Résultats en live ${CALENDRIER_PHRASE}.`,
+    `${SITE}/voter`,
+  ].filter(Boolean).join('\n');
+
+  await send(email, 'Il te manque quelques votes — Retro Awards', html, text);
+}
+
 /** Récapitulatif complet des votes, envoyé à la demande. */
 export async function sendRecap(email: string, pseudo: string, years: RecapYear[]): Promise<void> {
   const blocks = years

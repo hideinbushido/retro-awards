@@ -2,7 +2,7 @@
 
 import { Fragment, useState, useRef } from 'react';
 import Image from 'next/image';
-import { BarChart3, Trophy, Music, Tv, RefreshCw, Upload, Copy, Check, Users, MessageCircle, Trash2 } from 'lucide-react';
+import { BarChart3, Trophy, Music, Tv, RefreshCw, Upload, Copy, Check, Users, MessageCircle, Trash2, Send } from 'lucide-react';
 import { YEARS } from '@/lib/firestore';
 import { PODIUM_POINTS } from '@/lib/votes';
 import { uploadFile } from '@/lib/storage';
@@ -189,7 +189,7 @@ export default function AdminPage() {
         {tab === 'upload' && <UploadPanel />}
 
         {tab === 'votants' && (
-          <VotersPanel voters={voters} ballots={ballots} nomAnime={nomAnime} nomOpening={nomOpening} />
+          <VotersPanel voters={voters} ballots={ballots} nomAnime={nomAnime} nomOpening={nomOpening} password={pwd} />
         )}
 
         {tab === 'commentaires' && (
@@ -486,11 +486,13 @@ function VotersPanel({
   ballots,
   nomAnime,
   nomOpening,
+  password,
 }: {
   voters: Voter[];
   ballots: Ballot[];
   nomAnime: (year: number, id: string) => string;
   nomOpening: (year: number, id: string) => string;
+  password: string;
 }) {
   const [ouvert, setOuvert] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
@@ -527,7 +529,8 @@ function VotersPanel({
         <Repartition title="Arrivés par" items={compte(voters.map((v) => v.source))} />
       </div>
 
-      <div className="flex justify-end mb-3">
+      <div className="flex flex-wrap justify-end gap-2 mb-3">
+        <RappelPanel password={password} />
         <button onClick={copyEmails} className="btn-neon px-3 py-2 rounded text-xs flex items-center gap-2">
           {copied ? <Check size={12} /> : <Copy size={12} />} Copier les adresses
         </button>
@@ -809,6 +812,100 @@ function HistoriqueVotant({
           </div>
         );
       })}
+    </div>
+  );
+}
+
+type Cible = { pseudo: string; email: string; animes: number; openings: number };
+
+/**
+ * Relance par mail les votants à qui il manque des bulletins.
+ *
+ * Rien ne part sans un aperçu : on voit d'abord qui serait relancé et ce qui
+ * lui manque, puis on confirme. Des mails à de vraies personnes ne s'envoient
+ * pas d'un clic distrait.
+ */
+function RappelPanel({ password }: { password: string }) {
+  const [cibles, setCibles] = useState<Cible[] | null>(null);
+  const [etat, setEtat] = useState<'idle' | 'apercu' | 'envoi' | 'fini'>('idle');
+  const [message, setMessage] = useState<string | null>(null);
+
+  async function appeler(dryRun: boolean) {
+    setMessage(null);
+    setEtat(dryRun ? 'idle' : 'envoi');
+    try {
+      const res = await fetch('/api/admin/reminder', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password, dryRun }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setMessage(data.error ?? 'Échec.');
+        setEtat('idle');
+        return;
+      }
+      if (dryRun) {
+        setCibles(data.cibles as Cible[]);
+        setEtat('apercu');
+      } else {
+        setMessage(`${data.envoyes} mail${data.envoyes > 1 ? 's' : ''} envoyé${data.envoyes > 1 ? 's' : ''}${data.echecs ? `, ${data.echecs} échec(s)` : ''}.`);
+        setEtat('fini');
+      }
+    } catch {
+      setMessage('Connexion impossible.');
+      setEtat('idle');
+    }
+  }
+
+  return (
+    <div className="relative">
+      <button
+        onClick={() => (etat === 'apercu' ? setEtat('idle') : appeler(true))}
+        className="btn-neon px-3 py-2 rounded text-xs flex items-center gap-2"
+      >
+        <Send size={12} /> Rappel par mail
+      </button>
+
+      {message && etat !== 'apercu' && (
+        <p className="text-xs mt-2 text-right" style={{ color: etat === 'fini' ? 'var(--neon)' : '#ff5555' }}>{message}</p>
+      )}
+
+      {etat === 'apercu' && cibles && (
+        <div
+          className="absolute right-0 mt-2 z-20 rounded-lg p-4 text-left"
+          style={{ background: 'rgba(13,10,6,0.98)', border: '1px solid var(--neon)', width: 'min(22rem, 90vw)', boxShadow: '0 8px 24px rgba(0,0,0,0.6)' }}
+        >
+          <p className="font-black text-sm mb-1" style={{ color: 'var(--sepia)' }}>
+            {cibles.length} personne{cibles.length > 1 ? 's' : ''} à relancer
+          </p>
+          <p className="text-xs mb-3" style={{ color: 'var(--sepia-dim)' }}>
+            Chacune recevra la liste de ses années manquantes, animés et openings séparés.
+          </p>
+          <div className="flex flex-col gap-1 mb-3 overflow-y-auto" style={{ maxHeight: '12rem' }}>
+            {cibles.map((c) => (
+              <div key={c.email} className="flex justify-between text-xs" style={{ color: 'var(--sepia-dim)' }}>
+                <span style={{ color: 'var(--sepia)' }}>{c.pseudo}</span>
+                <span>{c.animes} animé{c.animes > 1 ? 's' : ''} · {c.openings} opening{c.openings > 1 ? 's' : ''}</span>
+              </div>
+            ))}
+          </div>
+          <div className="flex gap-2">
+            <button onClick={() => setEtat('idle')} className="btn-neon px-3 py-2 rounded text-xs flex-1">Annuler</button>
+            <button
+              onClick={() => appeler(false)}
+              className="btn-neon px-3 py-2 rounded text-xs flex-1"
+              style={{ background: 'var(--neon)', color: 'var(--bg)' }}
+            >
+              Envoyer
+            </button>
+          </div>
+        </div>
+      )}
+
+      {etat === 'envoi' && (
+        <p className="text-xs mt-2 text-right" style={{ color: 'var(--sepia-dim)' }}>Envoi en cours…</p>
+      )}
     </div>
   );
 }
