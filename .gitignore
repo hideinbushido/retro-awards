@@ -42,3 +42,9 @@ next-env.d.ts
 
 # gros medias locaux (3.8 Go) - jamais dans git
 /public/nominé/
+
+# sources de montage trop lourdes pour GitHub (plus de 100 Mo)
+/public/2008/OPENING/Cover/2008 OPENING.mp4
+/public/2010/OPENING/Audio/pub awards.mov
+/public/2010/OPENING/Audio/top 3 2005.mov
+/public/2010/OPENING/Audio/top 3 2006.mov
