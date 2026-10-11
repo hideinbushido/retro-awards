@@ -16,7 +16,7 @@ type Presenter = {
   tiktoks: string[];
 };
 
-const PRESENTERS: Presenter[] = [
+export const PRESENTERS: Presenter[] = [
   {
     name: 'Tampico',
     realName: 'Pape',

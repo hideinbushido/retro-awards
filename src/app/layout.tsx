@@ -39,10 +39,6 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fr" className={`h-full ${body.variable}`}>
-      <head>
-        {/* Preload uniquement la vidéo hero — les autres chargent à la demande */}
-        <link rel="preload" href="/Fondaccueil2.mp4" as="video" type="video/mp4" />
-      </head>
       <body className="min-h-full flex flex-col">
         <EntryTracker />
         <MusicProvider src="/CRYSTAL.mp3">
