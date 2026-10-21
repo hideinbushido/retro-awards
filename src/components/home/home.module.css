@@ -1,6 +1,7 @@
 /*
  * L'accueil est une cassette : le scroll fait défiler la bande.
- * Tout ce qui suit ne concerne que cette page.
+ * Ses briques (polices, magnétoscope, jaquettes) servent aussi aux autres
+ * pages, via TapePage et tape.module.css.
  */
 
 .root {
@@ -129,6 +130,13 @@ button:focus-visible .rollCh {
   pointer-events: none;
 }
 .vcr > * { pointer-events: auto; }
+/* Hors de l'accueil, le contenu est dense : la barre devient opaque pour ne
+   pas laisser les textes défiler sous le logo. */
+:global(.vhs) .vcr {
+  background: #0d0a06;
+  border-bottom: 1px solid var(--border);
+  pointer-events: auto;
+}
 
 .vcrBrand {
   display: flex;

@@ -1,10 +1,14 @@
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import Link from 'next/link';
-import { ChevronLeft, ChevronRight, MessageCircle, Music, Tv } from 'lucide-react';
-import Navbar from '@/components/Navbar';
 import OpeningNominees from '@/components/OpeningNominees';
 import AnimeNominees from '@/components/AnimeNominees';
 import Comments from '@/components/Comments';
+import TapePage from '@/components/tape/TapePage';
+import YearHead from '@/components/tape/YearHead';
+import { Rise } from '@/components/home/Letters';
+import InView from '@/components/home/InView';
+import s from '@/components/home/home.module.css';
+import t from '@/components/tape/tape.module.css';
 import { YEARS } from '@/lib/firestore';
 import { nominees } from '@/data/nominees';
 
@@ -14,119 +18,55 @@ export async function generateStaticParams() {
   return YEARS.map((y) => ({ year: String(y) }));
 }
 
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { year } = await params;
+  return { title: `${year} — RETRO Awards` };
+}
+
 export default async function YearPage({ params }: Props) {
   const { year: yearStr } = await params;
   const year = Number(yearStr);
-
   if (!YEARS.includes(year)) notFound();
-
-  const currentIndex = YEARS.indexOf(year);
-  const prevYear = YEARS[currentIndex - 1] ?? null;
-  const nextYear = YEARS[currentIndex + 1] ?? null;
 
   const yearData = nominees[year] ?? { openings: [], animes: [] };
 
   return (
-    <>
-      <Navbar />
-      <main className="pt-20 pb-16 min-h-screen" style={{ background: 'var(--bg)' }}>
-        <div className="max-w-6xl mx-auto px-4">
+    <TapePage>
+      <YearHead year={year} base="annee" kicker={`${yearData.openings.length + yearData.animes.length} nominés · 2 catégories`} />
 
-          {/* ── HEADER ── */}
-          <div className="text-center mb-16 pt-8">
-            <div className="flex items-center justify-center gap-6 mb-6">
-              {nextYear ? (
-                <Link href={`/annee/${nextYear}`}
-                  className="flex items-center gap-1 text-xs font-bold tracking-widest btn-neon px-3 py-1.5 rounded"
-                >
-                  <ChevronLeft size={14} /> {nextYear}
-                </Link>
-              ) : <div className="w-20" />}
-
-              <span className="font-black neon-text" style={{ fontSize: '5rem', lineHeight: 1 }}>{year}</span>
-
-              {prevYear ? (
-                <Link href={`/annee/${prevYear}`}
-                  className="flex items-center gap-1 text-xs font-bold tracking-widest btn-neon px-3 py-1.5 rounded"
-                >
-                  {prevYear} <ChevronRight size={14} />
-                </Link>
-              ) : <div className="w-20" />}
-            </div>
-
-            <p className="text-xs font-bold tracking-widest uppercase" style={{ color: 'var(--sepia-dim)' }}>
-              2 CATÉGORIES · {yearData.openings.length + yearData.animes.length} NOMINÉS
-            </p>
-            <div className="h-px w-32 mx-auto mt-4" style={{ background: 'linear-gradient(to right, transparent, var(--neon), transparent)' }} />
-            {/* Le fil était tout en bas de page : personne ne descendait jusque-là */}
-            <a href="#commentaires" className="btn-neon text-xs px-4 py-2 rounded inline-flex items-center gap-2 mt-5">
-              <MessageCircle size={12} /> Commentaires
-            </a>
+      {/* ── Face A : les openings ── */}
+      <section className={t.section}>
+        <InView className={t.sectionHead}>
+          <div>
+            <p className={`${s.osd} ${s.kicker}`}>Face A</p>
+            <h2 className={`${s.display} ${t.sectionTitle}`}><Rise text="Meilleur opening" /></h2>
           </div>
+        </InView>
+        {yearData.openings.length === 0 ? (
+          <p className={`${s.osd} ${t.empty}`}>Aucun opening nominé pour cette année.</p>
+        ) : (
+          <OpeningNominees year={year} openings={yearData.openings} />
+        )}
+      </section>
 
-          {/* ── OPENING ── */}
-          <section className="mb-20">
-            <div className="flex items-center gap-3 mb-8">
-              <div className="w-10 h-10 rounded flex items-center justify-center"
-                style={{ background: 'rgba(0,255,204,0.1)', border: '1px solid var(--border)' }}
-              >
-                <Music size={18} style={{ color: 'var(--neon)' }} />
-              </div>
-              <div>
-                <p className="text-xs font-bold tracking-widest uppercase" style={{ color: 'var(--neon)' }}>CATÉGORIE 01</p>
-                <h2 className="text-xl font-black" style={{ color: 'var(--sepia)' }}>Meilleur Opening</h2>
-              </div>
-              <div className="flex-1 h-px ml-4" style={{ background: 'linear-gradient(to right, var(--border), transparent)' }} />
-            </div>
-            {yearData.openings.length === 0 ? (
-              <EmptyState message="Aucun opening nominé pour cette année." />
-            ) : (
-              <OpeningNominees year={year} openings={yearData.openings} />
-            )}
-          </section>
-
-          {/* ── ANIME ── */}
-          <section>
-            <div className="flex items-center gap-3 mb-8">
-              <div className="w-10 h-10 rounded flex items-center justify-center"
-                style={{ background: 'rgba(0,255,204,0.1)', border: '1px solid var(--border)' }}
-              >
-                <Tv size={18} style={{ color: 'var(--neon)' }} />
-              </div>
-              <div>
-                <p className="text-xs font-bold tracking-widest uppercase" style={{ color: 'var(--neon)' }}>CATÉGORIE 02</p>
-                <h2 className="text-xl font-black" style={{ color: 'var(--sepia)' }}>Anime de l'Année</h2>
-              </div>
-              <div className="flex-1 h-px ml-4" style={{ background: 'linear-gradient(to right, var(--border), transparent)' }} />
-            </div>
-            {yearData.animes.length === 0 ? (
-              <EmptyState message="Aucun anime nominé pour cette année." />
-            ) : (
-              <AnimeNominees year={year} animes={yearData.animes} />
-            )}
-          </section>
-
-          <section id="commentaires" className="mt-20 pt-10 scroll-mt-24" style={{ borderTop: '1px solid var(--border)' }}>
-            <Comments scope={String(year)} title={`Vos commentaires sur ${year}`} />
-          </section>
-
-          <div className="text-center mt-16">
-            <Link href="/#timeline" className="btn-neon px-6 py-3 rounded text-sm inline-flex items-center gap-2">
-              <ChevronLeft size={16} /> Retour à la timeline
-            </Link>
+      {/* ── Face B : les animés ── */}
+      <section className={t.section} style={{ paddingBottom: 'clamp(48px, 8vh, 96px)' }}>
+        <InView className={t.sectionHead}>
+          <div>
+            <p className={`${s.osd} ${s.kicker}`}>Face B</p>
+            <h2 className={`${s.display} ${t.sectionTitle}`}><Rise text="Animé de l’année" /></h2>
           </div>
-        </div>
-      </main>
-    </>
-  );
-}
+        </InView>
+        {yearData.animes.length === 0 ? (
+          <p className={`${s.osd} ${t.empty}`}>Aucun animé nominé pour cette année.</p>
+        ) : (
+          <AnimeNominees year={year} animes={yearData.animes} />
+        )}
+      </section>
 
-function EmptyState({ message }: { message: string }) {
-  return (
-    <div className="text-center py-12 rounded-lg"
-      style={{ border: '1px dashed var(--border)', color: 'var(--sepia-dim)' }}
-    >
-      <p className="text-sm">{message}</p>
-    </div>
+      <section id="commentaires" className={t.comments}>
+        <Comments scope={String(year)} title={`Vos commentaires sur ${year}`} />
+      </section>
+    </TapePage>
   );
 }

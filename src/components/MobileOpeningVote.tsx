@@ -2,12 +2,14 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import { Check, Music, Play, Square, Undo2, X } from 'lucide-react';
+import { Check, Play, Square, Undo2, X } from 'lucide-react';
 import { Opening } from '@/data/nominees';
 import { PODIUM_POINTS, PODIUM_SIZE } from '@/lib/votes';
 import { useMusicContext } from '@/contexts/MusicContext';
 import { useVoterGate } from '@/components/VoterGate';
 import { clearDraft, loadDraft, saveDraft } from '@/components/OpeningNominees';
+import s from '@/components/home/home.module.css';
+import t from '@/components/tape/tape.module.css';
 
 type Props = {
   year: number;
@@ -15,7 +17,7 @@ type Props = {
   onVoted: (podium: string[]) => void;
 };
 
-const MEDALS = ['🥇', '🥈', '🥉'];
+const RANG = ['1er', '2e', '3e'];
 const HINT_KEY = 'retro_hint_toucher';
 /** Part de la largeur à franchir pour qu’un swipe compte. */
 const SWIPE_RATIO = 0.25;
@@ -284,82 +286,72 @@ export default function MobileOpeningVote({ year, openings, onVoted }: Props) {
 
     if (roundEnd) {
       return (
-        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-5 px-6 text-center" style={{ background: 'var(--bg)' }}>
-          {roundEnd.type === 'blocked' && (
-            <>
-              <p className="font-black text-xl" style={{ color: 'var(--sepia)' }}>Tu as tout gardé</p>
-              <p className="text-sm" style={{ color: 'var(--sepia-dim)' }}>Écarte-en au moins une pour avancer.</p>
-              <button onClick={replayRound} className="btn-neon px-6 py-3 rounded text-sm">Refaire ce tour</button>
-            </>
-          )}
-          {roundEnd.type === 'empty' && (
-            <>
-              <p className="font-black text-xl" style={{ color: 'var(--sepia)' }}>Tu n’en as gardé aucune</p>
-              <p className="text-sm" style={{ color: 'var(--sepia-dim)' }}>On refait le tour, ou tu classes à la main ?</p>
-              <div className="flex gap-3">
-                <button onClick={replayRound} className="btn-neon px-5 py-3 rounded text-sm">Refaire</button>
-                <button onClick={backToGrid} className="btn-neon px-5 py-3 rounded text-sm">Classer à la main</button>
-              </div>
-            </>
-          )}
-          {roundEnd.type === 'rescue' && (
-            <>
-              <p className="font-black text-xl" style={{ color: 'var(--sepia)' }}>
-                Il ne t’en reste que {roundEnd.kept.length}
-              </p>
-              <p className="text-sm" style={{ color: 'var(--sepia-dim)' }}>
-                Veux-tu repêcher les dernières écartées ?
-              </p>
-              <div className="flex gap-3">
-                <button
-                  onClick={() => goToFinal([...roundEnd.kept, ...roundEnd.rescuable])}
-                  className="btn-neon px-5 py-3 rounded text-sm"
-                >
-                  Repêcher
+        <div className={`${t.overlay} ${t.swipeScreen}`} style={{ background: 'var(--bg)' }}>
+          <div className={t.swipeEnd}>
+            {roundEnd.type === 'blocked' && (
+              <>
+                <p className={`${s.display} ${t.sheetTitle}`}>Tu as tout gardé</p>
+                <p className={t.sheetText}>Écarte-en au moins une pour avancer.</p>
+                <button onClick={replayRound} className={t.key} data-on="1">Refaire ce tour</button>
+              </>
+            )}
+            {roundEnd.type === 'empty' && (
+              <>
+                <p className={`${s.display} ${t.sheetTitle}`}>Tu n’en as gardé aucune</p>
+                <p className={t.sheetText}>On refait le tour, ou tu classes à la main ?</p>
+                <div className={t.keys}>
+                  <button onClick={replayRound} className={t.key} data-on="1">Refaire</button>
+                  <button onClick={backToGrid} className={t.key}>Classer à la main</button>
+                </div>
+              </>
+            )}
+            {roundEnd.type === 'rescue' && (
+              <>
+                <p className={`${s.display} ${t.sheetTitle}`}>Il ne t’en reste que {roundEnd.kept.length}</p>
+                <p className={t.sheetText}>Veux-tu repêcher les dernières écartées ?</p>
+                <div className={t.keys}>
+                  <button onClick={() => goToFinal([...roundEnd.kept, ...roundEnd.rescuable])} className={t.key} data-on="1">
+                    Repêcher
+                  </button>
+                  <button onClick={backToGrid} className={t.key}>Classer à la main</button>
+                </div>
+              </>
+            )}
+            {roundEnd.type === 'next' && (
+              <>
+                <p className={`${s.display} ${t.sheetTitle}`}>Encore un effort</p>
+                <p className={t.sheetText}>Il en reste {roundEnd.kept.length}. On refait un tour sur celles-ci.</p>
+                <button onClick={() => nextRound(roundEnd.kept)} className={t.key} data-on="1">
+                  Tour {round + 1} ▶
                 </button>
-                <button onClick={backToGrid} className="btn-neon px-5 py-3 rounded text-sm">
-                  Classer à la main
-                </button>
-              </div>
-            </>
-          )}
-          {roundEnd.type === 'next' && (
-            <>
-              <p className="font-black text-xl" style={{ color: 'var(--sepia)' }}>Encore un effort !</p>
-              <p className="text-sm" style={{ color: 'var(--sepia-dim)' }}>
-                Il en reste {roundEnd.kept.length}. On refait un tour sur celles-ci.
-              </p>
-              <button onClick={() => nextRound(roundEnd.kept)} className="btn-neon px-6 py-3 rounded text-sm">
-                Tour {round + 1}
-              </button>
-            </>
-          )}
+              </>
+            )}
+          </div>
         </div>
       );
     }
 
     return (
-      <div className="fixed inset-0 z-50 flex flex-col" style={{ background: 'var(--bg)' }}>
-        <div className="flex items-center justify-between px-4 py-3">
-          <button onClick={backToGrid} className="text-xs" style={{ color: 'var(--sepia-dim)' }}>← Classer à la main</button>
-          <span className="text-xs font-black tracking-widest" style={{ color: 'var(--neon)' }}>
-            TOUR {round} · {index + 1}/{pool.length}
+      <div className={`${t.overlay} ${t.swipeScreen}`} style={{ background: 'var(--bg)' }}>
+        <div className={`${s.osd} ${t.swipeTop}`}>
+          <button onClick={backToGrid} className={t.linkBtn}>◀ Grille</button>
+          <span style={{ color: 'var(--neon)' }}>
+            Tour {round} · {index + 1}/{pool.length}
           </span>
-          <button onClick={undo} disabled={index === 0} className="text-xs flex items-center gap-1" style={{ color: index === 0 ? 'var(--border)' : 'var(--sepia-dim)' }}>
-            <Undo2 size={12} /> Annuler
+          <button onClick={undo} disabled={index === 0} className={t.linkBtn} style={{ opacity: index === 0 ? 0.35 : 1 }}>
+            <Undo2 size={14} style={{ display: 'inline', verticalAlign: '-2px' }} /> Annuler
           </button>
         </div>
 
-        <div className="flex-1 flex items-center justify-center px-6">
+        <div className={t.swipeStage}>
           {current && (
             <div
-              className="relative w-full max-w-xs rounded-xl overflow-hidden"
+              className={t.swipeCard}
               style={{
                 touchAction: 'none',
                 transform: `translateX(${dx}px) rotate(${tilt * 8}deg)`,
-                transition: dx === 0 ? 'transform 0.25s ease' : 'none',
-                border: `2px solid ${dx > 40 ? '#3ddc84' : dx < -40 ? '#ff5555' : 'var(--border)'}`,
-                boxShadow: dx > 40 ? '0 0 30px rgba(61,220,132,0.35)' : dx < -40 ? '0 0 30px rgba(255,85,85,0.35)' : 'none',
+                transition: dx === 0 ? 'transform 0.25s cubic-bezier(0.23, 1, 0.32, 1)' : 'none',
+                borderColor: dx > 40 ? 'var(--neon)' : dx < -40 ? 'var(--rec)' : undefined,
               }}
               onTouchStart={(e) => { swipeStart.current = e.touches[0].clientX; }}
               onTouchMove={(e) => { if (swipeStart.current !== null) setDx(e.touches[0].clientX - swipeStart.current); }}
@@ -371,17 +363,20 @@ export default function MobileOpeningVote({ year, openings, onVoted }: Props) {
                 swipeStart.current = null;
               }}
             >
-              <div className="relative aspect-[3/4]">
-                <Image src={current.image} alt={current.animeName} fill sizes="80vw" className="object-cover" priority />
+              <div className={t.coverOpening} style={{ position: 'relative' }}>
+                <Image src={current.image} alt="" fill sizes="80vw" style={{ objectFit: 'cover' }} priority />
+                {dx > 40 && <span className={`${s.osd} ${t.swipeStamp}`} data-keep="1">Garder</span>}
+                {dx < -40 && <span className={`${s.osd} ${t.swipeStamp}`}>Écarter</span>}
               </div>
-              <div className="p-3 text-center" style={{ background: 'var(--bg2)' }}>
-                <p className="font-black text-sm" style={{ color: 'var(--sepia)' }}>{current.animeName}</p>
-                <p className="text-xs mt-0.5" style={{ color: 'var(--neon)' }}>{current.openingTitle}</p>
+              <div className={t.swipeInfo}>
+                <p className={`${s.display} ${s.tapeName}`}>{current.animeName}</p>
+                <p className={`${s.osd} ${s.tapeTitle}`}>♪ {current.openingTitle}</p>
                 <button
                   onClick={() => (playingId === current.id ? stopAudio() : playAudio(current))}
-                  className="btn-neon text-xs px-4 py-2 rounded mt-2 inline-flex items-center gap-1"
+                  className={t.key}
+                  data-on={playingId === current.id ? '1' : undefined}
                 >
-                  {playingId === current.id ? <Square size={11} /> : <Play size={11} />}
+                  {playingId === current.id ? <Square size={12} /> : <Play size={12} />}
                   {playingId === current.id ? 'Stop' : 'Écouter'}
                 </button>
               </div>
@@ -389,22 +384,12 @@ export default function MobileOpeningVote({ year, openings, onVoted }: Props) {
           )}
         </div>
 
-        <div className="flex items-center justify-center gap-8 pb-10 pt-4">
-          <button
-            onClick={() => decide(false)}
-            className="rounded-full flex items-center justify-center"
-            style={{ width: '4rem', height: '4rem', border: '2px solid #ff5555', color: '#ff5555', fontSize: '1.5rem' }}
-            aria-label="Écarter"
-          >
-            ✕
+        <div className={t.swipeKeys}>
+          <button onClick={() => decide(false)} className={t.swipeBtn} aria-label="Écarter">
+            <X size={26} />
           </button>
-          <button
-            onClick={() => decide(true)}
-            className="rounded-full flex items-center justify-center"
-            style={{ width: '4rem', height: '4rem', border: '2px solid #3ddc84', color: '#3ddc84', fontSize: '1.5rem' }}
-            aria-label="Garder"
-          >
-            ✓
+          <button onClick={() => decide(true)} className={t.swipeBtn} data-keep="1" aria-label="Garder">
+            <Check size={26} />
           </button>
         </div>
       </div>
@@ -416,28 +401,23 @@ export default function MobileOpeningVote({ year, openings, onVoted }: Props) {
     <>
       {gate}
       {mode === 'final' && (
-        <div className="retro-card rounded-lg p-4 mb-4 text-center">
-          <p className="font-black text-sm" style={{ color: 'var(--sepia)' }}>Plus que {visible.length} !</p>
-          <p className="text-xs mt-1" style={{ color: 'var(--sepia-dim)' }}>
-            Touche une cover, puis sa place en bas.
-          </p>
+        <div className={t.notice}>
+          <p className={`${s.display} ${t.noticeTitle}`}>Plus que {visible.length}</p>
+          <p className={t.noticeText}>Touche une jaquette, puis sa place en bas.</p>
         </div>
       )}
 
       {mode === 'grid' && showHint && (
-        <div className="retro-card rounded-lg p-4 mb-4 flex items-start gap-3">
-          <span style={{ fontSize: '1.4rem' }}>👆</span>
-          <div className="flex-1">
-            <p className="text-xs font-black" style={{ color: 'var(--sepia)' }}>Touche, puis choisis sa place</p>
-            <p className="text-xs mt-1 leading-relaxed" style={{ color: 'var(--sepia-dim)' }}>
-              Touche la cover que tu veux, puis 🥇, 🥈 ou 🥉 en bas. Le bouton ▶ sur la cover écoute l’extrait.
-            </p>
-          </div>
-          <button onClick={dismissHint} className="p-1" style={{ color: 'var(--sepia-dim)' }} aria-label="Compris"><X size={14} /></button>
+        <div className={t.notice} style={{ position: 'relative', paddingRight: 56 }}>
+          <p className={`${s.display} ${t.noticeTitle}`}>Touche, puis choisis sa place</p>
+          <p className={t.noticeText}>
+            Touche la jaquette que tu veux, puis <b>1er</b>, <b>2e</b> ou <b>3e</b> en bas. Le bouton ▶ sur la jaquette écoute l’extrait.
+          </p>
+          <button onClick={dismissHint} className={t.close} aria-label="Compris"><X size={16} /></button>
         </div>
       )}
 
-      <div className="grid grid-cols-2 gap-3 pb-56" onClick={() => selected && deselect()}>
+      <div className={s.tapes} style={{ marginTop: 0, paddingBottom: 230 }} onClick={() => selected && deselect()}>
         {visible.map((op) => {
           const rank = slots.indexOf(op.id);
           const isPicked = rank >= 0;
@@ -445,29 +425,18 @@ export default function MobileOpeningVote({ year, openings, onVoted }: Props) {
           return (
             <div
               key={op.id}
-              className="retro-card rounded-lg overflow-hidden flex flex-col relative select-none"
-              style={{
-                borderColor: isSelected ? 'var(--neon)' : isPicked ? 'var(--neon)' : undefined,
-                boxShadow: isSelected ? '0 0 0 2px var(--neon), 0 0 22px rgba(0,255,204,0.3)' : undefined,
-                opacity: selected && !isSelected ? 0.55 : 1,
-                transition: 'opacity .2s, box-shadow .2s',
-                WebkitTouchCallout: 'none',
-                WebkitUserSelect: 'none',
-              }}
+              className={t.pick}
+              data-on={isSelected || isPicked ? '1' : undefined}
+              data-dim={selected && !isSelected ? '1' : undefined}
+              style={{ WebkitTouchCallout: 'none', WebkitUserSelect: 'none', userSelect: 'none' }}
               onClick={(e) => { e.stopPropagation(); toggleSelect(op); }}
               onContextMenu={(e) => e.preventDefault()}
             >
-              <div className="relative aspect-[3/4]">
-                <Image src={op.image} alt={op.animeName} fill sizes="50vw" className="object-cover" />
-                {isPicked && (
-                  <div className="absolute top-1.5 left-1.5 px-2 py-1 rounded text-xs font-black" style={{ background: 'var(--neon)', color: 'var(--bg)' }}>
-                    {MEDALS[rank]} {PODIUM_POINTS[rank]} pts
-                  </div>
-                )}
+              <div className={`${t.thumb} ${t.coverBox} ${t.coverOpening}`}>
+                <Image src={op.image} alt="" fill sizes="46vw" />
+                {isPicked && <span className={t.badge}>{RANG[rank]} · {PODIUM_POINTS[rank]} pts</span>}
                 {playingId === op.id && (
-                  <div className="absolute top-1.5 right-1.5 flex items-end gap-0.5" style={{ height: '16px' }}>
-                    {[0,1,2,3].map((i) => (<div key={i} className="audio-bar" style={{ animationDelay: `${i * 0.15}s` }} />))}
-                  </div>
+                  <span className={`${s.eq} ${t.eqCorner}`} aria-hidden="true"><i /><i /><i /><i /></span>
                 )}
                 <button
                   onClick={(e) => {
@@ -475,128 +444,100 @@ export default function MobileOpeningVote({ year, openings, onVoted }: Props) {
                     if (playingId === op.id) stopAudio();
                     else playAudio(op);
                   }}
-                  className="absolute bottom-1.5 right-1.5 rounded-full flex items-center justify-center"
-                  style={{ width: '2.1rem', height: '2.1rem', background: 'rgba(13,10,6,0.85)', border: '1px solid var(--neon)', color: 'var(--neon)' }}
+                  className={t.listen}
                   aria-label={playingId === op.id ? 'Arrêter' : 'Écouter'}
                 >
-                  {playingId === op.id ? <Square size={12} /> : <Play size={12} />}
+                  {playingId === op.id ? <Square size={14} /> : <Play size={14} />}
                 </button>
               </div>
-              <div className="p-2">
-                <p className="font-black text-xs leading-tight" style={{ color: 'var(--sepia)' }}>{op.animeName}</p>
-                <p className="text-xs mt-0.5 truncate" style={{ color: 'var(--neon)' }}>
-                  <Music size={9} className="inline mr-1" />{op.openingTitle}
-                </p>
-              </div>
+              <p className={`${s.display} ${s.tapeName}`}>{op.animeName}</p>
+              <p className={`${s.osd} ${s.tapeTitle}`}>♪ {op.openingTitle}</p>
             </div>
           );
         })}
       </div>
 
-      {/* Cases de rang, zone du pouce */}
-      <div
-        className="fixed bottom-0 left-0 right-0 z-40 px-3 pt-3 pb-4"
-        style={{ background: 'rgba(13,10,6,0.97)', borderTop: '1px solid var(--border)', backdropFilter: 'blur(8px)' }}
-      >
+      {/* Les places, dans la zone du pouce */}
+      <div className={t.rack}>
         {selected && (
-          <div className="flex items-center justify-center gap-3 mb-2">
-            <p className="text-xs font-black" style={{ color: 'var(--neon)' }}>
-              Quel rang pour cette cover ?
-            </p>
+          <div className={`${s.osd} ${t.rackAsk}`}>
+            Quelle place pour cette jaquette ?
             {slots.includes(selected) && (
-              <button
-                onClick={() => removeFromPodium(selected)}
-                className="text-xs px-2 py-1 rounded"
-                style={{ border: '1px solid var(--border)', color: 'var(--sepia-dim)' }}
-              >
-                ✕ Retirer
-              </button>
+              <button onClick={() => removeFromPodium(selected)} className={t.linkBtn}>✕ Retirer</button>
             )}
           </div>
         )}
-        <div className="flex items-stretch gap-2 mb-3">
+        <div className={t.rackInner}>
           {Array.from({ length: ranks }, (_, i) => {
             const op = byId(slots[i]);
             return (
               <button
                 key={i}
                 onClick={() => (selected ? assignRank(selected, i) : op ? clearSlot(i) : undefined)}
-                className="flex-1 rounded-lg p-2 flex flex-col items-center gap-1 transition-all"
-                style={{
-                  border: `1px ${selected ? 'solid' : 'dashed'} ${selected ? 'var(--neon)' : op ? 'var(--neon)' : 'var(--border)'}`,
-                  background: selected ? 'rgba(0,255,204,0.12)' : 'transparent',
-                  opacity: selected || op ? 1 : 0.6,
-                  minHeight: '4.2rem',
-                }}
+                className={t.slot}
+                data-full={op ? '1' : undefined}
+                data-target={selected ? '1' : undefined}
+                aria-label={op ? `${RANG[i]} : ${op.animeName}` : `${RANG[i]}, vide`}
               >
-                <span style={{ fontSize: '1.1rem', lineHeight: 1 }}>{MEDALS[i]}</span>
-                {op ? (
-                  <div className="relative rounded overflow-hidden" style={{ width: '1.9rem', height: '2.5rem' }}>
-                    <Image src={op.image} alt={op.animeName} fill sizes="30px" className="object-cover" />
-                  </div>
-                ) : (
-                  <span className="text-xs" style={{ color: 'var(--sepia-dim)' }}>{PODIUM_POINTS[i]} pts</span>
+                <span className={t.slotRank}>
+                  <span className={`${s.display} ${t.slotRankNum}`}>{RANG[i]}</span>
+                  {!op && <span className={`${s.osd} ${t.slotPts}`}>{PODIUM_POINTS[i]} pts</span>}
+                </span>
+                {op && (
+                  <span className={t.slotThumb}>
+                    <Image src={op.image} alt="" fill sizes="42px" />
+                  </span>
                 )}
               </button>
             );
           })}
         </div>
 
-        {error && <p className="text-xs mb-2 text-center" style={{ color: '#ff5555' }}>{error}</p>}
+        {error && <p className={`${s.osd} ${t.error}`} style={{ textAlign: 'center' }}>{error}</p>}
 
-        <div className="flex gap-2">
+        <div className={t.rackRow}>
           {mode === 'grid' && (
-            <button onClick={startSwipe} className="btn-neon text-xs py-3 px-4 rounded flex-1">
+            <button onClick={startSwipe} className={t.key}>
               Tu hésites ?
             </button>
           )}
-          <button
-            onClick={() => setConfirming(true)}
-            disabled={!ready}
-            className="btn-neon text-xs py-3 px-4 rounded flex-1"
-            style={ready ? { background: 'var(--neon)', color: 'var(--bg)' } : {}}
-          >
-            Valider mon vote ({filled}/{ranks})
+          <button onClick={() => setConfirming(true)} disabled={!ready} className={t.key} data-on={ready ? '1' : undefined}>
+            Valider {filled}/{ranks}
           </button>
         </div>
       </div>
 
       {/* Confirmation avant envoi définitif */}
       {confirming && (
-        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.85)' }}>
-          <div className="retro-card rounded-xl p-5 w-full max-w-sm">
-            <p className="font-black text-base mb-1" style={{ color: 'var(--sepia)' }}>Confirmer ton podium {year}</p>
-            <p className="text-xs mb-4" style={{ color: 'var(--sepia-dim)' }}>Le vote est définitif, tu ne pourras plus le modifier.</p>
-            <div className="flex flex-col gap-2 mb-5">
+        <div className={t.overlay}>
+          <div className={t.sheet} role="dialog" aria-modal="true" aria-labelledby="confirm-podium-title">
+            <h2 id="confirm-podium-title" className={`${s.display} ${t.sheetTitle}`}>Ton podium {year}</h2>
+            <p className={t.sheetText}>Le vote est définitif, tu ne pourras plus le modifier.</p>
+            <div className={t.confirmList}>
               {slots.map((id, i) => {
                 const op = byId(id);
                 if (!op) return null;
                 return (
-                  <div key={i} className="flex items-center gap-2">
-                    <span style={{ fontSize: '1.1rem' }}>{MEDALS[i]}</span>
-                    <div className="relative rounded overflow-hidden shrink-0" style={{ width: '1.9rem', height: '2.5rem' }}>
-                      <Image src={op.image} alt={op.animeName} fill sizes="30px" className="object-cover" />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-xs font-black truncate" style={{ color: 'var(--sepia)' }}>{op.animeName}</p>
-                      <p className="text-xs truncate" style={{ color: 'var(--neon)' }}>{op.openingTitle}</p>
-                    </div>
-                    <span className="text-xs font-black shrink-0" style={{ color: 'var(--sepia-dim)' }}>{PODIUM_POINTS[i]} pts</span>
+                  <div key={i} className={t.confirmRow}>
+                    <span className={`${s.display} ${t.slotRankNum}`}>{RANG[i]}</span>
+                    <span className={t.slotThumb}>
+                      <Image src={op.image} alt="" fill sizes="42px" />
+                    </span>
+                    <span style={{ minWidth: 0, flex: 1 }}>
+                      <span className={`${s.display} ${t.slotName}`} style={{ display: 'block' }}>{op.animeName}</span>
+                      <span className={`${s.osd} ${s.tapeTitle}`} style={{ display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        {op.openingTitle}
+                      </span>
+                    </span>
+                    <span className={`${s.osd} ${t.slotPts}`}>{PODIUM_POINTS[i]} pts</span>
                   </div>
                 );
               })}
             </div>
-            <div className="flex gap-2">
-              <button onClick={() => setConfirming(false)} className="btn-neon text-xs py-3 px-4 rounded flex-1">
-                Modifier
-              </button>
-              <button
-                onClick={submit}
-                disabled={sending}
-                className="btn-neon text-xs py-3 px-4 rounded flex-1"
-                style={{ background: 'var(--neon)', color: 'var(--bg)' }}
-              >
-                {sending ? '...' : <><Check size={12} className="inline mr-1" />Envoyer</>}
+            <div className={t.rackRow}>
+              <button onClick={() => setConfirming(false)} className={t.key}>Modifier</button>
+              <button onClick={submit} disabled={sending} className={t.key} data-on="1">
+                {sending ? 'Envoi…' : '✓ Envoyer'}
               </button>
             </div>
           </div>

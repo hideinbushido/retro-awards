@@ -1,12 +1,15 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
-import { ChevronLeft, Lock } from 'lucide-react';
-import Navbar from '@/components/Navbar';
-import LiveSchedule from '@/components/LiveSchedule';
+import { LiveLinks } from '@/components/LiveSchedule';
+import TapePage from '@/components/tape/TapePage';
+import InView from '@/components/home/InView';
+import { Rise, Roll } from '@/components/home/Letters';
+import s from '@/components/home/home.module.css';
+import t from '@/components/tape/tape.module.css';
 import { useVotesClos } from '@/hooks/useVotesClos';
 import { PODIUM_POINTS } from '@/lib/votes';
+import { FIN_DES_VOTES_TEXTE, LIVES } from '@/lib/event';
 
 /**
  * Page résultats — publique.
@@ -17,66 +20,64 @@ import { PODIUM_POINTS } from '@/lib/votes';
 export default function ResultatsPage() {
   const clos = useVotesClos();
   return (
-    <>
-      <Navbar />
-      <main className="pt-20 pb-16 min-h-screen px-4 md:px-8" style={{ background: 'var(--bg)' }}>
-        <div className="max-w-3xl mx-auto">
+    <TapePage>
+      <header className={t.head}>
+        <InView>
+          <p className={`${s.osd} ${s.kicker}`}>■ Bande scellée</p>
+          <h1 className={`${s.display} ${t.title}`}>
+            <Rise text="Résultats" />
+          </h1>
+          <p className={t.lede}>
+            {clos ? 'Les votes sont clos.' : 'Le vote est en cours.'} Les résultats restent scellés jusqu’au bout, pour que
+            personne ne soit influencé en votant. Ils seront dévoilés en direct, catégorie par catégorie.
+          </p>
+        </InView>
+      </header>
 
-          <div className="text-center py-12 mb-8">
-            <Image
-              src="/logo-retro.png"
-              alt="Retro Awards"
-              width={384}
-              height={294}
-              priority
-              className="mx-auto mb-6"
-              style={{ height: 'clamp(6rem, 18vw, 9rem)', width: 'auto', filter: 'drop-shadow(0 0 24px rgba(0,255,204,0.25))' }}
-            />
-            <h1 className="text-3xl md:text-5xl font-black mb-3" style={{ color: 'var(--sepia)' }}>Résultats</h1>
-            <p className="text-xs tracking-widest uppercase" style={{ color: 'var(--sepia-dim)' }}>
-              2019 à 2005
-            </p>
-            <div className="h-px w-24 mx-auto mt-4" style={{ background: 'linear-gradient(to right, transparent, var(--neon), transparent)' }} />
+      <section className={t.body}>
+        <p className={`${s.osd} ${s.kicker}`}>
+          <span className={s.recDot} />À l’antenne
+        </p>
+        <div className={s.grid}>
+          <div className={s.gridRow}>
+            <span className={`${s.osd} ${s.gridDate}`}>{FIN_DES_VOTES_TEXTE}</span>
+            <span className={`${s.display} ${s.gridTitle}`}>Fin des votes</span>
+            <span className={`${s.osd} ${s.gridNote}`}>{clos ? 'Votes clos' : '23 h 59, heure de Paris'}</span>
           </div>
-
-          <div className="retro-card rounded-xl p-8 text-center flex flex-col items-center gap-4">
-            <Lock size={28} style={{ color: 'var(--neon)' }} />
-            <h2 className="font-black text-xl" style={{ color: 'var(--sepia)' }}>
-              {clos ? 'Les votes sont clos' : 'Le vote est en cours'}
-            </h2>
-            <p className="text-sm leading-relaxed" style={{ color: 'var(--sepia-dim)', maxWidth: '38rem' }}>
-              Les résultats restent scellés jusqu’au bout, pour que personne ne soit influencé
-              en votant. Ils seront dévoilés en direct, catégorie par catégorie :
-            </p>
-            <LiveSchedule />
-            <div className="h-px w-full my-2" style={{ background: 'var(--border)' }} />
-            <div className="text-xs leading-relaxed" style={{ color: 'var(--sepia-dim)' }}>
-              <p className="font-bold tracking-widest uppercase mb-2" style={{ color: 'var(--neon)' }}>
-                Comment on compte les points
-              </p>
-              <p>
-                Openings : chacun classe 3 openings par année —
-                1er = <strong style={{ color: 'var(--sepia)' }}>{PODIUM_POINTS[0]} pts</strong>,
-                2e = <strong style={{ color: 'var(--sepia)' }}>{PODIUM_POINTS[1]} pts</strong>,
-                3e = <strong style={{ color: 'var(--sepia)' }}>{PODIUM_POINTS[2]} pts</strong>.
-              </p>
-              <p className="mt-1">Anime de l’année : une voix par personne et par année.</p>
+          {LIVES.map((l) => (
+            <div key={l.categorie} className={s.gridRow}>
+              <span className={`${s.osd} ${s.gridDate}`}>{l.date}</span>
+              <span className={`${s.display} ${s.gridTitle}`}>{l.categorie}</span>
+              <span className={`${s.osd} ${s.gridNote}`} data-live>
+                <span className={s.recDot} />En live
+              </span>
             </div>
-          </div>
-
-          <div className="text-center mt-12 flex flex-wrap gap-3 justify-center">
-            <Link href="/opening" className="btn-neon px-6 py-3 rounded text-sm inline-flex items-center gap-2">
-              Voter pour les openings
-            </Link>
-            <Link href="/anime" className="btn-neon px-6 py-3 rounded text-sm inline-flex items-center gap-2">
-              Voter pour les animés
-            </Link>
-            <Link href="/" className="btn-neon px-6 py-3 rounded text-sm inline-flex items-center gap-2">
-              <ChevronLeft size={16} /> Accueil
-            </Link>
-          </div>
+          ))}
         </div>
-      </main>
-    </>
+        <div className={s.channels}>
+          <LiveLinks />
+        </div>
+
+        <div className={t.notice} style={{ marginTop: 56 }}>
+          <p className={`${s.display} ${t.noticeTitle}`}>Comment on compte les points</p>
+          <p className={t.noticeText}>
+            Openings : chacun classe 3 openings par année. 1er = <b>{PODIUM_POINTS[0]} pts</b>, 2e ={' '}
+            <b>{PODIUM_POINTS[1]} pts</b>, 3e = <b>{PODIUM_POINTS[2]} pts</b>.
+          </p>
+          <p className={t.noticeText}>Animé de l’année : une voix par personne et par année.</p>
+        </div>
+
+        {!clos && (
+          <div className={s.heroActions} style={{ justifyContent: 'flex-start', marginTop: 40 }}>
+            <Link href="/voter" className={`${s.display} ${s.cta}`}>
+              <Roll text="Voter" /> <span aria-hidden="true">▶</span>
+            </Link>
+            <Link href="/mes-votes" className={`${s.osd} ${s.textLink}`}>
+              <Roll text="Mes votes" />
+            </Link>
+          </div>
+        )}
+      </section>
+    </TapePage>
   );
 }

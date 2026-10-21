@@ -2,11 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { X, Check } from 'lucide-react';
+import Link from 'next/link';
+import { X } from 'lucide-react';
 import { Anime } from '@/data/nominees';
 import { useVoterGate } from '@/components/VoterGate';
 import { useVotesClos } from '@/hooks/useVotesClos';
 import { FIN_DES_VOTES_TEXTE, LIVES } from '@/lib/event';
+import s from '@/components/home/home.module.css';
+import t from '@/components/tape/tape.module.css';
 
 type Props = { year: number; animes: Anime[] };
 
@@ -28,6 +31,14 @@ export default function AnimeNominees({ year, animes }: Props) {
       .catch(() => {});
     return () => { alive = false; };
   }, [year]);
+
+  /* Échap ferme l'affiche agrandie */
+  useEffect(() => {
+    if (!zoomed) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setZoomed(null); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [zoomed]);
 
   /** Le pseudo et le mail sont demandés d’abord, puis le vote repart tout seul. */
   function handleVote(id: string) {
@@ -80,131 +91,113 @@ export default function AnimeNominees({ year, animes }: Props) {
   return (
     <>
       {gate}
-      {error && (<p className="text-xs mb-3" style={{ color: "#ff5555" }}>{error}</p>)}
       {clos && (
-        <div className="retro-card rounded-lg p-4 mb-4 text-center">
-          <p className="font-black text-sm" style={{ color: 'var(--sepia)' }}>Les votes sont clos</p>
-          <p className="text-xs mt-1" style={{ color: 'var(--sepia-dim)' }}>
+        <div className={t.notice} data-tone="rec">
+          <p className={`${s.display} ${t.noticeTitle}`}>Les votes sont clos</p>
+          <p className={t.noticeText}>
             Ils ont fermé le {FIN_DES_VOTES_TEXTE}. Résultats des animés en live le {LIVES[1].date}.
           </p>
         </div>
       )}
       {!clos && !votedId && (
-        <p className="text-xs mb-4" style={{ color: 'var(--sepia-dim)' }}>
-          Un vote par année, annulable jusqu’au {FIN_DES_VOTES_TEXTE} inclus.
-        </p>
+        <div className={t.notice}>
+          <p className={`${s.display} ${t.noticeTitle}`}>Un seul animé pour {year}</p>
+          <p className={t.noticeText}>
+            Touche une affiche pour l’agrandir. Ton vote reste annulable jusqu’au {FIN_DES_VOTES_TEXTE} inclus.
+          </p>
+        </div>
       )}
       {votedId && (
-        <div className="retro-card rounded-lg p-3 mb-4 flex items-center justify-between gap-3">
-          <p className="text-xs" style={{ color: 'var(--sepia-dim)' }}>
-            {clos ? `Ton vote pour ${year} est enregistré.` : `Vote enregistré pour ${year}. Ce n’est pas le bon ? Tu peux l’annuler.`}
-          </p>
-          <div className="flex gap-2 shrink-0">
+        <div className={t.notice}>
+          <p className={`${s.display} ${t.noticeTitle}`}>Vote enregistré pour {year}</p>
+          {!clos && <p className={t.noticeText}>Ce n’est pas le bon ? Tu peux l’annuler, puis revoter.</p>}
+          <div className={t.keys}>
             {!clos && (
-              <button onClick={cancelVote} disabled={!!loading} className="btn-neon text-xs px-3 py-2 rounded">
-                {loading ? '...' : 'Annuler'}
+              <button onClick={cancelVote} disabled={!!loading} className={t.key}>
+                {loading ? 'Annulation…' : 'Annuler mon vote'}
               </button>
             )}
-            <a href="/mes-votes" className="btn-neon text-xs px-3 py-2 rounded">Mes votes</a>
+            <Link href="/mes-votes" className={t.key}>Mes votes</Link>
           </div>
         </div>
       )}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+      {error && <p className={`${s.osd} ${t.error}`} style={{ marginBottom: 20 }}>{error}</p>}
+
+      <div className={s.posters} style={{ marginTop: 0 }}>
         {animes.map((anime) => {
           const isMyVote = votedId === anime.id;
           const hasVoted = !!votedId;
           return (
-            <div key={anime.id} className="retro-card rounded-lg overflow-hidden flex flex-col group">
-              <div
-                className="relative aspect-[2/3] overflow-hidden cursor-zoom-in"
-                onClick={() => setZoomed(anime)}
-              >
+            <article
+              key={anime.id}
+              className={t.pick}
+              data-on={isMyVote ? '1' : undefined}
+              data-dim={hasVoted && !isMyVote ? '1' : undefined}
+            >
+              <button type="button" className={t.pickZoom} onClick={() => setZoomed(anime)} aria-label={`Agrandir ${anime.name}`}>
                 {/* cadre 2:3 = le ratio de la plupart des jaquettes : remplit sans bandes, et le bas reste visible */}
-                <Image src={anime.image} alt={anime.name} fill sizes="(max-width: 640px) 50vw, 33vw" className="object-cover group-hover:brightness-110 transition-[filter] duration-500" style={{ objectPosition: '50% 75%' }} />
-                {isMyVote && (
-                  <div className="absolute top-2 left-2 flex items-center gap-1 px-2 py-1 rounded text-xs font-bold"
-                    style={{ background: 'var(--neon)', color: 'var(--bg)' }}
-                  >
-                    <Check size={10} /> MON VOTE
-                  </div>
-                )}
-                <div
-                  className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                  style={{ background: 'rgba(0,255,204,0.08)' }}
+                <span className={`${t.thumb} ${t.coverBox} ${t.coverAnime}`} style={{ display: 'block' }}>
+                  <Image
+                    src={anime.image}
+                    alt=""
+                    fill
+                    sizes="(max-width: 640px) 46vw, (max-width: 1000px) 30vw, 260px"
+                    style={{ objectPosition: '50% 75%' }}
+                  />
+                  {isMyVote && <span className={t.badge}>✓ Mon vote</span>}
+                </span>
+              </button>
+              <h3 className={`${s.display} ${s.tapeName}`}>{anime.name}</h3>
+              {anime.season && <p className={`${s.osd} ${s.tapeTitle}`}>{anime.season}</p>}
+              {(anime.studio || anime.author) && (
+                <p className={`${s.osd} ${s.tapeMeta}`}>{[anime.studio, anime.author].filter(Boolean).join(' · ')}</p>
+              )}
+              {!clos && (
+                <button
+                  onClick={() => (isMyVote ? cancelVote() : handleVote(anime.id))}
+                  disabled={(hasVoted && !isMyVote) || loading === anime.id}
+                  className={t.key}
+                  data-on={isMyVote ? '1' : undefined}
                 >
-                  <span className="text-xs font-bold tracking-widest uppercase" style={{ color: 'var(--neon)' }}>Agrandir</span>
-                </div>
-              </div>
-              <div className="p-3 flex flex-col gap-2 flex-1">
-                <div>
-                  <p className="font-black text-sm leading-tight" style={{ color: 'var(--sepia)' }}>{anime.name}</p>
-                  {anime.season && (
-                    <p className="text-[10px] uppercase tracking-wider mt-0.5" style={{ color: 'var(--neon)' }}>{anime.season}</p>
-                  )}
-                  {(anime.studio || anime.author) && (
-                    <p className="text-[10px] leading-snug mt-1 opacity-70" style={{ color: 'var(--sepia)' }}>
-                      {[anime.studio, anime.author].filter(Boolean).join(' · ')}
-                    </p>
-                  )}
-                </div>
-                {!clos && (
-                  <button
-                    onClick={() => (isMyVote ? cancelVote() : handleVote(anime.id))}
-                    disabled={(hasVoted && !isMyVote) || loading === anime.id}
-                    className="btn-neon text-xs py-1.5 px-3 rounded w-full mt-auto"
-                    style={isMyVote ? { background: 'var(--neon)', color: 'var(--bg)' } : {}}
-                  >
-                    {loading === anime.id ? '...' : isMyVote ? '✓ Voté — annuler' : hasVoted ? 'Voté' : 'Voter'}
-                  </button>
-                )}
-              </div>
-            </div>
+                  {loading === anime.id ? '…' : isMyVote ? '✓ Voté · annuler' : hasVoted ? 'Déjà voté' : 'Voter'}
+                </button>
+              )}
+            </article>
           );
         })}
       </div>
 
-      {/* ZOOM MODAL */}
+      {/* L'affiche en grand */}
       {zoomed && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4"
-          style={{ background: 'rgba(0,0,0,0.92)', backdropFilter: 'blur(8px)' }}
-          onClick={() => setZoomed(null)}
-        >
-          <div className="relative max-w-sm w-full" onClick={(e) => e.stopPropagation()}>
-            <button onClick={() => setZoomed(null)} className="absolute -top-10 right-0 btn-neon p-1.5 rounded z-10">
-              <X size={16} />
-            </button>
-            <div className="rounded-xl overflow-hidden neon-border">
-              <div className="relative" style={{ aspectRatio: '2/3' }}>
-                <Image src={zoomed.image} alt={zoomed.name} fill sizes="90vw" className="object-cover" style={{ objectPosition: '50% 75%' }} />
-              </div>
+        <div className={t.overlay} onClick={() => setZoomed(null)}>
+          <div className={t.zoom} onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-label={zoomed.name}>
+            <div className={t.zoomImg}>
+              <Image src={zoomed.image} alt={zoomed.name} fill sizes="90vw" style={{ objectPosition: '50% 75%' }} />
+              <button onClick={() => setZoomed(null)} className={t.close} aria-label="Fermer" style={{ zIndex: 2, background: 'rgba(8,6,3,0.85)' }}>
+                <X size={18} />
+              </button>
             </div>
-            <div className="text-center mt-4">
-              <h3 className="font-black text-lg" style={{ color: 'var(--sepia)' }}>{zoomed.name}</h3>
-              {zoomed.season && (
-                <p className="text-xs uppercase tracking-widest mt-1" style={{ color: 'var(--neon)' }}>{zoomed.season}</p>
-              )}
-              {zoomed.studio && (
-                <p className="text-xs mt-2 opacity-80" style={{ color: 'var(--sepia)' }}>Studio : {zoomed.studio}</p>
-              )}
-              {zoomed.author && (
-                <p className="text-xs opacity-80" style={{ color: 'var(--sepia)' }}>Auteur : {zoomed.author}</p>
-              )}
-              {!clos && (
-                <button
-                  onClick={() => {
-                    if (votedId === zoomed.id) cancelVote();
-                    else handleVote(zoomed.id);
-                    setZoomed(null);
-                  }}
-                  disabled={!!votedId && votedId !== zoomed.id}
-                  className="btn-neon px-6 py-2 rounded text-sm mt-3"
-                  style={votedId === zoomed.id ? { background: 'var(--neon)', color: 'var(--bg)' } : {}}
-                >
-                  {votedId === zoomed.id ? '✓ Voté — annuler' : votedId ? 'Déjà voté' : 'Voter pour cet anime'}
-                </button>
-              )}
-            </div>
+            <h3 className={`${s.display} ${t.sheetTitle}`}>{zoomed.name}</h3>
+            {zoomed.season && <p className={`${s.osd} ${s.tapeTitle}`}>{zoomed.season}</p>}
+            {(zoomed.studio || zoomed.author) && (
+              <p className={`${s.osd} ${s.tapeMeta}`}>
+                {[zoomed.studio && `Studio : ${zoomed.studio}`, zoomed.author && `Auteur : ${zoomed.author}`].filter(Boolean).join(' · ')}
+              </p>
+            )}
+            {!clos && (
+              <button
+                onClick={() => {
+                  if (votedId === zoomed.id) cancelVote();
+                  else handleVote(zoomed.id);
+                  setZoomed(null);
+                }}
+                disabled={!!votedId && votedId !== zoomed.id}
+                className={t.key}
+                data-on={votedId === zoomed.id ? '1' : undefined}
+              >
+                {votedId === zoomed.id ? '✓ Voté · annuler' : votedId ? 'Déjà voté' : 'Voter pour cet animé'}
+              </button>
+            )}
           </div>
         </div>
       )}

@@ -2,8 +2,11 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Check, MessageCircle, Music, Tv, Vote } from 'lucide-react';
-import Navbar from '@/components/Navbar';
+import TapePage from '@/components/tape/TapePage';
+import InView from '@/components/home/InView';
+import { Rise, Roll } from '@/components/home/Letters';
+import s from '@/components/home/home.module.css';
+import t from '@/components/tape/tape.module.css';
 import { YEARS } from '@/lib/firestore';
 import { PODIUM_POINTS } from '@/lib/votes';
 import { FIN_DES_VOTES_TEXTE } from '@/lib/event';
@@ -44,119 +47,107 @@ export default function VoterPage() {
   const animesOublies = (avancement ?? []).filter((a) => a.openings && !a.anime);
   const openingsOublies = (avancement ?? []).filter((a) => a.anime && !a.openings);
 
+  const etapes = [
+    { titre: 'Choisis une année', texte: 'De 2005 à 2019, dans l’ordre que tu veux.' },
+    {
+      titre: 'Vote',
+      texte: `Un animé par année, et un podium de 3 openings : ${PODIUM_POINTS[0]}, ${PODIUM_POINTS[1]} et ${PODIUM_POINTS[2]} points.`,
+    },
+    { titre: 'Pseudo et mail', texte: 'Demandés une seule fois, au premier vote.' },
+  ];
+
   return (
-    <>
-      <Navbar />
-      <main className="pt-20 pb-16 min-h-screen px-4 md:px-8" style={{ background: 'var(--bg)' }}>
-        <div className="max-w-5xl mx-auto">
+    <TapePage>
+      <header className={t.head}>
+        <InView>
+          <p className={`${s.osd} ${s.kicker}`}>
+            <span className={s.recDot} />
+            {clos ? 'Votes clos' : `Ouvert jusqu’au ${FIN_DES_VOTES_TEXTE} inclus`}
+          </p>
+          <h1 className={`${s.display} ${t.title}`}>
+            <Rise text="Voter" />
+          </h1>
+          <p className={t.lede}>
+            {clos
+              ? 'Les votes sont clos. Tu peux encore revoir les nominés de chaque année.'
+              : 'Deux minutes par année. Tu reprends où tu veux, ce qui est fait reste fait.'}
+          </p>
+        </InView>
+        <ol className={t.steps}>
+          {etapes.map((etape, i) => (
+            <li key={etape.titre} className={t.step}>
+              <span className={`${s.display} ${t.stepNum}`}>{i + 1}</span>
+              <span className={`${s.osd} ${t.stepTitle}`}>{etape.titre}</span>
+              <span className={t.stepText}>{etape.texte}</span>
+            </li>
+          ))}
+        </ol>
+      </header>
 
-          <div className="text-center py-12 mb-4">
-            <div
-              className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-5"
-              style={{ background: 'rgba(0,255,204,0.08)', border: '1px solid var(--border)' }}
-            >
-              <Vote size={24} style={{ color: 'var(--neon)' }} />
-            </div>
-            <h1 className="text-3xl md:text-5xl font-black mb-3" style={{ color: 'var(--sepia)' }}>Voter</h1>
-            <p className="text-sm" style={{ color: 'var(--sepia-dim)' }}>
-              {clos ? 'Les votes sont clos.' : `Ouvert jusqu’au ${FIN_DES_VOTES_TEXTE} inclus — deux minutes par année.`}
+      <section className={t.body}>
+        {animesOublies.length > 0 && !clos && (
+          <div className={t.notice} data-tone="rec">
+            <p className={`${s.display} ${t.noticeTitle}`}>
+              Il te manque {animesOublies.length} animé{animesOublies.length > 1 ? 's' : ''}
             </p>
-            <div className="h-px w-24 mx-auto mt-4" style={{ background: 'linear-gradient(to right, transparent, var(--neon), transparent)' }} />
-          </div>
-
-          {/* Mode d'emploi */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-10">
-            {[
-              { n: 1, titre: 'Choisis une année', texte: 'De 2005 à 2019, dans l’ordre que tu veux.' },
-              {
-                n: 2,
-                titre: 'Vote',
-                texte: `Un animé par année, et un podium de 3 openings : ${PODIUM_POINTS[0]}, ${PODIUM_POINTS[1]} et ${PODIUM_POINTS[2]} points.`,
-              },
-              { n: 3, titre: 'Pseudo et mail', texte: 'Demandés une seule fois, au premier vote.' },
-            ].map((etape) => (
-              <div key={etape.n} className="retro-card rounded-lg p-4">
-                <span
-                  className="inline-flex items-center justify-center rounded-full font-black mb-2"
-                  style={{ width: '1.8rem', height: '1.8rem', background: 'var(--neon)', color: 'var(--bg)', fontSize: '0.9rem' }}
-                >
-                  {etape.n}
-                </span>
-                <p className="font-black text-sm" style={{ color: 'var(--sepia)' }}>{etape.titre}</p>
-                <p className="text-xs mt-1 leading-relaxed" style={{ color: 'var(--sepia-dim)' }}>{etape.texte}</p>
-              </div>
-            ))}
-          </div>
-
-          {animesOublies.length > 0 && !clos && (
-            <div className="retro-card rounded-lg p-4 mb-6 text-center" style={{ borderColor: 'var(--neon)' }}>
-              <p className="font-black text-sm" style={{ color: 'var(--sepia)' }}>
-                Il te manque {animesOublies.length} animé{animesOublies.length > 1 ? 's' : ''}
-              </p>
-              <p className="text-xs mt-1" style={{ color: 'var(--sepia-dim)' }}>
-                Tu as classé les openings de {animesOublies.map((a) => a.year).join(', ')} sans voter l’animé de ces années.
-              </p>
-              <Link
-                href={`/anime/${animesOublies[0].year}`}
-                className="btn-neon px-5 py-3 rounded text-sm inline-flex items-center gap-2 mt-3"
-                style={{ background: 'var(--neon)', color: 'var(--bg)' }}
-              >
-                <Tv size={14} /> Voter l’animé {animesOublies[0].year}
+            <p className={t.noticeText}>
+              Tu as classé les openings de <b>{animesOublies.map((a) => a.year).join(', ')}</b> sans voter l’animé de ces années.
+            </p>
+            <div className={t.keys}>
+              <Link href={`/anime/${animesOublies[0].year}`} className={t.key} data-on="1">
+                Voter l’animé {animesOublies[0].year} ▶
               </Link>
             </div>
-          )}
+          </div>
+        )}
 
-          {openingsOublies.length > 0 && !clos && (
-            <div className="retro-card rounded-lg p-4 mb-6 text-center">
-              <p className="text-xs" style={{ color: 'var(--sepia-dim)' }}>
-                Il te manque aussi {openingsOublies.length} podium{openingsOublies.length > 1 ? 's' : ''} d’openings :{' '}
-                {openingsOublies.map((a) => a.year).join(', ')}.
-              </p>
-            </div>
-          )}
-
-          {total > 0 && (
-            <p className="text-center text-xs mb-6" style={{ color: 'var(--sepia-dim)' }}>
-              Tu as déjà rempli <strong style={{ color: 'var(--neon)' }}>{total}</strong> bulletin{total > 1 ? 's' : ''} sur {YEARS.length * 2}.{' '}
-              <Link href="/mes-votes" style={{ color: 'var(--neon)' }}>Voir mes votes</Link>
+        {openingsOublies.length > 0 && !clos && (
+          <div className={t.notice}>
+            <p className={t.noticeText}>
+              Il te manque aussi {openingsOublies.length} podium{openingsOublies.length > 1 ? 's' : ''} d’openings :{' '}
+              <b>{openingsOublies.map((a) => a.year).join(', ')}</b>.
             </p>
-          )}
+          </div>
+        )}
 
-          {/* Une porte par année */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {YEARS.map((year) => (
-              <div key={year} className="retro-card rounded-lg p-4">
-                <div className="flex items-center justify-between mb-3">
-                  <span className="font-black text-2xl" style={{ color: 'var(--sepia)' }}>{year}</span>
-                  <Link
-                    href={`/annee/${year}#commentaires`}
-                    className="text-xs inline-flex items-center gap-1"
-                    style={{ color: 'var(--sepia-dim)' }}
-                  >
-                    <MessageCircle size={12} /> Commentaires
+        {total > 0 && (
+          <p className={`${s.osd} ${t.empty}`} style={{ paddingTop: 0 }}>
+            <span style={{ color: 'var(--neon)' }}>{total}</span> bulletin{total > 1 ? 's' : ''} rempli{total > 1 ? 's' : ''} sur {YEARS.length * 2} ·{' '}
+            <Link href="/mes-votes" className={s.textLink}>
+              <Roll text="Voir mes votes" />
+            </Link>
+          </p>
+        )}
+
+        {/* Une porte par année */}
+        <div className={t.rows}>
+          {YEARS.map((year) => {
+            const ops = fait(year, 'openings');
+            const ani = fait(year, 'anime');
+            return (
+              <div key={year} className={t.row} data-done={ops && ani ? '1' : undefined}>
+                <span className={`${s.display} ${t.rowYear}`}>{year}</span>
+                <div className={t.keys}>
+                  <Link href={`/opening/${year}`} className={t.key} data-on={ops ? '1' : undefined}>
+                    {ops ? '✓' : '▶'} Openings
+                  </Link>
+                  <Link href={`/anime/${year}`} className={t.key} data-on={ani ? '1' : undefined}>
+                    {ani ? '✓' : '▶'} Animé
                   </Link>
                 </div>
-                <div className="flex gap-2">
-                  <Link
-                    href={`/opening/${year}`}
-                    className="btn-neon text-xs px-3 py-2 rounded flex-1 inline-flex items-center justify-center gap-1.5"
-                    style={fait(year, 'openings') ? { background: 'var(--neon)', color: 'var(--bg)' } : {}}
-                  >
-                    {fait(year, 'openings') ? <Check size={12} /> : <Music size={12} />} Openings
+                <div className={t.rowSide}>
+                  <Link href={`/nomines/${year}`} className={`${s.osd} ${t.rowLink}`}>
+                    <Roll text="Nominés" />
                   </Link>
-                  <Link
-                    href={`/anime/${year}`}
-                    className="btn-neon text-xs px-3 py-2 rounded flex-1 inline-flex items-center justify-center gap-1.5"
-                    style={fait(year, 'anime') ? { background: 'var(--neon)', color: 'var(--bg)' } : {}}
-                  >
-                    {fait(year, 'anime') ? <Check size={12} /> : <Tv size={12} />} Animé
+                  <Link href={`/annee/${year}#commentaires`} className={`${s.osd} ${t.rowLink}`}>
+                    <Roll text="Commentaires" />
                   </Link>
                 </div>
               </div>
-            ))}
-          </div>
+            );
+          })}
         </div>
-      </main>
-    </>
+      </section>
+    </TapePage>
   );
 }

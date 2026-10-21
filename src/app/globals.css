@@ -624,3 +624,48 @@ body::after {
 @media (prefers-reduced-motion: reduce) {
   .zenkai-spin { animation: none; }
 }
+
+/* ── LA CASSETTE HORS DE L'ACCUEIL ──
+   Les pages enveloppées dans <TapePage> portent la classe `vhs`. Les anciens
+   composants partagés (commentaires, fenêtres, vote au doigt) y prennent la
+   même allure que l'accueil, sans toucher à leur fonctionnement. */
+.vhs h1,
+.vhs h2,
+.vhs h3 {
+  font-family: var(--font-display), Impact, 'Arial Narrow', sans-serif;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0;
+  line-height: 0.95;
+}
+/* Les petites étiquettes en capitales deviennent des incrustations */
+.vhs .uppercase.tracking-widest,
+.vhs .btn-neon {
+  font-family: var(--font-osd), 'Courier New', monospace;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+}
+.vhs .btn-neon {
+  font-size: 1.1rem;
+  line-height: 1;
+  border-color: var(--border);
+  background: rgba(0, 255, 204, 0.04);
+  transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1), border-color 0.2s, background-color 0.2s, color 0.2s;
+}
+.vhs .btn-neon:hover { box-shadow: none; }
+.vhs .btn-neon:active:not(:disabled) { transform: scale(0.96); }
+.vhs .retro-card {
+  background: #171209;
+  border: 1px solid var(--border);
+}
+.vhs .retro-card:hover { transform: none; box-shadow: none; }
+/* Pas d'arrondis : du plastique et du verre d'écran, pas des pastilles */
+.vhs .rounded,
+.vhs .rounded-lg,
+.vhs .rounded-xl {
+  border-radius: 0;
+}
+.vhs textarea,
+.vhs input {
+  border-radius: 0;
+}

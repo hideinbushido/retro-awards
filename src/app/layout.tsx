@@ -4,6 +4,7 @@ import './globals.css';
 import { MusicProvider } from '@/contexts/MusicContext';
 import EntryTracker from '@/components/EntryTracker';
 import Footer from '@/components/Footer';
+import { display, osd } from '@/components/home/fonts';
 import { siteUrl } from '@/lib/site';
 
 /*
@@ -38,7 +39,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" className={`h-full ${body.variable}`}>
+    // Les polices de la cassette (titres, incrustations) servent sur tout le site
+    <html lang="fr" className={`h-full ${body.variable} ${display.variable} ${osd.variable}`}>
       <body className="min-h-full flex flex-col">
         <EntryTracker />
         <MusicProvider src="/CRYSTAL.mp3">

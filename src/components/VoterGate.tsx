@@ -1,9 +1,10 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Mail } from 'lucide-react';
 import type { VoterIdentity } from '@/lib/voters';
 import { readEntry } from '@/components/EntryTracker';
+import s from '@/components/home/home.module.css';
+import t from '@/components/tape/tape.module.css';
 
 /**
  * Pseudo et adresse mail, demandés une seule fois, juste avant le premier vote.
@@ -61,16 +62,6 @@ export function useVoterGate() {
   return { voter, guard, gate, ask };
 }
 
-const FIELD: React.CSSProperties = {
-  background: 'var(--bg2)',
-  border: '1px solid var(--border)',
-  color: 'var(--sepia)',
-  borderRadius: '0.375rem',
-  padding: '0.7rem 0.8rem',
-  width: '100%',
-  fontSize: '0.875rem',
-};
-
 function VoterModal({
   onDone,
   onClose,
@@ -105,26 +96,27 @@ function VoterModal({
   }
 
   return (
-    <div
-      className="fixed inset-0 z-[60] flex items-center justify-center p-4"
-      style={{ background: 'rgba(0,0,0,0.88)', backdropFilter: 'blur(6px)' }}
-      onClick={onClose}
-    >
+    <div className={t.overlay} onClick={onClose}>
       <form
         onSubmit={submit}
         onClick={(e) => e.stopPropagation()}
-        className="retro-card rounded-xl p-5 w-full max-w-sm flex flex-col gap-3"
+        className={t.sheet}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="voter-gate-title"
       >
-        <div className="text-center">
-          <Mail size={22} className="mx-auto mb-2" style={{ color: 'var(--neon)' }} />
-          <h2 className="font-black text-lg" style={{ color: 'var(--sepia)' }}>Avant de voter</h2>
-          <p className="text-xs mt-2 leading-relaxed" style={{ color: 'var(--sepia-dim)' }}>
+        <div>
+          <p className={`${s.osd} ${s.kicker}`} style={{ marginBottom: 10 }}>
+            <span className={s.recDot} />Avant le premier vote
+          </p>
+          <h2 id="voter-gate-title" className={`${s.display} ${t.sheetTitle}`}>Qui vote ?</h2>
+          <p className={t.sheetText} style={{ marginTop: 10 }}>
             Un pseudo et une adresse mail, comme à l’édition précédente. Tu recevras un mail de
             confirmation, puis le récap de tes votes.
           </p>
         </div>
 
-        <label className="text-xs font-black tracking-widest uppercase" style={{ color: 'var(--neon)' }}>
+        <label className={`${s.osd} ${t.label}`}>
           Pseudo
           <input
             value={pseudo}
@@ -133,11 +125,11 @@ function VoterModal({
             maxLength={30}
             autoComplete="nickname"
             placeholder="Ton pseudo"
-            style={{ ...FIELD, marginTop: '0.35rem' }}
+            className={t.field}
           />
         </label>
 
-        <label className="text-xs font-black tracking-widest uppercase" style={{ color: 'var(--neon)' }}>
+        <label className={`${s.osd} ${t.label}`}>
           Adresse mail
           <input
             type="email"
@@ -148,24 +140,19 @@ function VoterModal({
             autoComplete="email"
             inputMode="email"
             placeholder="toi@exemple.com"
-            style={{ ...FIELD, marginTop: '0.35rem' }}
+            className={t.field}
           />
         </label>
 
-        {error && <p className="text-xs" style={{ color: '#ff5555' }}>{error}</p>}
+        {error && <p className={`${s.osd} ${t.error}`} style={{ marginTop: 0 }}>{error}</p>}
 
-        <button
-          type="submit"
-          disabled={sending}
-          className="btn-neon text-sm py-3 px-4 rounded"
-          style={{ background: 'var(--neon)', color: 'var(--bg)' }}
-        >
-          {sending ? '...' : 'C’est parti'}
+        <button type="submit" disabled={sending} className={t.key} data-on="1">
+          {sending ? 'Envoi…' : 'C’est parti ▶'}
         </button>
-        <button type="button" onClick={onClose} className="text-xs" style={{ color: 'var(--sepia-dim)' }}>
+        <button type="button" onClick={onClose} className={`${s.osd} ${t.linkBtn}`}>
           Plus tard
         </button>
-        <p className="text-xs text-center" style={{ color: 'var(--sepia-dim)', opacity: 0.7 }}>
+        <p className={t.sheetSmall}>
           Ton adresse sert uniquement aux Retro Awards. Elle n’apparaît nulle part sur le site.
           On note aussi le pays et l’appareil, pour les statistiques de participation.
         </p>
