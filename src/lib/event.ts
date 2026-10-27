@@ -5,12 +5,11 @@
  */
 
 /**
- * Fin des votes : dimanche 25 octobre, 23 h 59 à Paris.
- * Ce jour-là, la France repasse à l'heure d'hiver à 3 h : le soir, c'est UTC+1.
+ * Fin des votes : mardi 27 octobre, 23 h 59 à Paris (UTC+1).
  */
-export const FIN_DES_VOTES = new Date('2026-10-25T23:59:59+01:00');
-export const FIN_DES_VOTES_TEXTE = 'dimanche 25 octobre';
-export const FIN_DES_VOTES_COURT = 'dim. 25 oct.';
+export const FIN_DES_VOTES = new Date('2026-10-27T23:59:59+01:00');
+export const FIN_DES_VOTES_TEXTE = 'mardi 27 octobre';
+export const FIN_DES_VOTES_COURT = 'mar. 27 oct.';
 
 export function votesClos(maintenant: number = Date.now()): boolean {
   return maintenant > FIN_DES_VOTES.getTime();
