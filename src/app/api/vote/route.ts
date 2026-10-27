@@ -73,7 +73,7 @@ export async function POST(request: NextRequest) {
 
   // L'échéance se juge ici, à l'horloge du serveur : celle du visiteur ne compte pas.
   if (votesClos()) {
-    return NextResponse.json({ error: 'Les votes sont clos depuis le dimanche 25 octobre.', closed: true }, { status: 403 });
+    return NextResponse.json({ error: 'Les votes sont clos depuis le mardi 27 octobre.', closed: true }, { status: 403 });
   }
 
   /* Pseudo et mail d’abord : c’est eux qui rattachent le bulletin à quelqu’un. */
@@ -120,7 +120,7 @@ export async function POST(request: NextRequest) {
 export async function DELETE(request: NextRequest) {
   // Passé l'échéance, un vote ne se retire plus : les totaux sont figés.
   if (votesClos()) {
-    return NextResponse.json({ error: 'Les votes sont clos depuis le dimanche 25 octobre.', closed: true }, { status: 403 });
+    return NextResponse.json({ error: 'Les votes sont clos depuis le mardi 27 octobre.', closed: true }, { status: 403 });
   }
 
   let body: { year?: unknown; category?: unknown };
