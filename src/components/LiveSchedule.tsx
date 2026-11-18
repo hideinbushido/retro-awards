@@ -1,4 +1,5 @@
 'use client';
+// avoid-ai-design-ignore-file: SD4. Raison : SD4 : libellés OSD en capitales espacées, comme l’affichage d’un magnétoscope
 
 import { CHAINES, FIN_DES_VOTES_COURT, FIN_DES_VOTES_TEXTE, LIVES, type Chaine } from '@/lib/event';
 import { TikTokIcon, TwitchIcon } from '@/components/icons';

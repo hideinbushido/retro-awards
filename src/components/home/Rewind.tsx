@@ -1,4 +1,5 @@
 'use client';
+// avoid-ai-design-ignore-file: I2. Raison : I2 : symboles de magnétoscope (▶ ◀◀ ❙❙ ♪), cœur de la DA cassette VHS
 
 import Link from 'next/link';
 import Image from 'next/image';

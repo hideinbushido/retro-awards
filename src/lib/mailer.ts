@@ -1,3 +1,4 @@
+// avoid-ai-design-ignore-file: CP3. Raison : CP3 : flèche de lien voulue (mail, commentaire)
 /**
  * Envoi des mails aux votants — côté serveur uniquement.
  *

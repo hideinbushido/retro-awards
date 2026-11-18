@@ -1,4 +1,5 @@
 'use client';
+// avoid-ai-design-ignore-file: I2, SD4. Raison : I2 : symboles de magnétoscope (▶ ◀◀ ❙❙ ♪), cœur de la DA cassette VHS ; SD4 : libellés OSD en capitales espacées, comme l’affichage d’un magnétoscope
 
 import { useState, useRef, useCallback, useEffect } from 'react';
 import Link from 'next/link';
@@ -244,7 +245,7 @@ function YearSlide({
                   }}
                 >
                   {audioPlaying ? (
-                    <><span style={{ fontSize: '14px' }}>⏸</span> PAUSE</>
+                    <><span style={{ fontSize: '14px' }}>❙❙</span> PAUSE</>
                   ) : (
                     <><span style={{ fontSize: '14px' }}>▶</span> ÉCOUTER</>
                   )}
@@ -332,7 +333,7 @@ function YearSlide({
             style={{ background: 'rgba(0,255,204,0.08)', border: '1px solid var(--border)' }}
           >
             <span className="text-xs font-bold tracking-widest uppercase" style={{ color: 'var(--sepia-dim)' }}>
-              ✦ NOMINÉ
+              ● NOMINÉ
             </span>
           </div>
 
@@ -368,7 +369,7 @@ function YearSlide({
                     }}
                   >
                     {audioPlaying ? (
-                      <><span style={{ fontSize: '14px' }}>⏸</span> PAUSE</>
+                      <><span style={{ fontSize: '14px' }}>❙❙</span> PAUSE</>
                     ) : (
                       <><span style={{ fontSize: '14px' }}>▶</span> ÉCOUTER</>
                     )}

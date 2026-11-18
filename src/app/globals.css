@@ -1,3 +1,4 @@
+/* avoid-ai-design-ignore-file: SD2, SD4, K3, C5. Raison : SD2 : fond noir + néon : écran cathodique de la DA VHS ; SD4 : libellés OSD en capitales espacées, comme l’affichage d’un magnétoscope ; K3 : flou réservé à la barre des années, posée sur du contenu qui défile ; C5 : lueur néon = phosphore de l’écran CRT */
 @import "tailwindcss";
 
 /* Un cran au-dessus des tailles par défaut : les petits textes du site
@@ -34,6 +35,8 @@ body {
   color: var(--sepia);
   font-family: var(--font-body), system-ui, sans-serif;
   overflow-x: hidden;
+  /* les symboles de magnétoscope (play, rew, pause, note) restent monochromes, pas des emojis colorés sur mobile */
+  font-variant-emoji: text;
 }
 
 /* Les titres gardent le Courier d'origine : c'est l'identité rétro du site.
@@ -521,55 +524,6 @@ body::after {
     gap: 0;
   }
 }
-
-/* ── HERO RETRO BACKGROUND (grille synthwave, sans vidéo) ── */
-.hero-retro-bg {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  background:
-    radial-gradient(ellipse 120% 60% at 50% 0%, rgba(0,255,204,0.10) 0%, transparent 60%),
-    linear-gradient(180deg, var(--bg) 0%, var(--bg3) 55%, var(--bg) 100%);
-}
-.hero-retro-bg::before {
-  content: '';
-  position: absolute;
-  top: 6%;
-  left: 50%;
-  width: 420px;
-  height: 420px;
-  transform: translateX(-50%);
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(232,213,160,0.16) 0%, rgba(0,255,204,0.12) 45%, transparent 72%);
-  filter: blur(2px);
-}
-.hero-grid {
-  position: absolute;
-  left: -50%;
-  right: -50%;
-  bottom: -10%;
-  height: 70%;
-  background-image:
-    linear-gradient(rgba(0,255,204,0.28) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,255,204,0.28) 1px, transparent 1px);
-  background-size: 64px 64px;
-  transform: perspective(340px) rotateX(62deg);
-  transform-origin: 50% 0%;
-  animation: gridScroll 6s linear infinite;
-  -webkit-mask-image: linear-gradient(to top, black 12%, transparent 92%);
-  mask-image: linear-gradient(to top, black 12%, transparent 92%);
-}
-@keyframes gridScroll {
-  from { background-position: 0 0; }
-  to   { background-position: 0 64px; }
-}
-
-/* ── SCROLL CUE ── */
-@keyframes bounceCue {
-  0%, 100% { transform: translateY(0);   opacity: 0.6; }
-  50%      { transform: translateY(8px); opacity: 1;   }
-}
-.scroll-cue { animation: bounceCue 1.8s ease-in-out infinite; display: inline-flex; }
 
 /* ── PILL (catégories compactes) ── */
 .pill-neon {

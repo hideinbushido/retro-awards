@@ -1,4 +1,5 @@
 'use client';
+// avoid-ai-design-ignore-file: I2, I3. Raison : I2 : symboles de magnétoscope (▶ ◀◀ ❙❙ ♪), cœur de la DA cassette VHS ; I3 : coche de validation du vote, pas une icône décorative
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';

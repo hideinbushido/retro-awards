@@ -1,4 +1,5 @@
 'use client';
+// avoid-ai-design-ignore-file. Raison : back-office interne, hors DA publique
 
 import { Fragment, useState, useRef } from 'react';
 import Image from 'next/image';
